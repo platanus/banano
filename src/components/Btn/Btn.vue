@@ -38,7 +38,7 @@ const tag = computed(() => {
       `bn-btn--sizes-${props.size}`,
       `bn-btn--shapes-${props.shape}`,
       `bn-btn--variants-${props.variant}`,
-      `bn-btn--variants-${props.variant}-${props.color}`,
+      `bn-btn--${props.color}`,
     ]"
   >
     <template v-if="!loading || loading && !loadingReplacesContent">

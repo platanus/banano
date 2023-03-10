@@ -5,5 +5,5 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [banano.tailwindPlugin],
+  plugins: [banano.tailwindPlugin({ colors: ['orange'] })],
 };

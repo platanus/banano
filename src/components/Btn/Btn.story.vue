@@ -21,6 +21,12 @@ const shapeVariants = [
 const variantVariants = [
   { variant: 'default' },
   { variant: 'outline' },
+  { variant: 'no-border' },
+];
+
+const colorVariants = [
+  { color: 'orange' },
+  { color: 'orange', variant: 'outline' },
 ];
 
 defineExpose({
@@ -71,6 +77,17 @@ defineExpose({
       :title="'Btn ' + props.variant"
     >
       <Btn v-bind="props">
+        {{ state.text }}
+      </Btn>
+    </Variant>
+    <Variant
+      v-for="(props, key) of colorVariants"
+      :key="key"
+      :title="'Btn ' + Object.keys(props).join(' ')"
+    >
+      <Btn
+        v-bind="props"
+      >
         {{ state.text }}
       </Btn>
     </Variant>

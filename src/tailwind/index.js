@@ -15,7 +15,7 @@ function parseClassName(prefix, className) {
 function parseClasses(prefix, classObj, prevClassName, finalClasses = {}) {
   for (const [className, value] of Object.entries(classObj)) {
     const valueEntries = Object.entries(value);
-    if (valueEntries.length > 0) {
+    if (valueEntries.length > 0 && !className.includes('data-color')) {
       const classNamePrefix = className.startsWith('.') ? '' : '-';
       const parsedClassName = prevClassName ? `${prevClassName}${classNamePrefix}${className}` : className;
       parseClasses(prefix, value, parsedClassName, finalClasses);
@@ -29,23 +29,29 @@ function parseClasses(prefix, classObj, prevClassName, finalClasses = {}) {
   return finalClasses;
 }
 
-const btnClasses = parseClasses('.bn-btn', btn);
+const defaultOptions = { colors: ['base'] };
+function getColors(userColors = [], defaultColors = []) {
+  return [...defaultColors, ...userColors];
+}
 
 module.exports = {
-  tailwindPlugin: plugin(({ addComponents }) => {
-    addComponents({
-      ...btnClasses,
-    });
-  }, {
-    theme: {
-      extend: {
-        colors: {
-          base: colors.blue,
+  tailwindPlugin: plugin.withOptions(
+    (options = defaultOptions) => ({ addComponents }) => {
+      addComponents({
+        ...parseClasses('.bn-btn', btn(getColors(options.colors, defaultOptions.colors))),
+      });
+    },
+    (options = defaultOptions) => ({
+      theme: {
+        extend: {
+          colors: {
+            base: colors.blue,
+          },
         },
       },
-    },
-    safelist: [
-      ...Object.keys(btnClasses),
-    ],
-  }),
+      safelist: [
+        ...Object.keys(parseClasses('.bn-btn', btn(getColors(options.colors, defaultOptions.colors)))),
+      ],
+    }),
+  ),
 };

@@ -10,6 +10,12 @@ module.exports = {
         '@apply ui-open:border-varColor-600 ui-open:outline-varColor-600 ui-open:ring-varColor-600': {},
       },
     },
+    '&__tag': {
+      '@apply ml-1 inline-flex rounded py-1 px-2': {},
+      colors: {
+        '@apply bg-varColor-100': {},
+      },
+    },
   },
   // Separate class since it's teleported to body
   '.bn-listbox-options': {

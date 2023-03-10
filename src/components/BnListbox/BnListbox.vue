@@ -11,12 +11,13 @@ import {
 import { computePosition, flip, offset } from '@floating-ui/dom';
 
 interface Props {
-  modelValue?: string
+  modelValue?: string | string[]
   options: string[]
   name: string
   color?: string
   rules?: RuleExpression<unknown>
   disabled?: boolean
+  multiple?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,13 +25,14 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'base',
   rules: undefined,
   disabled: false,
+  multiple: false,
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: number | string): void}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string | string[]): void}>();
 
 const name = toRef(props, 'name');
 
-const { value } = useField<string>(name, props.rules, {
+const { value } = useField<string|string[]>(name, props.rules, {
   initialValue: props.modelValue,
 });
 
@@ -76,6 +78,7 @@ watch(
 <template>
   <Listbox
     v-model="value"
+    :multiple="props.multiple"
     :disabled="props.disabled"
     as="div"
     class="bn-listbox"
@@ -85,9 +88,22 @@ watch(
       ref="listboxButtonRef"
       class="bn-listbox__button"
     >
-      <span class="truncate">
-        {{ value }}
-      </span>
+      <template v-if="multiple">
+        <div class="overflow-hidden">
+          <span
+            v-for="option in props.modelValue"
+            :key="option"
+            class="bn-listbox__tag"
+          >
+            {{ option }}
+          </span>
+        </div>
+      </template>
+      <template v-else>
+        <span class="truncate">
+          {{ value }}
+        </span>
+      </template>
       <svg
         class="ml-auto h-6 w-6 shrink-0 text-gray-500"
         viewBox="0 0 24 24"

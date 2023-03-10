@@ -4,6 +4,7 @@ import BnListbox from './BnListbox.vue';
 
 const state = reactive({
   single: 'Super Long Text lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  multiple: ['Option 2', 'Option 3', 'Option 4'],
 });
 
 const selectOptions = [
@@ -46,6 +47,16 @@ const selectOptions = [
           name="color"
           :options="selectOptions"
           color="orange"
+        />
+      </template>
+    </Variant>
+    <Variant title="multiple">
+      <template #default>
+        <BnListbox
+          v-model="state.multiple"
+          name="multiple"
+          multiple
+          :options="selectOptions"
         />
       </template>
     </Variant>

@@ -1,8 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const babelTraverse = require('@babel/traverse');
-const babelParser = require('@babel/parser');
-const babelGenerator = require('@babel/generator');
 
 const BASE_PATH = path.resolve(__dirname, '..', 'src', 'components');
 const TAILWIND_CONFIG = path.resolve(__dirname, '..', 'tailwind.config.js');
@@ -20,19 +17,8 @@ function extractStyles() {
     }
   });
 
-  return JSON.stringify(styles);
-}
-
-function isModuleChild(nodePath) {
-  try {
-    return nodePath.parentPath.parentPath.container.left.object.name === 'module';
-  } catch (e) {
-    return false;
-  }
-}
-
-function getLibraryIndexInArray(ast) {
-  return ast.findIndex(node => node.type === 'CallExpression' && node.callee.name === 'banano');
+  // eslint-disable-next-line no-magic-numbers
+  return JSON.stringify(styles, null, 2);
 }
 
 function main() {
@@ -43,24 +29,7 @@ function main() {
     return;
   }
 
-  const tailwindConfig = fs.readFileSync(TAILWIND_CONFIG, 'utf8');
-  const ast = babelParser.parse(tailwindConfig, { sourceType: 'module' });
-  babelTraverse.default(ast, {
-    ArrayExpression(nodePath) {
-      if (nodePath.container.key.name === 'plugins' && isModuleChild(nodePath)) {
-        const plugins = nodePath.container.value.elements;
-        if (getLibraryIndexInArray(plugins) === -1) {
-          plugins.push(babelParser.parseExpression(
-            `banano.tailwindPlugin(
-              { colors: [], styles: ${extractStyles()} }
-            )`,
-          ));
-        }
-      }
-    },
-  });
-
-  fs.writeFileSync(TAILWIND_CONFIG, babelGenerator.default(ast).code);
+  fs.writeFileSync('./banano.json', extractStyles());
 }
 
 main();

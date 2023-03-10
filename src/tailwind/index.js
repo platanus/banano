@@ -1,8 +1,16 @@
 /* eslint-disable max-len, vue/max-len*/
 const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
+const mergeWith = require('lodash/mergeWith');
 
 const btn = require('../components/Btn/Btn.styles.js');
+
+const components = {
+  '.bn-btn': {
+    name: 'Btn',
+    styles: btn,
+  },
+};
 
 function parseClassName(prefix, className) {
   if (className === 'base') {
@@ -49,29 +57,52 @@ function parseClasses(settings, classObj, prevClassName, finalClasses = {}) {
   return finalClasses;
 }
 
-const defaultOptions = { colors: ['base'] };
-function getColors(userColors = [], defaultColors = []) {
-  return [...defaultColors, ...userColors];
+const defaultOptions = { colors: ['base'], styles: {} };
+
+function mergeArray(objValue, srcValue) {
+  if (Array.isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
+
+  return undefined;
 }
 
 module.exports = {
   tailwindPlugin: plugin.withOptions(
-    (options = defaultOptions) => ({ addComponents }) => {
+    (options) => ({ addComponents }) => {
+      const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
+
       addComponents({
-        ...parseClasses({ prefix: '.bn-btn', colors: getColors(options.colors, defaultOptions.colors) }, btn),
+        ...Object.entries(components)
+          .map(([componentPrefix, component]) => parseClasses(
+            { prefix: componentPrefix, colors: optionsWithDefaults.colors },
+            mergeWith({}, component.styles, optionsWithDefaults.styles[component.name], mergeArray),
+          ))
+          .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
       });
     },
-    (options = defaultOptions) => ({
-      theme: {
-        extend: {
-          colors: {
-            base: tailwindColors.blue,
+    (options) => {
+      const optionsWithDefaults = mergeWith({}, defaultOptions, options, mergeArray);
+
+      return {
+        theme: {
+          extend: {
+            colors: {
+              base: tailwindColors.blue,
+            },
           },
         },
-      },
-      safelist: [
-        ...Object.keys(parseClasses({ prefix: '.bn-btn', colors: getColors(options.colors, defaultOptions.colors) }, btn)),
-      ],
-    }),
+        safelist: [
+          ...Object.keys(
+            Object.entries(components)
+              .map(([componentPrefix, component]) => parseClasses(
+                { prefix: componentPrefix, colors: optionsWithDefaults.colors },
+                mergeWith(component.styles, optionsWithDefaults.styles[component.name], mergeArray),
+              ))
+              .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
+          ),
+        ],
+      };
+    },
   ),
 };

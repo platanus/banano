@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { GenericValidateFunction } from 'vee-validate';
+import { reactive, Ref } from 'vue';
 import BnFileInput from './BnFileInput.vue';
 
 const icons = [
@@ -34,6 +35,14 @@ const state = reactive({
     createSVGFile('icon2.svg', icons[1]),
   ],
 });
+
+function isRequired(val: File[]) {
+  if (val.length === 0) {
+    return 'This field is required';
+  }
+
+  return true;
+}
 </script>
 
 <template>
@@ -90,7 +99,7 @@ const state = reactive({
       <template #default>
         <BnFileInput
           v-model="state.avatar"
-          name="avatar"
+          name="avatar-disabled"
           variant="avatar"
           disabled
         />
@@ -152,6 +161,15 @@ const state = reactive({
             </div>
           </template>
         </BnFileInput>
+      </template>
+    </Variant>
+    <Variant title="validation">
+      <template #default>
+        <BnFileInput
+          v-model="state.single"
+          name="required"
+          :rules="(isRequired as GenericValidateFunction)"
+        />
       </template>
     </Variant>
   </Story>

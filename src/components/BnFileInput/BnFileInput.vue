@@ -38,6 +38,9 @@ const {
   value: inputValue,
   handleBlur,
   handleChange,
+  setTouched,
+  errorMessage,
+  meta,
 } = useField<File[]>(props.name, props.rules, {
   initialValue: props.modelValue,
 });
@@ -63,6 +66,7 @@ function setFile(e: Event) {
   }
   updateInputFiles();
   handleChange(files);
+  setTouched(true);
   emit('update:modelValue', inputValue.value);
 }
 
@@ -114,94 +118,108 @@ function removeFile(file: File) {
 </script>
 
 <template>
-  <component
-    :is="$slots['default'] ? 'div' : 'label'"
+  <div
     class="bn-file-input"
     :class="[
       `bn-file-input--${props.color}`,
       `bn-file-input--variants-${props.variant}`,
-      { 'bn-file-input--disabled': props.disabled, 'bn-file-input--custom': $slots['default'] }
+      {
+        'bn-file-input--disabled': props.disabled,
+        'bn-file-input--custom': $slots['default'],
+        'bn-file-input--error': meta.touched && errorMessage,
+      }
     ]"
   >
-    <input
-      ref="fileInputRef"
-      type="file"
-      :name="name"
-      class="bn-file-input__input"
-      :multiple="props.multiple"
-      :disabled="props.disabled"
-      @change="setFile"
-      @blur="handleBlur"
+    <component
+      :is="$slots['default'] ? 'div' : 'label'"
+      class="bn-file-input__wrapper"
     >
-    <slot
-      :open-file-dialog="openFileDialog"
-      :disabled="disabled"
-      :image-preview-path="imagePreviewPath"
-      :remove-file="removeFile"
-      :add-file="addFile"
-      :files="inputValue"
-    >
-      <template v-if="variant === 'default'">
-        <BnBtn
-          size="xs"
-          class="bn-file-input__button"
-          variant="outline"
-          :disabled="props.disabled"
-          @click="openFileDialog"
-        >
-          Browse
-        </BnBtn>
-      </template>
-      <template v-if="variant === 'avatar'">
-        <button
-          class="bn-file-input__avatar"
-          :class="`bn-file-input__avatar--${props.avatarShape}`"
-          :disabled="props.disabled"
-          @click="openFileDialog"
-        >
-          <img
-            v-if="inputValue && inputValue[0] && imagePreviewPath(inputValue[0])"
-            :src="imagePreviewPath(inputValue[0])"
-            class="h-full w-full object-cover"
-          >
-          <template v-else>
-            +
-          </template>
-        </button>
-      </template>
-      <div
-        v-if="variant !== 'avatar'"
-        class="bn-file-input__label"
+      <input
+        ref="fileInputRef"
+        type="file"
+        :name="name"
+        class="bn-file-input__input"
+        :multiple="props.multiple"
+        :disabled="props.disabled"
+        @change="setFile"
+        @blur="handleBlur"
       >
-        <div
-          v-if="fileList"
-          class="flex w-full items-center"
-        >
-          <span class="truncate">
-            {{ fileList }}
-          </span>
-          <button
-            class="ml-auto shrink-0 text-gray-500"
-            @click="inputValue = []"
+      <slot
+        :open-file-dialog="openFileDialog"
+        :disabled="disabled"
+        :image-preview-path="imagePreviewPath"
+        :remove-file="removeFile"
+        :add-file="addFile"
+        :files="inputValue"
+      >
+        <template v-if="variant === 'default'">
+          <BnBtn
+            size="xs"
+            class="bn-file-input__button"
+            variant="outline"
+            :disabled="props.disabled"
+            @click="openFileDialog"
           >
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
+            Browse
+          </BnBtn>
+        </template>
+        <template v-if="variant === 'avatar'">
+          <button
+            class="bn-file-input__avatar"
+            :class="`bn-file-input__avatar--${props.avatarShape}`"
+            :disabled="props.disabled"
+            @click="openFileDialog"
+          >
+            <img
+              v-if="inputValue && inputValue[0] && imagePreviewPath(inputValue[0])"
+              :src="imagePreviewPath(inputValue[0])"
+              class="h-full w-full object-cover"
             >
-              <path
-                fill="currentColor"
-                d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"
-              />
-            </svg>
+            <template v-else>
+              +
+            </template>
           </button>
-        </div>
-        <span
-          v-else
-          class="bn-file-input__placeholder"
+        </template>
+        <div
+          v-if="variant !== 'avatar'"
+          class="bn-file-input__label"
         >
-          {{ props.placeholder }}
-        </span>
-      </div>
-    </slot>
-  </component>
+          <div
+            v-if="fileList"
+            class="flex w-full items-center"
+          >
+            <span class="truncate">
+              {{ fileList }}
+            </span>
+            <button
+              class="ml-auto shrink-0 text-gray-500"
+              @click="inputValue = []"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"
+                />
+              </svg>
+            </button>
+          </div>
+          <span
+            v-else
+            class="bn-file-input__placeholder"
+          >
+            {{ props.placeholder }}
+          </span>
+        </div>
+      </slot>
+    </component>
+    <p
+      v-if="errorMessage && meta.touched && !$slots['default']"
+      class="bn-input__error-message"
+    >
+      {{ errorMessage }}
+    </p>
+  </div>
 </template>

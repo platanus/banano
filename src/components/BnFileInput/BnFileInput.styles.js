@@ -1,13 +1,27 @@
 module.exports = {
   '.bn-file-input': {
     '&--variants-default': {
-      '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2': {},
+      '.bn-file-input__wrapper': {
+        '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2': {},
+      },
     },
     '&--disabled': {
-      '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
+      '.bn-file-input__wrapper': {
+        '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
+      },
     },
     '&--custom': {
-      '@apply p-0 border-0 h-auto': {},
+      '.bn-file-input__wrapper': {
+        '@apply p-0 border-0 h-auto': {},
+      },
+    },
+    '&--error': {
+      '.bn-file-input__wrapper': {
+        '@apply border border-red-300 text-red-700 ring-red-300 outline-red-300 !important': {},
+      },
+      '.bn-file-input__placeholder': {
+        '@apply text-red-500': {},
+      },
     },
     '&__input': {
       '@apply hidden': {},
@@ -33,6 +47,9 @@ module.exports = {
       '&[disabled]': {
         '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
       },
+    },
+    '&__error-message': {
+      '@apply text-sm text-red-600': {},
     },
   },
 };

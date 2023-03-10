@@ -9,6 +9,7 @@ interface Props {
   color?: string
   rules?: RuleExpression<unknown>
   multiple?: boolean
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'base',
   rules: undefined,
   multiple: false,
+  disabled: false,
 });
 
 const fileInputRef = ref<HTMLInputElement>();
@@ -64,7 +66,7 @@ const fileList = computed(() => {
 <template>
   <label
     class="bn-file-input"
-    :class="`bn-file-input--${props.color}`"
+    :class="[`bn-file-input--${props.color}`, { 'bn-file-input--disabled': props.disabled }]"
   >
     <input
       ref="fileInputRef"
@@ -72,6 +74,7 @@ const fileList = computed(() => {
       :name="name"
       class="bn-file-input__input"
       :multiple="props.multiple"
+      :disabled="props.disabled"
       @change="setFile"
       @blur="handleBlur"
     >
@@ -79,6 +82,7 @@ const fileList = computed(() => {
       size="xs"
       class="bn-file-input__button"
       variant="outline"
+      :disabled="props.disabled"
     >
       Browse
     </BnBtn>

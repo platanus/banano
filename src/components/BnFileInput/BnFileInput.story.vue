@@ -30,5 +30,14 @@ const state = reactive({
         />
       </template>
     </Variant>
+    <Variant title="disabled">
+      <template #default>
+        <BnFileInput
+          v-model="state.single"
+          name="disabled"
+          disabled
+        />
+      </template>
+    </Variant>
   </Story>
 </template>

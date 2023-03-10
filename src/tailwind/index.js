@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-len, vue/max-len*/
 const mergeWith = require('lodash/mergeWith');
 const tailwindColors = require('tailwindcss/colors');
@@ -9,6 +10,7 @@ const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.js');
 const BnListbox = require('../components/BnListbox/BnListbox.styles.js');
 const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.js');
 const BnCheckbox = require('../components/BnCheckbox/BnCheckbox.styles.js');
+const BnToggle = require('../components/BnToggle/BnToggle.styles.js');
 
 const componentList = {
   Btn,
@@ -17,6 +19,7 @@ const componentList = {
   BnListbox,
   BnFileInput,
   BnCheckbox,
+  BnToggle,
 };
 
 function parseColors(classes, colors = []) {
@@ -31,26 +34,21 @@ function parseColors(classes, colors = []) {
   }, {});
 }
 
-function parseStyles(obj, colors, componentClass, elementClass) {
+function parseStyles(obj, colors, componentClass, elementClasses = []) {
   return Object.entries(obj).reduce((prev, [key, value]) => {
-    let element;
-    if (elementClass) {
-      element = elementClass;
-    } else if (key.startsWith('&__')) {
-      element = key;
-    }
-
+    const newElementClasses = [...elementClasses];
     if (key !== 'colors') {
-      prev[key] = parseStyles(value, colors, componentClass, element);
+      if (!key.startsWith('@')) {
+        newElementClasses.push(key);
+      }
+      prev[key] = parseStyles(value, colors, componentClass, newElementClasses);
       const colorClasses = value.colors ? parseColors(value.colors, colors) : {};
       if (colorClasses) {
+        const isElement = newElementClasses[1] && newElementClasses[1].startsWith('&__');
+        const newElementClass = newElementClasses.join('').replace(/&/g, '');
+
         Object.keys(colorClasses).forEach((color) => {
-          const cleanElement = element && element.replace('&', '');
-          const cleanKey = key.replace('&', '');
-          const suffix = cleanElement === cleanKey || cleanKey.startsWith(':') ? cleanElement : `${cleanKey}${cleanElement}`;
-          prev[`@at-root ${componentClass}--${color}${element ?
-            ` ${componentClass}${suffix}` :
-            `${componentClass}${cleanKey}`}`] = parseStyles(colorClasses[color], colors, componentClass, element);
+          prev[`@at-root ${componentClass}--${color}${isElement ? ' ' : ''}${newElementClass}`] = parseStyles(colorClasses[color], colors, componentClass, newElementClasses);
         });
       }
     }
@@ -84,7 +82,7 @@ function parseComponents(components, colors) {
     const component = components[key];
     Object.keys(component).forEach((componentKey) => {
       const elementClass = component[componentKey];
-      const parsedStyles = parseStyles(elementClass, colors, componentKey);
+      const parsedStyles = parseStyles(elementClass, colors, componentKey, [componentKey]);
       prev[componentKey] = parsedStyles;
     });
 

@@ -93,6 +93,56 @@ const objectOptions = [
         />
       </template>
     </Variant>
+    <Variant title="option template">
+      <template #default>
+        <BnListbox
+          v-model="state.single"
+          name="optionTemplate"
+          :options="selectOptions"
+        >
+          <template #option-template="{option, selected}">
+            <div class="flex overflow-hidden">
+              <span class="mr-2">{{ selected ? '✔' : '❌' }}</span>
+              <span class="truncate">{{ option }}</span>
+            </div>
+          </template>
+        </BnListbox>
+      </template>
+    </Variant>
+    <Variant title="selected template">
+      <template #default>
+        <BnListbox
+          v-model="state.single"
+          name="optionTemplate"
+          :options="selectOptions"
+        >
+          <template #selected-template="{value}">
+            <div class="flex overflow-hidden">
+              <span>✔</span>
+              <span class="mx-2 truncate">{{ value }}</span>
+              <span>✔</span>
+            </div>
+          </template>
+        </BnListbox>
+      </template>
+    </Variant>
+    <Variant title="selected template multiple">
+      <template #default>
+        <BnListbox
+          v-model="state.multiple"
+          name="optionTemplate"
+          :options="selectOptions"
+          multiple
+        >
+          <template #selected-multiple-template="{value}">
+            <div class="mr-1 inline-flex rounded border border-purple-800 bg-purple-300 px-1 text-purple-800">
+              <span class="mr-1">📑</span>
+              {{ value }}
+            </div>
+          </template>
+        </BnListbox>
+      </template>
+    </Variant>
   </Story>
 </template>
 

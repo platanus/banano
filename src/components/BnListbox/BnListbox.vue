@@ -104,23 +104,33 @@ watch(
     >
       <template v-if="multiple">
         <div class="overflow-hidden">
-          <span
+          <template
             v-for="option in (value as string[] | Record<string, unknown>[])"
             :key="isObjectValue(option) ?
               option[props.trackBy] as string : option as string"
-            class="bn-listbox__tag"
           >
-            {{ isObjectValue(option) ? option[props.optionLabel] : option }}
-          </span>
+            <slot
+              name="selected-multiple-template"
+              :value="option"
+            >
+              <span class="bn-listbox__tag">
+                {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+              </span>
+            </slot>
+          </template>
         </div>
       </template>
-      <template v-else>
+      <slot
+        v-else
+        name="selected-template"
+        :value="value"
+      >
         <span class="truncate">
           {{ isObjectValue(value as string | Record<string, unknown>) ?
             (value as Record<string, unknown>)[props.optionLabel] : value
           }}
         </span>
-      </template>
+      </slot>
       <svg
         class="ml-auto h-6 w-6 shrink-0 text-gray-500"
         viewBox="0 0 24 24"
@@ -145,20 +155,26 @@ watch(
           :value="option"
           class="bn-listbox-options__option"
         >
-          <span class="truncate">
-            {{ isObjectValue(option) ? option[props.optionLabel] : option }}
-          </span>
-          <svg
-            v-if="selected"
-            class="ml-auto h-[14px] w-[18px] shrink-0"
-            viewBox="0 0 18 14"
-            fill="none"
+          <slot
+            name="option-template"
+            :option="option"
+            :selected="selected"
           >
-            <path
-              d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
-              fill="currentColor"
-            />
-          </svg>
+            <span class="truncate">
+              {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+            </span>
+            <svg
+              v-if="selected"
+              class="ml-auto h-[14px] w-[18px] shrink-0"
+              viewBox="0 0 18 14"
+              fill="none"
+            >
+              <path
+                d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
+                fill="currentColor"
+              />
+            </svg>
+          </slot>
         </ListboxOption>
       </ListboxOptions>
     </Teleport>

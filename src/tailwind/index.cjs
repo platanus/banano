@@ -108,13 +108,14 @@ module.exports = {
   tailwindPlugin: plugin.withOptions(
     (options) => ({ addComponents }) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-
-      const parsedComponents = parseComponents(componentList, optionsWithDefaults.colors);
+      const components = mergeWith({}, componentList, optionsWithDefaults.components);
+      const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
       addComponents(parsedComponents);
     },
     (options) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const parsedComponents = parseComponents(componentList, optionsWithDefaults.colors);
+      const components = mergeWith({}, componentList, optionsWithDefaults.components);
+      const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
 
       return {
         theme: {

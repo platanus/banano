@@ -6,8 +6,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-
-    banano.tailwindPlugin({ colors: ['orange'] }),
+    banano.tailwindPlugin({ colors: ['orange'], components: require('./banano.json') }),
     require('@tailwindcss/forms'),
     require('@headlessui/tailwindcss'),
   ],

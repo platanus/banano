@@ -3,9 +3,6 @@ module.exports = {
     '@apply items-center justify-center inline-flex': {},
     '@apply inline-flex': {},
   },
-  block: {
-    '@apply block w-full !important': {},
-  },
   '[disabled]': {
     '@apply opacity-60': {},
     '@apply cursor-not-allowed': {},
@@ -27,7 +24,7 @@ module.exports = {
   shapes: {
     circle: {
       '@apply rounded-full': {},
-      '@apply !p-0': {},
+      '@apply !p-0 leading-tight': {},
       '.bn-btn--sizes-sm': {
         '@apply w-6 h-6': {},
       },

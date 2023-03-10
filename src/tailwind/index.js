@@ -8,6 +8,7 @@ const BnInput = require('../components/BnInput/BnInput.styles.js');
 const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.js');
 const BnListbox = require('../components/BnListbox/BnListbox.styles.js');
 const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.js');
+const BnCheckbox = require('../components/BnCheckbox/BnCheckbox.styles.js');
 
 const componentList = {
   Btn,
@@ -15,6 +16,7 @@ const componentList = {
   BnTextarea,
   BnListbox,
   BnFileInput,
+  BnCheckbox,
 };
 
 function parseColors(classes, colors = []) {
@@ -45,8 +47,10 @@ function parseStyles(obj, colors, componentClass, elementClass) {
         Object.keys(colorClasses).forEach((color) => {
           const cleanElement = element && element.replace('&', '');
           const cleanKey = key.replace('&', '');
-          const suffix = cleanElement === cleanKey ? cleanElement : `${cleanKey}${cleanElement}`;
-          prev[`@at-root ${componentClass}--${color}${element ? ` ${componentClass}${suffix}` : `${componentClass}${cleanKey}`}`] = parseStyles(colorClasses[color], colors, componentClass, element);
+          const suffix = cleanElement === cleanKey || cleanKey.startsWith(':') ? cleanElement : `${cleanKey}${cleanElement}`;
+          prev[`@at-root ${componentClass}--${color}${element ?
+            ` ${componentClass}${suffix}` :
+            `${componentClass}${cleanKey}`}`] = parseStyles(colorClasses[color], colors, componentClass, element);
         });
       }
     }

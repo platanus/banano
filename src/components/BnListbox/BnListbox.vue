@@ -9,6 +9,7 @@ import {
   ListboxOption,
 } from '@headlessui/vue';
 import { computePosition, flip, offset } from '@floating-ui/dom';
+import isEmpty from 'lodash/isEmpty';
 
 interface Props {
   modelValue?: string | string[] | Record<string, unknown> | Record<string, unknown>[]
@@ -20,6 +21,7 @@ interface Props {
   multiple?: boolean
   trackBy?: string
   optionLabel?: string
+  placeholder?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   trackBy: undefined,
   optionLabel: undefined,
+  placeholder: undefined,
 });
 
 const useObjectOptions = !!props.trackBy && !!props.optionLabel;
@@ -102,6 +105,9 @@ watch(
       ref="listboxButtonRef"
       class="bn-listbox__button"
     >
+      <template v-if="placeholder && isEmpty(value)">
+        {{ placeholder }}
+      </template>
       <template v-if="multiple">
         <div class="overflow-hidden">
           <template
@@ -161,7 +167,12 @@ watch(
             :selected="selected"
           >
             <span class="truncate">
-              {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+              <template v-if="isObjectValue(option)">
+                {{ option[props.trackBy] ? option[props.optionLabel] : placeholder }}
+              </template>
+              <template v-else>
+                {{ option ? option : placeholder }}
+              </template>
             </span>
             <svg
               v-if="selected"

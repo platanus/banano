@@ -7,6 +7,7 @@ const state = reactive({
   multiple: ['Option 2', 'Option 3', 'Option 4'],
   object: { name: 'Label 1', id: 1 },
   objectMultiple: [{ name: 'Label 1', id: 1 }, { name: 'Label 2', id: 2 }],
+  empty: undefined,
 });
 
 const selectOptions = [
@@ -23,6 +24,11 @@ const objectOptions = [
   { name: 'Label 3', id: 3 },
   { name: 'Label 4', id: 4 },
   { name: 'Label 5', id: 5 },
+];
+
+const selectOptionsWithEmpty = [
+  '',
+  ...selectOptions,
 ];
 </script>
 
@@ -50,6 +56,26 @@ const objectOptions = [
         />
       </template>
     </Variant>
+    <Variant title="placeholder">
+      <template #default>
+        <BnListbox
+          v-model="state.empty"
+          name="placeholder"
+          :options="selectOptions"
+          placeholder="Please select an option"
+        />
+      </template>
+    </Variant>
+    <Variant title="placeholder with empty choice">
+      <template #default>
+        <BnListbox
+          v-model="state.single"
+          name="placeholder"
+          :options="selectOptionsWithEmpty"
+          placeholder="Please select an option"
+        />
+      </template>
+    </Variant>
     <Variant title="color">
       <template #default>
         <BnListbox
@@ -67,6 +93,7 @@ const objectOptions = [
           name="multiple"
           multiple
           :options="selectOptions"
+          placeholder="Please select an option"
         />
       </template>
     </Variant>

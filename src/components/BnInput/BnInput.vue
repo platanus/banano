@@ -45,18 +45,31 @@ export default {
 
 <template>
   <div
-    class="bn-input"
-    :class="`bn-input--${props.color} ${attrs.class}`"
+    class="bn-input relative"
+    :class="`bn-input--${props.color} ${attrs.class ? attrs.class : ''}`"
   >
+    <div
+      v-if="$slots['icon-left']"
+      class="bn-input__icon-left"
+    >
+      <slot name="icon-left" />
+    </div>
     <input
       v-bind="attrsWithoutClass"
       :id="name"
       :value="inputValue"
       :name="name"
       class="bn-input__input"
+      :class="{'bn-input__input--icon-left': $slots['icon-left'], 'bn-input__input--icon-right': $slots['icon-right']}"
       @input="onInput"
       @blur="handleBlur"
     >
+    <div
+      v-if="$slots['icon-right']"
+      class="bn-input__icon-right"
+    >
+      <slot name="icon-right" />
+    </div>
   </div>
 </template>
 

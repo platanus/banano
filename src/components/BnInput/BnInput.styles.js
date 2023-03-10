@@ -10,6 +10,18 @@ module.exports = {
           '@apply outline outline-1 outline-varColor-600 border-varColor-600 ring-varColor-600': {},
         },
       },
+      '&--icon-left': {
+        '@apply pl-10': {},
+      },
+      '&--icon-right': {
+        '@apply pr-10': {},
+      },
+    },
+    '&__icon-left': {
+      '@apply absolute top-0 left-0 bottom-0 flex items-center justify-center w-10': {},
+    },
+    '&__icon-right': {
+      '@apply absolute top-0 right-0 bottom-0 flex items-center justify-center w-10': {},
     },
   },
 };

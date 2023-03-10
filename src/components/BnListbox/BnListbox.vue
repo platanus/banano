@@ -50,7 +50,7 @@ const emit = defineEmits<{(
 
 const name = toRef(props, 'name');
 
-const { value, meta, errorMessage, setTouched } = useField<inputValue>(name, props.rules, {
+const { value, meta, setTouched } = useField<inputValue>(name, props.rules, {
   initialValue: props.modelValue,
 });
 
@@ -193,11 +193,5 @@ watch(
         </ListboxOption>
       </ListboxOptions>
     </Teleport>
-    <p
-      v-if="errorMessage && meta.touched"
-      class="bn-listbox__error-message"
-    >
-      {{ errorMessage }}
-    </p>
   </Listbox>
 </template>

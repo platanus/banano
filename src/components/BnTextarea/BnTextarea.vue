@@ -25,7 +25,6 @@ const {
   handleBlur,
   handleChange,
   meta,
-  errorMessage,
 } = useField(name, props.rules, {
   initialValue: props.modelValue,
   valueProp: props.modelValue,
@@ -38,29 +37,18 @@ function onInput(event: Event) {
 }
 
 const attrs = useAttrs();
-const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
 
 <template>
-  <div
+  <textarea
     class="bn-textarea"
-    :class="`bn-textarea--${props.color} ${attrs.class ? attrs.class : ''}`"
-  >
-    <textarea
-      v-bind="attrsWithoutClass"
-      :id="name"
-      :value="(inputValue as string)"
-      :name="name"
-      class="bn-textarea__input"
-      :class="{'bn-textarea__input--error': !meta.valid && meta.touched}"
-      @input="onInput"
-      @blur="handleBlur"
-    />
-    <p
-      v-if="errorMessage && meta.touched"
-      class="bn-textarea__error-message"
-    >
-      {{ errorMessage }}
-    </p>
-  </div>
+    :class="[
+      `bn-textarea--${props.color} ${attrs.class ? attrs.class : ''}`,
+      {'bn-textarea--error': !meta.valid && meta.touched},
+    ]"
+    :value="(inputValue as string)"
+    :name="name"
+    @input="onInput"
+    @blur="handleBlur"
+  />
 </template>

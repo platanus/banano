@@ -14,22 +14,24 @@ module.exports = {
     'eslint:recommended',
     '@vue/typescript/recommended',
     '@vue/eslint-config-typescript',
+    'plugin:tailwindcss/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2021,
   },
-  plugins: ['import'],
+  plugins: ['import', 'tailwindcss'],
   rules: {
     ...platanusRules,
   },
   overrides: [
     {
-      files: ["*.ts", "*.vue"],
+      files: ['*.ts', '*.vue'],
       rules: {
-        "no-undef": "off",
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error"
-      }
-    }
-  ]
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
+        'tailwindcss/no-custom-classname': 'off',
+      },
+    },
+  ],
 };

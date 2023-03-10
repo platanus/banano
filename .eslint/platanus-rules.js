@@ -228,7 +228,7 @@ module.exports = {
   "lines-around-comment": 0,
   "max-depth": [2, 4],
   "max-len": [2, 120, {
-    "ignorePattern": "^\\s.+class=\""
+    "ignorePattern": "^\\s.+class=\"|^\\s.+d=\""
   }],
   "max-nested-callbacks": [2, 4],
   "max-params": [1, 4],
@@ -300,7 +300,7 @@ module.exports = {
   "space-in-parens": [2, "never"],
   "space-infix-ops": 2,
   "space-unary-ops": 0,
-  "spaced-comment": [2],
+  "spaced-comment": 0,
   "wrap-regex": 0,
   "init-declarations": 0,
   "no-catch-shadow": 2,
@@ -318,6 +318,6 @@ module.exports = {
   "no-use-before-define": 2,
   "vue/max-len": ["error", {
     "code": 120,
-    "ignoreHTMLAttributeValues": true
+    "ignoreHTMLAttributeValues": true,
   }]
 }

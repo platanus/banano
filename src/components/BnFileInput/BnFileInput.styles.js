@@ -36,9 +36,7 @@ module.exports = {
       '&--circle': {
         '@apply rounded-full overflow-hidden': {},
       },
-      '&[disabled]': {
-        '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
-      },
+      '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
     },
   },
 };

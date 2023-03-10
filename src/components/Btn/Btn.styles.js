@@ -1,10 +1,7 @@
 module.exports = {
   '.bn-btn': {
     '@apply items-center justify-center inline-flex': {},
-    '&[disabled]': {
-      '@apply opacity-60': {},
-      '@apply cursor-not-allowed': {},
-    },
+    '@apply disabled:opacity-60 disabled:cursor-not-allowed': {},
     '&--sizes-xs': {
       '@apply text-xs': {},
       '@apply px-3 py-1.5': {},
@@ -70,6 +67,7 @@ module.exports = {
         '@apply text-varColor-600 bg-transparent': {},
         '@apply border-varColor-600': {},
         '@apply hover:bg-varColor-100': {},
+
         '@apply focus:ring-varColor-600': {},
       },
     },
@@ -80,6 +78,7 @@ module.exports = {
       colors: {
         '@apply text-varColor-600 bg-transparent': {},
         '@apply hover:text-varColor-400': {},
+
         '@apply focus:text-varColor-400': {},
       },
     },

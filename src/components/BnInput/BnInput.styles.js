@@ -3,13 +3,10 @@ module.exports = {
     '@apply w-full flex': {},
     '&__input': {
       '@apply py-3 px-3 w-full rounded-lg border border-gray-200 h-12': {},
-      '&[disabled]': {
-        '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
-      },
-      '&:focus': {
-        colors: {
-          '@apply outline outline-1 outline-varColor-600 border-varColor-600 ring-varColor-600': {},
-        },
+      '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
+      colors: {
+        '@apply focus:outline focus:outline-1 focus:outline-varColor-600': {},
+        '@apply focus:border-varColor-600 focus:ring-varColor-600': {},
       },
       '&--icon-left': {
         '@apply pl-10': {},

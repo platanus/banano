@@ -6,6 +6,7 @@ const plugin = require('tailwindcss/plugin');
 const Btn = require('../components/Btn/Btn.styles.js');
 const BnInput = require('../components/BnInput/BnInput.styles.js');
 const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.js');
+const BnListbox = require('../components/BnListbox/BnListbox.styles.js');
 
 function parseColors(classes, colors = []) {
   return colors.reduce((colorObj, color) => {
@@ -33,7 +34,10 @@ function parseStyles(obj, colors, componentClass, elementClass) {
       const colorClasses = value.colors ? parseColors(value.colors, colors) : {};
       if (colorClasses) {
         Object.keys(colorClasses).forEach((color) => {
-          prev[`@at-root ${componentClass}--${color}${element ? ` ${componentClass}${element.replace('&', '')}${key.replace('&', '')}` : `${componentClass}${key.replace('&', '')}`}`] = parseStyles(colorClasses[color], colors, componentClass, element);
+          const cleanElement = element && element.replace('&', '');
+          const cleanKey = key.replace('&', '');
+          const suffix = cleanElement === cleanKey ? cleanElement : `${cleanKey}${cleanElement}`;
+          prev[`@at-root ${componentClass}--${color}${element ? ` ${componentClass}${suffix}` : `${componentClass}${cleanKey}`}`] = parseStyles(colorClasses[color], colors, componentClass, element);
         });
       }
     }
@@ -89,12 +93,12 @@ module.exports = {
     (options) => ({ addComponents }) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
 
-      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea, BnListbox }, optionsWithDefaults.colors);
       addComponents(parsedComponents);
     },
     (options) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea, BnListbox }, optionsWithDefaults.colors);
 
       return {
         theme: {

@@ -24,6 +24,7 @@ const state = reactive({
   single: 'Checked',
   array: ['Item 1', 'Item 2'],
   object: [],
+  disabled: undefined,
 });
 
 function isRequired(val: string) {
@@ -46,6 +47,18 @@ function isRequired(val: string) {
           v-model="state.single"
           name="single"
           value="Checked"
+        >
+          This is a checkbox
+        </BnCheckbox>
+      </template>
+    </Variant>
+    <Variant title="disabled">
+      <template #default>
+        <BnCheckbox
+          v-model="state.disabled"
+          name="single"
+          value="Checked"
+          disabled
         >
           This is a checkbox
         </BnCheckbox>

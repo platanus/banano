@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef } from 'vue';
+import { toRef, useAttrs } from 'vue';
 
 type valueTypes = undefined | string | number | Record<string, unknown>;
 
-const props = defineProps<{
+interface Props {
   modelValue?: valueTypes | valueTypes[],
   value: valueTypes,
   name: string,
   color?: string,
-  rules?: RuleExpression<unknown>
-}>();
+  rules?: RuleExpression<unknown>,
+  disabled?: boolean,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  value: undefined,
+  color: 'base',
+  rules: undefined,
+  disabled: false,
+});
 
 const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueTypes[]): void}>();
 
@@ -39,6 +48,9 @@ function onChange(e: Event) {
   }
   handleChange(e);
 }
+
+const attrs = useAttrs();
+const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
 
 <template>
@@ -47,6 +59,7 @@ function onChange(e: Event) {
     :class="[
       `bn-checkbox--${props.color}`,
       {'bn-checkbox--error': !meta.valid && meta.touched},
+      {'bn-checkbox--disabled': props.disabled},
     ]"
   >
     <input
@@ -55,6 +68,7 @@ function onChange(e: Event) {
       type="checkbox"
       :name="name"
       class="bn-checkbox__input"
+      v-bind="attrsWithoutClass"
       @change="onChange"
     >
     <slot />

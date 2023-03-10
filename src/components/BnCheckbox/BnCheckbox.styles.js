@@ -1,6 +1,9 @@
 module.exports = {
   '.bn-checkbox': {
     '@apply flex items-center': {},
+    '&--disabled': {
+      '@apply cursor-not-allowed opacity-75': {},
+    },
     '&--error': {
       '@apply text-red-500': {},
       '.bn-checkbox__input': {

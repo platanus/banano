@@ -7,6 +7,7 @@ const state = reactive({
 });
 
 const sizeVariants = [
+  { size: 'xs' },
   { size: 'sm' },
   { size: 'md' },
   { size: 'lg' },
@@ -119,7 +120,7 @@ defineExpose({
           <template #icon-left>
             <svg
               viewBox="0 0 24 24"
-              class="w-4 h-4"
+              class="h-4 w-4"
             >
               <path
                 fill="currentColor"
@@ -131,7 +132,7 @@ defineExpose({
           <template #icon-right>
             <svg
               viewBox="0 0 24 24"
-              class="w-4 h-4"
+              class="h-4 w-4"
             >
               <path
                 fill="currentColor"

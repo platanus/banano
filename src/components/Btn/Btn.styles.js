@@ -5,6 +5,13 @@ module.exports = {
       '@apply opacity-60': {},
       '@apply cursor-not-allowed': {},
     },
+    '&--sizes-xs': {
+      '@apply text-xs': {},
+      '@apply px-3 py-1.5': {},
+      '.bn-btn__loading': {
+        '@apply w-4 h-4': {},
+      },
+    },
     '&--sizes-sm': {
       '@apply text-sm': {},
       '@apply px-3 py-1.5': {},

@@ -45,30 +45,49 @@ export default {
 
 <template>
   <div
-    class="bn-input relative"
+    class="bn-input flex"
     :class="`bn-input--${props.color} ${attrs.class ? attrs.class : ''}`"
   >
     <div
-      v-if="$slots['icon-left']"
-      class="bn-input__icon-left"
+      v-if="$slots['prefix']"
+      class="bn-input__prefix"
     >
-      <slot name="icon-left" />
+      <slot name="prefix" />
     </div>
-    <input
-      v-bind="attrsWithoutClass"
-      :id="name"
-      :value="inputValue"
-      :name="name"
-      class="bn-input__input"
-      :class="{'bn-input__input--icon-left': $slots['icon-left'], 'bn-input__input--icon-right': $slots['icon-right']}"
-      @input="onInput"
-      @blur="handleBlur"
-    >
+    <div class="relative">
+      <div
+        v-if="$slots['icon-left']"
+        class="bn-input__icon-left"
+      >
+        <slot name="icon-left" />
+      </div>
+      <input
+        v-bind="attrsWithoutClass"
+        :id="name"
+        :value="inputValue"
+        :name="name"
+        class="bn-input__input"
+        :class="{
+          'bn-input__input--icon-left': $slots['icon-left'],
+          'bn-input__input--icon-right': $slots['icon-right'],
+          'bn-input__input--prefix': $slots['prefix'],
+          'bn-input__input--suffix': $slots['suffix'],
+        }"
+        @input="onInput"
+        @blur="handleBlur"
+      >
+      <div
+        v-if="$slots['icon-right']"
+        class="bn-input__icon-right"
+      >
+        <slot name="icon-right" />
+      </div>
+    </div>
     <div
-      v-if="$slots['icon-right']"
-      class="bn-input__icon-right"
+      v-if="$slots['suffix']"
+      class="bn-input__suffix"
     >
-      <slot name="icon-right" />
+      <slot name="suffix" />
     </div>
   </div>
 </template>

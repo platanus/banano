@@ -73,6 +73,56 @@ const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2
         </BnInput>
       </template>
     </Variant>
+    <Variant title="prefix">
+      <template #default>
+        <BnInput
+          v-model="state.value"
+          name="prefix"
+        >
+          <template #prefix>
+            +56 9
+          </template>
+        </BnInput>
+      </template>
+    </Variant>
+    <Variant title="suffix">
+      <template #default>
+        <BnInput
+          v-model="state.value"
+          name="suffix"
+        >
+          <template #suffix>
+            @gmail.com
+          </template>
+        </BnInput>
+      </template>
+    </Variant>
+    <Variant title="prefix + suffix + icons">
+      <template #default>
+        <BnInput
+          v-model="state.value"
+          name="prefix + suffix + icons"
+        >
+          <template #prefix>
+            USD
+          </template>
+          <template #icon-left>
+            <svg
+              viewBox="0 0 24 24"
+              class="w-4 h-4 text-gray-400"
+            >
+              <path
+                fill="currentColor"
+                :d="letterIcon"
+              />
+            </svg>
+          </template>
+          <template #suffix>
+            .00
+          </template>
+        </BnInput>
+      </template>
+    </Variant>
   </Story>
 </template>
 

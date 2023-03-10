@@ -69,10 +69,11 @@ function mergeClasses(styles) {
 function parseComponents(components, colors) {
   return Object.keys(components).reduce((prev, key) => {
     const component = components[key];
-    const componentClass = Object.keys(component)[0];
-    prev[componentClass] = {
-      ...parseStyles(component[componentClass], colors, componentClass),
-    };
+    Object.keys(component).forEach((componentKey) => {
+      const elementClass = component[componentKey];
+      const parsedStyles = parseStyles(elementClass, colors, componentKey);
+      prev[componentKey] = parsedStyles;
+    });
 
     return prev;
   }, {});

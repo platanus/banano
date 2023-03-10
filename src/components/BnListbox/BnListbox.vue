@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, watch } from 'vue';
+import { toRef, watch, ref, ComponentPublicInstance, watchEffect } from 'vue';
+import { useElementBounding } from '@vueuse/core';
 import {
   Listbox,
   ListboxButton,
   ListboxOptions,
   ListboxOption,
 } from '@headlessui/vue';
+import { computePosition, flip, offset } from '@floating-ui/dom';
 
 interface Props {
   modelValue?: string
@@ -14,7 +16,7 @@ interface Props {
   name: string
   color?: string
   rules?: RuleExpression<unknown>
-  disabled: boolean
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +33,29 @@ const name = toRef(props, 'name');
 const { value } = useField<string>(name, props.rules, {
   initialValue: props.modelValue,
 });
+
+const listboxButtonRef = ref<ComponentPublicInstance>();
+const { width: listboxButtonWidth } = useElementBounding(listboxButtonRef);
+
+const listboxOptionsRef = ref<ComponentPublicInstance>();
+const LISTBOX_OFFSET = 4;
+watchEffect(() => {
+  if (listboxOptionsRef.value && listboxOptionsRef.value.$el && listboxButtonRef.value) {
+    computePosition(
+      listboxButtonRef.value.$el,
+      listboxOptionsRef.value.$el,
+      {
+        strategy: 'fixed',
+        placement: 'bottom-start',
+        middleware: [flip(), offset(LISTBOX_OFFSET)],
+      }).then((val) => {
+      if (listboxOptionsRef.value && listboxOptionsRef.value.$el) {
+        listboxOptionsRef.value.$el.style.top = `${val.y}px`;
+        listboxOptionsRef.value.$el.style.left = `${val.x}px`;
+      }
+    });
+  }
+}, { flush: 'post' });
 
 watch(value, (newValue) => {
   if (newValue !== props.modelValue) {
@@ -56,7 +81,10 @@ watch(
     class="bn-listbox"
     :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
   >
-    <ListboxButton class="bn-listbox__button">
+    <ListboxButton
+      ref="listboxButtonRef"
+      class="bn-listbox__button"
+    >
       <span class="truncate">
         {{ value }}
       </span>
@@ -70,27 +98,34 @@ watch(
         />
       </svg>
     </ListboxButton>
-    <ListboxOptions class="bn-listbox__options">
-      <ListboxOption
-        v-for="option in props.options"
-        v-slot="{ selected }"
-        :key="option"
-        class="bn-listbox__option"
-        :value="option"
+    <Teleport to="body">
+      <ListboxOptions
+        ref="listboxOptionsRef"
+        class="bn-listbox-options"
+        :class="[`bn-listbox-options--${props.color}`]"
+        :style="`width: ${listboxButtonWidth}px`"
       >
-        <span class="truncate">{{ option }}</span>
-        <svg
-          v-if="selected"
-          class="ml-auto h-[14px] w-[18px] shrink-0"
-          viewBox="0 0 18 14"
-          fill="none"
+        <ListboxOption
+          v-for="option in props.options"
+          v-slot="{ selected }"
+          :key="option"
+          class="bn-listbox-options__option"
+          :value="option"
         >
-          <path
-            d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
-            fill="currentColor"
-          />
-        </svg>
-      </ListboxOption>
-    </ListboxOptions>
+          <span class="truncate">{{ option }}</span>
+          <svg
+            v-if="selected"
+            class="ml-auto h-[14px] w-[18px] shrink-0"
+            viewBox="0 0 18 14"
+            fill="none"
+          >
+            <path
+              d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
+              fill="currentColor"
+            />
+          </svg>
+        </ListboxOption>
+      </ListboxOptions>
+    </Teleport>
   </Listbox>
 </template>

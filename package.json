@@ -13,8 +13,10 @@
     "README.md"
   ],
   "dependencies": {
+    "@floating-ui/dom": "^1.0.2",
     "@headlessui/tailwindcss": "^0.1.1",
     "@headlessui/vue": "^1.7.3",
+    "@vueuse/core": "^9.3.0",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {

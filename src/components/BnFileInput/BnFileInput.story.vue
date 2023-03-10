@@ -5,6 +5,7 @@ import BnFileInput from './BnFileInput.vue';
 const state = reactive({
   single: undefined,
   multiple: undefined,
+  avatar: undefined,
 });
 </script>
 
@@ -35,6 +36,46 @@ const state = reactive({
         <BnFileInput
           v-model="state.single"
           name="disabled"
+          disabled
+        />
+      </template>
+    </Variant>
+    <Variant title="avatar">
+      <template #default>
+        <BnFileInput
+          v-model="state.avatar"
+          name="avatar"
+          variant="avatar"
+        />
+      </template>
+    </Variant>
+    <Variant title="avatar circle">
+      <template #default>
+        <BnFileInput
+          v-model="state.avatar"
+          name="avatar-circle"
+          variant="avatar"
+          avatar-shape="circle"
+        />
+      </template>
+    </Variant>
+    <Variant title="avatar disabled">
+      <template #default>
+        <BnFileInput
+          v-model="state.avatar"
+          name="avatar"
+          variant="avatar"
+          disabled
+        />
+      </template>
+    </Variant>
+    <Variant title="avatar disabled circle">
+      <template #default>
+        <BnFileInput
+          v-model="state.avatar"
+          name="avatar-circle"
+          variant="avatar"
+          avatar-shape="circle"
           disabled
         />
       </template>

@@ -11,6 +11,8 @@ import {
 import { computePosition, flip, offset } from '@floating-ui/dom';
 import isEmpty from 'lodash/isEmpty';
 
+type inputValue = string|string[]|Record<string, unknown>|Record<string, unknown>[];
+
 interface Props {
   modelValue?: string | string[] | Record<string, unknown> | Record<string, unknown>[]
   options: string[] | Record<string, unknown>[]
@@ -48,7 +50,7 @@ const emit = defineEmits<{(
 
 const name = toRef(props, 'name');
 
-const { value } = useField<string|string[]|Record<string, unknown>|Record<string, unknown>[]>(name, props.rules, {
+const { value, meta, errorMessage, setTouched } = useField<inputValue>(name, props.rules, {
   initialValue: props.modelValue,
 });
 
@@ -104,6 +106,8 @@ watch(
     <ListboxButton
       ref="listboxButtonRef"
       class="bn-listbox__button"
+      :class="{'bn-listbox__button--error': !meta.valid && meta.touched}"
+      @blur="setTouched(true)"
     >
       <template v-if="placeholder && isEmpty(value)">
         {{ placeholder }}
@@ -189,5 +193,11 @@ watch(
         </ListboxOption>
       </ListboxOptions>
     </Teleport>
+    <p
+      v-if="errorMessage && meta.touched"
+      class="bn-listbox__error-message"
+    >
+      {{ errorMessage }}
+    </p>
   </Listbox>
 </template>

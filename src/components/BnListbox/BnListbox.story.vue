@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { GenericValidateFunction } from 'vee-validate';
 import { reactive } from 'vue';
 import BnListbox from './BnListbox.vue';
 
@@ -8,6 +9,7 @@ const state = reactive({
   object: { name: 'Label 1', id: 1 },
   objectMultiple: [{ name: 'Label 1', id: 1 }, { name: 'Label 2', id: 2 }],
   empty: undefined,
+  validate: undefined,
 });
 
 const selectOptions = [
@@ -30,6 +32,14 @@ const selectOptionsWithEmpty = [
   '',
   ...selectOptions,
 ];
+
+function isRequired(val: string) {
+  if (!val) {
+    return 'This field is required';
+  }
+
+  return true;
+}
 </script>
 
 <template>
@@ -168,6 +178,17 @@ const selectOptionsWithEmpty = [
             </div>
           </template>
         </BnListbox>
+      </template>
+    </Variant>
+    <Variant title="Validation">
+      <template #default>
+        <BnListbox
+          v-model="state.validate"
+          :options="selectOptionsWithEmpty"
+          name="validation"
+          placeholder="Please select an option"
+          :rules="(isRequired as GenericValidateFunction)"
+        />
       </template>
     </Variant>
   </Story>

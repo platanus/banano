@@ -6,6 +6,9 @@ module.exports = {
     '&--disabled': {
       '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
     },
+    '&--custom': {
+      '@apply p-0 border-0 h-auto': {},
+    },
     '&__input': {
       '@apply hidden': {},
     },
@@ -13,7 +16,7 @@ module.exports = {
       '@apply mr-2 shrink-0 cursor-pointer': {},
     },
     '&__label': {
-      '@apply truncate text-sm': {},
+      '@apply w-full overflow-hidden text-sm': {},
     },
     '&__placeholder': {
       '@apply text-gray-500': {},

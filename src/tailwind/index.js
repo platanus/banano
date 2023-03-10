@@ -4,6 +4,7 @@ const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
 const Btn = require('../components/Btn/Btn.styles.js');
+const BnInput = require('../components/BnInput/BnInput.styles.js');
 
 function parseColors(classes, colors = []) {
   return colors.reduce((colorObj, color) => {
@@ -87,12 +88,12 @@ module.exports = {
     (options) => ({ addComponents }) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
 
-      const parsedComponents = parseComponents({ Btn }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents({ Btn, BnInput }, optionsWithDefaults.colors);
       addComponents(parsedComponents);
     },
     (options) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const parsedComponents = parseComponents({ Btn }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents({ Btn, BnInput }, optionsWithDefaults.colors);
 
       return {
         theme: {

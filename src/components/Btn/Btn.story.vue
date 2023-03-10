@@ -29,6 +29,15 @@ const colorVariants = [
   { color: 'orange', variant: 'outline' },
 ];
 
+const loadingVariants = [
+  { loading: true, text: 'Loading...', title: 'Loading' },
+  { loading: true, text: 'Loading...', size: 'sm', title: 'Loading sm' },
+  { loading: true, text: 'Loading...', size: 'md', title: 'Loading md' },
+  { loading: true, text: 'Loading...', size: 'lg', title: 'Loading lg' },
+  { loading: true, text: 'Loading...', disabled: true, title: 'Loading disabled' },
+  { loading: true, text: 'Loading...', loadingReplacesContent: true, title: 'Loading with content replaced' },
+];
+
 // eslint-disable-next-line max-len, vue/max-len
 const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
 
@@ -40,7 +49,7 @@ defineExpose({
 <template>
   <Story
     title="Btn"
-    :layout="{ type: 'grid', width: '200px' }"
+    :layout="{ type: 'grid', width: '300px' }"
   >
     <Variant title="default">
       <template #default>
@@ -52,6 +61,13 @@ defineExpose({
     <Variant title="disabled">
       <template #default>
         <Btn disabled>
+          {{ state.text }}
+        </Btn>
+      </template>
+    </Variant>
+    <Variant title="with href">
+      <template #default>
+        <Btn href="#">
           {{ state.text }}
         </Btn>
       </template>
@@ -123,6 +139,17 @@ defineExpose({
               />
             </svg>
           </template>
+        </Btn>
+      </template>
+    </Variant>
+    <Variant
+      v-for="(props, key) of loadingVariants"
+      :key="key"
+      :title="props.title"
+    >
+      <template #default>
+        <Btn v-bind="props">
+          {{ props.text }}
         </Btn>
       </template>
     </Variant>

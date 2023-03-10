@@ -77,4 +77,21 @@ module.exports = {
       },
     },
   },
+  elements: {
+    loading: {
+      '@apply animate-spin mr-3': {},
+      '.bn-btn--sizes-sm &': {
+        '@apply w-4 h-4': {},
+      },
+      '.bn-btn--sizes-md &': {
+        '@apply w-5 h-5': {},
+      },
+      '.bn-btn--sizes-lg &': {
+        '@apply w-6 h-6': {},
+      },
+      '&--no-content': {
+        '@apply mr-0': {},
+      },
+    },
+  },
 };

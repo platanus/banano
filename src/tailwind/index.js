@@ -7,6 +7,15 @@ const Btn = require('../components/Btn/Btn.styles.js');
 const BnInput = require('../components/BnInput/BnInput.styles.js');
 const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.js');
 const BnListbox = require('../components/BnListbox/BnListbox.styles.js');
+const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.js');
+
+const componentList = {
+  Btn,
+  BnInput,
+  BnTextarea,
+  BnListbox,
+  BnFileInput,
+};
 
 function parseColors(classes, colors = []) {
   return colors.reduce((colorObj, color) => {
@@ -94,12 +103,12 @@ module.exports = {
     (options) => ({ addComponents }) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
 
-      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea, BnListbox }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents(componentList, optionsWithDefaults.colors);
       addComponents(parsedComponents);
     },
     (options) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const parsedComponents = parseComponents({ Btn, BnInput, BnTextarea, BnListbox }, optionsWithDefaults.colors);
+      const parsedComponents = parseComponents(componentList, optionsWithDefaults.colors);
 
       return {
         theme: {

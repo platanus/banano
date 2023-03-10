@@ -1,4 +1,4 @@
-module.exports = (colors) => ({
+module.exports = {
   base: {
     '@apply items-center justify-center inline-flex': {},
     '@apply inline-flex': {},
@@ -46,48 +46,33 @@ module.exports = (colors) => ({
     default: {
       '@apply border border-solid': {},
       '@apply focus:outline-none focus:ring-2': {},
-      ...colors.reduce(
-        (styles, color) => ({
-          ...styles,
-          [color]: {
-            [`@apply text-white bg-${color}-600`]: {},
-            [`@apply border-${color}-600`]: {},
-            [`@apply hover:bg-${color}-500 hover:border-${color}-500`]: {},
-            [`@apply focus:ring-${color}-600`]: {},
-          },
-        }), {},
-      ),
+      colors: {
+        '@apply text-white bg-varColor-600': {},
+        '@apply border-varColor-600': {},
+        '@apply hover:bg-varColor-500 hover:border-varColor-500': {},
+        '@apply focus:ring-varColor-600': {},
+      },
     },
     outline: {
       '@apply bg-transparent': {},
       '@apply border border-solid': {},
       '@apply focus:outline-none focus:ring-2': {},
-      ...colors.reduce(
-        (styles, color) => ({
-          ...styles,
-          [color]: {
-            [`@apply text-${color}-600 bg-transparent`]: {},
-            [`@apply border-${color}-600`]: {},
-            [`@apply hover:bg-${color}-100`]: {},
-            [`@apply focus:ring-${color}-600`]: {},
-          },
-        }), {},
-      ),
+      colors: {
+        '@apply text-varColor-600 bg-transparent': {},
+        '@apply border-varColor-600': {},
+        '@apply hover:bg-varColor-100': {},
+        '@apply focus:ring-varColor-600': {},
+      },
     },
     'no-border': {
       '@apply text-base-600 bg-transparent': {},
       '@apply border border-transparent': {},
       '@apply focus:outline-none': {},
-      ...colors.reduce(
-        (styles, color) => ({
-          ...styles,
-          [color]: {
-            [`@apply text-${color}-600 bg-transparent`]: {},
-            [`@apply hover:text-${color}-400`]: {},
-            [`@apply focus:text-${color}-400`]: {},
-          },
-        }), {},
-      ),
+      colors: {
+        '@apply text-varColor-600 bg-transparent': {},
+        '@apply hover:text-varColor-400': {},
+        '@apply focus:text-varColor-400': {},
+      },
     },
   },
-});
+};

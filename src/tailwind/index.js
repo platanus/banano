@@ -1,5 +1,5 @@
 /* eslint-disable max-len, vue/max-len*/
-const colors = require('tailwindcss/colors');
+const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
 const btn = require('../components/Btn/Btn.styles.js');
@@ -12,15 +12,35 @@ function parseClassName(prefix, className) {
   return className.startsWith('[') ? `${prefix}${className}` : `${prefix}--${className}`;
 }
 
-function parseClasses(prefix, classObj, prevClassName, finalClasses = {}) {
+function parseColors(classes, colors = []) {
+  return colors.reduce((colorObj, color) => {
+    colorObj[color] = Object.entries(classes).reduce((prev, [cssString]) => {
+      prev[cssString.replace(/varColor/g, color)] = {};
+
+      return prev;
+    }, {});
+
+    return colorObj;
+  }, {});
+}
+
+function getClassName(className, prevClassName) {
+  const classNamePrefix = className.startsWith('.') ? '' : '-';
+
+  return prevClassName ? `${prevClassName}${classNamePrefix}${className}` : className;
+}
+
+function parseClasses(settings, classObj, prevClassName, finalClasses = {}) {
   for (const [className, value] of Object.entries(classObj)) {
     const valueEntries = Object.entries(value);
-    if (valueEntries.length > 0 && !className.includes('data-color')) {
-      const classNamePrefix = className.startsWith('.') ? '' : '-';
-      const parsedClassName = prevClassName ? `${prevClassName}${classNamePrefix}${className}` : className;
-      parseClasses(prefix, value, parsedClassName, finalClasses);
+    if (valueEntries.length > 0) {
+      if (className === 'colors') {
+        parseClasses(settings, parseColors(value, settings.colors), prevClassName, finalClasses);
+      } else {
+        parseClasses(settings, value, getClassName(className, prevClassName), finalClasses);
+      }
     } else {
-      const finalClass = parseClassName(prefix, prevClassName);
+      const finalClass = parseClassName(settings.prefix, prevClassName);
       finalClasses[finalClass] = finalClasses[finalClass] || {};
       finalClasses[finalClass][className] = {};
     }
@@ -38,19 +58,19 @@ module.exports = {
   tailwindPlugin: plugin.withOptions(
     (options = defaultOptions) => ({ addComponents }) => {
       addComponents({
-        ...parseClasses('.bn-btn', btn(getColors(options.colors, defaultOptions.colors))),
+        ...parseClasses({ prefix: '.bn-btn', colors: getColors(options.colors, defaultOptions.colors) }, btn),
       });
     },
     (options = defaultOptions) => ({
       theme: {
         extend: {
           colors: {
-            base: colors.blue,
+            base: tailwindColors.blue,
           },
         },
       },
       safelist: [
-        ...Object.keys(parseClasses('.bn-btn', btn(getColors(options.colors, defaultOptions.colors)))),
+        ...Object.keys(parseClasses({ prefix: '.bn-btn', colors: getColors(options.colors, defaultOptions.colors) }, btn)),
       ],
     }),
   ),

@@ -37,6 +37,20 @@ const tag = computed(() => {
       `bn-btn--variants-${props.variant}-${props.color}`,
     ]"
   >
-    <slot />
+    <div
+      v-if="$slots['icon-left']"
+      class="pr-2"
+    >
+      <slot name="icon-left" />
+    </div>
+    <span class="flex-shrink-0">
+      <slot />
+    </span>
+    <div
+      v-if="$slots['icon-right']"
+      class="pl-2"
+    >
+      <slot name="icon-right" />
+    </div>
   </component>
 </template>

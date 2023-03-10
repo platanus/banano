@@ -13,7 +13,7 @@ const sizeVariants = [
 ];
 
 const shapeVariants = [
-  { shape: 'circle', size: 'lg' },
+  { shape: 'circle', size: 'lg', text: '👍' },
   { shape: 'pill' },
   { shape: 'rounded' },
 ];
@@ -28,6 +28,9 @@ const colorVariants = [
   { color: 'orange' },
   { color: 'orange', variant: 'outline' },
 ];
+
+// eslint-disable-next-line max-len, vue/max-len
+const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
 
 defineExpose({
   state,
@@ -57,6 +60,7 @@ defineExpose({
       v-for="(props, key) of sizeVariants"
       :key="key"
       :title="'Btn ' + props.size"
+      class="bg-white"
     >
       <Btn v-bind="props">
         {{ state.text }}
@@ -68,7 +72,7 @@ defineExpose({
       :title="'Btn ' + props.shape"
     >
       <Btn v-bind="props">
-        {{ state.text }}
+        {{ props.text ? props.text : state.text }}
       </Btn>
     </Variant>
     <Variant
@@ -85,11 +89,42 @@ defineExpose({
       :key="key"
       :title="'Btn ' + Object.keys(props).join(' ')"
     >
-      <Btn
-        v-bind="props"
-      >
+      <Btn v-bind="props">
         {{ state.text }}
       </Btn>
+    </Variant>
+    <Variant
+      v-for="(props, key) of sizeVariants"
+      :key="key"
+      :title="`Btn with icons ${props.size}`"
+    >
+      <template #default>
+        <Btn v-bind="props">
+          <template #icon-left>
+            <svg
+              viewBox="0 0 24 24"
+              class="w-4 h-4"
+            >
+              <path
+                fill="currentColor"
+                :d="letterIcon"
+              />
+            </svg>
+          </template>
+          {{ state.text }}
+          <template #icon-right>
+            <svg
+              viewBox="0 0 24 24"
+              class="w-4 h-4"
+            >
+              <path
+                fill="currentColor"
+                :d="letterIcon"
+              />
+            </svg>
+          </template>
+        </Btn>
+      </template>
     </Variant>
   </Story>
 </template>

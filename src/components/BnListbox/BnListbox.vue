@@ -11,13 +11,15 @@ import {
 import { computePosition, flip, offset } from '@floating-ui/dom';
 
 interface Props {
-  modelValue?: string | string[]
-  options: string[]
+  modelValue?: string | string[] | Record<string, unknown> | Record<string, unknown>[]
+  options: string[] | Record<string, unknown>[]
   name: string
   color?: string
   rules?: RuleExpression<unknown>
   disabled?: boolean
   multiple?: boolean
+  trackBy?: string
+  optionLabel?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,13 +28,24 @@ const props = withDefaults(defineProps<Props>(), {
   rules: undefined,
   disabled: false,
   multiple: false,
+  trackBy: undefined,
+  optionLabel: undefined,
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string | string[]): void}>();
+const useObjectOptions = !!props.trackBy && !!props.optionLabel;
+
+function isObjectValue(value: string | Record<string, unknown>): value is Record<string, unknown> {
+  return useObjectOptions;
+}
+
+const emit = defineEmits<{(
+  e: 'update:modelValue',
+  value: string | string[] | Record<string, unknown> | Record<string, unknown>[]
+): void}>();
 
 const name = toRef(props, 'name');
 
-const { value } = useField<string|string[]>(name, props.rules, {
+const { value } = useField<string|string[]|Record<string, unknown>|Record<string, unknown>[]>(name, props.rules, {
   initialValue: props.modelValue,
 });
 
@@ -83,6 +96,7 @@ watch(
     as="div"
     class="bn-listbox"
     :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
+    :by="props.trackBy"
   >
     <ListboxButton
       ref="listboxButtonRef"
@@ -91,17 +105,20 @@ watch(
       <template v-if="multiple">
         <div class="overflow-hidden">
           <span
-            v-for="option in props.modelValue"
-            :key="option"
+            v-for="option in (value as string[] | Record<string, unknown>[])"
+            :key="isObjectValue(option) ?
+              option[props.trackBy] as string : option as string"
             class="bn-listbox__tag"
           >
-            {{ option }}
+            {{ isObjectValue(option) ? option[props.optionLabel] : option }}
           </span>
         </div>
       </template>
       <template v-else>
         <span class="truncate">
-          {{ value }}
+          {{ isObjectValue(value as string | Record<string, unknown>) ?
+            (value as Record<string, unknown>)[props.optionLabel] : value
+          }}
         </span>
       </template>
       <svg
@@ -122,13 +139,15 @@ watch(
         :style="`width: ${listboxButtonWidth}px`"
       >
         <ListboxOption
-          v-for="option in props.options"
+          v-for="option in options"
           v-slot="{ selected }"
-          :key="option"
-          class="bn-listbox-options__option"
+          :key="isObjectValue(option) ? option[props.trackBy] as string : option as string"
           :value="option"
+          class="bn-listbox-options__option"
         >
-          <span class="truncate">{{ option }}</span>
+          <span class="truncate">
+            {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+          </span>
           <svg
             v-if="selected"
             class="ml-auto h-[14px] w-[18px] shrink-0"

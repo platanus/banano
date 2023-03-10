@@ -1,24 +1,11 @@
 /* eslint-disable max-len, vue/max-len*/
+const mergeWith = require('lodash/mergeWith');
 const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
-const mergeWith = require('lodash/mergeWith');
 
-const btn = require('../components/Btn/Btn.styles.js');
+const Btn = require('../components/Btn/Btn.styles.js');
 
-const components = {
-  '.bn-btn': {
-    name: 'Btn',
-    styles: btn,
-  },
-};
-
-function parseClassName(prefix, className) {
-  if (className === 'base') {
-    return prefix;
-  }
-
-  return className.startsWith('[') ? `${prefix}${className}` : `${prefix}--${className}`;
-}
+const specialCases = ['&', '@apply', '.'];
 
 function parseColors(classes, colors = []) {
   return colors.reduce((colorObj, color) => {
@@ -32,32 +19,57 @@ function parseColors(classes, colors = []) {
   }, {});
 }
 
-function getClassName(className, prevClassName) {
-  const classNamePrefix = className.startsWith('.') ? '' : '-';
+function parseStyles(styles, prefix = '', colors = []) {
+  const classes = {};
+  Object.keys(styles).forEach((key) => {
+    if (specialCases.some((specialCase) => key.startsWith(specialCase))) {
+      classes[key] = styles[key];
+    } else if (key !== 'colors') {
+      const colorClasses = styles[key].colors ? parseColors(styles[key].colors, colors) : {};
+      classes[`${prefix}${key}`] = {
+        ...parseStyles(styles[key], '&-', colors),
+        ...parseStyles(colorClasses, '&-', colors),
+      };
+    }
+  });
 
-  return prevClassName ? `${prevClassName}${classNamePrefix}${className}` : className;
+  return classes;
 }
 
-function parseClasses(settings, classObj, prevClassName, finalClasses = {}) {
-  for (const [className, value] of Object.entries(classObj)) {
-    const valueEntries = Object.entries(value);
-    if (valueEntries.length > 0) {
-      if (className === 'colors') {
-        parseClasses(settings, parseColors(value, settings.colors), prevClassName, finalClasses);
-      } else {
-        parseClasses(settings, value, getClassName(className, prevClassName), finalClasses);
+function mergeClasses(styles) {
+  const classes = [];
+
+  function merge(obj, parent = '') {
+    Object.keys(obj).forEach((key) => {
+      if (key.startsWith('@') || key.startsWith('.') && parent) return;
+      const parsedKey = key.replace('&', '');
+      const newKey = parent ? `${parent}${parsedKey}` : key;
+      classes.push(newKey);
+      if (typeof obj[key] === 'object') {
+        merge(obj[key], newKey);
       }
-    } else {
-      const finalClass = parseClassName(settings.prefix, prevClassName);
-      finalClasses[finalClass] = finalClasses[finalClass] || {};
-      finalClasses[finalClass][className] = {};
-    }
+    });
   }
 
-  return finalClasses;
+  merge(styles);
+
+  return classes;
 }
 
-const defaultOptions = { colors: ['base'], styles: {} };
+function parseComponents(components, colors) {
+  return Object.keys(components).reduce((prev, key) => {
+    const component = components[key];
+    prev[component.baseComponentClass] = {
+      ...component.baseStyle,
+      ...(component.modifiers ? parseStyles(component.modifiers, '&--', colors) : {}),
+      ...(component.elements ? parseStyles(component.elements, '&__', colors) : {}),
+    };
+
+    return prev;
+  }, {});
+}
+
+const defaultOptions = { colors: ['base'], components: {} };
 
 function mergeArray(objValue, srcValue) {
   if (Array.isArray(objValue)) {
@@ -72,17 +84,12 @@ module.exports = {
     (options) => ({ addComponents }) => {
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
 
-      addComponents({
-        ...Object.entries(components)
-          .map(([componentPrefix, component]) => parseClasses(
-            { prefix: componentPrefix, colors: optionsWithDefaults.colors },
-            mergeWith({}, component.styles, optionsWithDefaults.styles[component.name], mergeArray),
-          ))
-          .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
-      });
+      const parsedComponents = parseComponents({ Btn, ...optionsWithDefaults.components }, optionsWithDefaults.colors);
+      addComponents(parsedComponents);
     },
     (options) => {
-      const optionsWithDefaults = mergeWith({}, defaultOptions, options, mergeArray);
+      const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
+      const parsedComponents = parseComponents({ Btn, ...optionsWithDefaults.components }, optionsWithDefaults.colors);
 
       return {
         theme: {
@@ -92,16 +99,7 @@ module.exports = {
             },
           },
         },
-        safelist: [
-          ...Object.keys(
-            Object.entries(components)
-              .map(([componentPrefix, component]) => parseClasses(
-                { prefix: componentPrefix, colors: optionsWithDefaults.colors },
-                mergeWith(component.styles, optionsWithDefaults.styles[component.name], mergeArray),
-              ))
-              .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
-          ),
-        ],
+        safelist: mergeClasses(parsedComponents),
       };
     },
   ),

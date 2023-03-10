@@ -7,7 +7,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: 'src/tailwind/index.js',
+      entry: 'src/tailwind/index.cjs',
       name: 'Banano Tailwind',
       formats: ['umd'],
       fileName: 'tailwind',

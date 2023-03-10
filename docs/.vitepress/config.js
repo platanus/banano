@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress';
 
 export default defineConfig({
   title: 'Banano',
+  base: '/banano/',
   themeConfig: {
     sidebar: {
       '/': [
@@ -10,11 +11,15 @@ export default defineConfig({
           items: [
             {
               text: 'Introduction',
-              link: '/getting-started',
+              link: '/',
             },
             {
               text: 'Theme Customization',
               link: '/theme-customization',
+            },
+            {
+              text: 'Histoire (Component Library)',
+              link: 'https://platanus.github.io/banano/histoire/',
             },
           ],
         },

@@ -1,11 +1,12 @@
-import Btn from '../components/Btn/Btn.vue';
+import components from '../components';
 
 const plugin = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(app: any) {
-    app.component('BnBtn', Btn);
+    Object.keys(components).forEach((key: string) => {
+      app.component(key, components[key as keyof typeof components]);
+    });
   },
 };
 
 export default plugin;
-export { Btn };

@@ -1,5 +1,5 @@
 require('@rushstack/eslint-patch/modern-module-resolution');
-const platanusRules = require('./.eslint/platanus-rules');
+const platanusRules = require('./.eslint/platanus-rules.cjs');
 
 module.exports = {
   root: true,

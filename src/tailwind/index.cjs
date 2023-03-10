@@ -4,15 +4,15 @@ const mergeWith = require('lodash/mergeWith');
 const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
-const Btn = require('../components/Btn/Btn.styles.js');
-const BnInput = require('../components/BnInput/BnInput.styles.js');
-const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.js');
-const BnListbox = require('../components/BnListbox/BnListbox.styles.js');
-const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.js');
-const BnCheckbox = require('../components/BnCheckbox/BnCheckbox.styles.js');
-const BnToggle = require('../components/BnToggle/BnToggle.styles.js');
-const BnModal = require('../components/BnModal/BnModal.styles.js');
-const BnPagination = require('../components/BnPagination/BnPagination.styles.js');
+const Btn = require('../components/Btn/Btn.styles.cjs');
+const BnInput = require('../components/BnInput/BnInput.styles.cjs');
+const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.cjs');
+const BnListbox = require('../components/BnListbox/BnListbox.styles.cjs');
+const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.cjs');
+const BnCheckbox = require('../components/BnCheckbox/BnCheckbox.styles.cjs');
+const BnToggle = require('../components/BnToggle/BnToggle.styles.cjs');
+const BnModal = require('../components/BnModal/BnModal.styles.cjs');
+const BnPagination = require('../components/BnPagination/BnPagination.styles.cjs');
 
 const componentList = {
   Btn,

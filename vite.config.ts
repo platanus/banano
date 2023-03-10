@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import dts from 'vite-dts';
+import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    dts(),
+    dts({
+      insertTypesEntry: true,
+    }),
     vue(),
   ],
   build: {
@@ -16,7 +18,7 @@ export default defineConfig({
       entry: 'src/lib/index.ts',
       name: 'Banano',
       formats: ['es'],
-      fileName: 'banano',
+      fileName: 'index',
     },
     outDir: 'dist/vue',
     rollupOptions: {

@@ -1,4 +1,4 @@
-const banano = require('./src/tailwind');
+const banano = require('./src/tailwind/index.cjs');
 
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],

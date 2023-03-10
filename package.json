@@ -8,33 +8,35 @@
     "preview": "vite preview"
   },
   "files": [
-    "src/**/*",
     "dist/**/*",
     "README.md"
   ],
+  "type": "module",
   "dependencies": {
     "@floating-ui/dom": "^1.0.2",
-    "@headlessui/tailwindcss": "^0.1.1",
     "@headlessui/vue": "^1.7.3",
     "@vueuse/core": "^9.3.0",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
+    "@headlessui/tailwindcss": "^0.1.1",
     "@tailwindcss/forms": "^0.5.3",
+    "tailwindcss": "^3.2.2",
     "vee-validate": "^4.6.9",
     "vue": "^3.2.25"
   },
-  "main": "./dist/vue/banano.es.js",
-  "module": "./dist/vue/banano.es.js",
+  "main": "./dist/vue/index.js",
+  "module": "./dist/vue/index.js",
   "exports": {
-    ".": "./dist/vue/banano.es.js",
-    "./tailwind": "./dist/tailwind/tailwind.umd.js"
+    ".": "./dist/vue/index.js",
+    "./tailwind": "./dist/tailwind/tailwind.umd.cjs"
   },
   "bin": {
     "banano": "./bin/banano.js"
   },
-  "types": "./dist/vue/banano.es.d.ts",
+  "types": "./dist/vue/index.d.ts",
   "devDependencies": {
+    "@headlessui/tailwindcss": "^0.1.1",
     "@histoire/plugin-vue": "^0.10.7",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rushstack/eslint-patch": "^1.1.2",
@@ -42,20 +44,21 @@
     "@types/lodash": "^4.14.186",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
-    "@vitejs/plugin-vue": "^2.3.1",
+    "@vitejs/plugin-vue": "^3.2.0",
     "@vue/eslint-config-typescript": "^10.0.0",
     "autoprefixer": "^10.4.4",
     "eslint": "^8.13.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-tailwindcss": "^3.6.2",
     "eslint-plugin-vue": "^8.6.0",
     "histoire": "^0.10.7",
     "postcss": "^8.4.12",
     "postcss-nested": "^5.0.6",
-    "tailwindcss": "^3.1.2",
+    "tailwindcss": "^3.2.2",
     "typescript": "^4.5.4",
     "vee-validate": "^4.6.9",
-    "vite": "^2.9.2",
-    "vite-dts": "^1.0.4",
+    "vite": "^3.2.2",
+    "vite-plugin-dts": "^1.6.6",
     "vue": "^3.2.25",
     "vue-tsc": "^0.29.8"
   }

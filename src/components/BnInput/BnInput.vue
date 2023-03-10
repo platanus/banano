@@ -10,7 +10,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'text',
   modelValue: undefined,
   color: 'base',
   rules: undefined,

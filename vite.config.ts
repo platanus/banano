@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
@@ -27,5 +27,10 @@ export default defineConfig({
         sourcemapExcludeSources: true,
       },
     },
+  },
+  test: {
+    include: ['./src/components/**/*.spec.ts'],
+    globals: true,
+    environment: 'jsdom',
   },
 });

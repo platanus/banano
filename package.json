@@ -46,12 +46,15 @@
     "@typescript-eslint/parser": "^5.19.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/eslint-config-typescript": "^10.0.0",
+    "@vue/test-utils": "^2.2.1",
     "autoprefixer": "^10.4.4",
     "eslint": "^8.13.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-tailwindcss": "^3.6.2",
     "eslint-plugin-vue": "^8.6.0",
+    "flush-promises": "^1.0.2",
     "histoire": "^0.10.7",
+    "jsdom": "^20.0.2",
     "postcss": "^8.4.12",
     "postcss-nested": "^5.0.6",
     "tailwindcss": "^3.2.2",
@@ -59,7 +62,9 @@
     "vee-validate": "^4.6.9",
     "vite": "^3.2.2",
     "vite-plugin-dts": "^1.6.6",
+    "vitest": "^0.24.5",
     "vue": "^3.2.25",
-    "vue-tsc": "^0.29.8"
+    "vue-tsc": "^0.29.8",
+    "wait-for-expect": "^3.0.2"
   }
 }

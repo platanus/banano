@@ -2,7 +2,7 @@
 import { RuleExpression, useField } from 'vee-validate';
 import { toRef, useAttrs } from 'vue';
 
-type valueTypes = undefined | string | number | Record<string, unknown>;
+type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
   modelValue?: valueTypes | valueTypes[],

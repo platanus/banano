@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { GenericValidateFunction } from 'vee-validate';
 import { reactive } from 'vue';
 import BnCheckbox from './BnCheckbox.vue';
 
@@ -24,6 +25,14 @@ const state = reactive({
   array: ['Item 1', 'Item 2'],
   object: [],
 });
+
+function isRequired(val: string) {
+  if (!val) {
+    return 'This field is required';
+  }
+
+  return true;
+}
 </script>
 
 <template>
@@ -78,6 +87,19 @@ const state = reactive({
       <template #default>
         <BnCheckbox
           v-model="state.single"
+          name="color"
+          value="Checked"
+          color="orange"
+        >
+          This is a checkbox
+        </BnCheckbox>
+      </template>
+    </Variant>
+    <Variant title="validation">
+      <template #default>
+        <BnCheckbox
+          v-model="state.single"
+          :rules="(isRequired as GenericValidateFunction)"
           name="color"
           value="Checked"
           color="orange"

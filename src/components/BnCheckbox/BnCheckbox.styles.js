@@ -1,6 +1,12 @@
 module.exports = {
   '.bn-checkbox': {
     '@apply flex items-center': {},
+    '&--error': {
+      '@apply text-red-500': {},
+      '.bn-checkbox__input': {
+        '@apply border-red-500': {},
+      },
+    },
     '&__input': {
       '@apply mr-2 rounded border-gray-300': {},
       colors: {

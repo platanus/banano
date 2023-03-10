@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { useField } from 'vee-validate';
+import { RuleExpression, useField } from 'vee-validate';
 import { toRef } from 'vue';
 
+type valueTypes = undefined | string | number | Record<string, unknown>;
+
 const props = defineProps<{
-  modelValue?: unknown | unknown[],
-  value: unknown,
+  modelValue?: valueTypes | valueTypes[],
+  value: valueTypes,
   name: string,
   color?: string,
+  rules?: RuleExpression<unknown>
 }>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: unknown): void}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueTypes[]): void}>();
 
 const name = toRef(props, 'name');
 
-const { handleChange, checked } = useField(props.name, undefined, {
+const { handleChange, checked, meta, setTouched } = useField(props.name, props.rules, {
   type: 'checkbox',
   checkedValue: props.value,
   initialValue: props.modelValue,
@@ -21,6 +24,7 @@ const { handleChange, checked } = useField(props.name, undefined, {
 
 function onChange(e: Event) {
   const input = e.target as HTMLInputElement;
+  setTouched(true);
 
   if (Array.isArray(props.modelValue)) {
     const newValue = [...props.modelValue];
@@ -40,7 +44,10 @@ function onChange(e: Event) {
 <template>
   <label
     class="bn-checkbox"
-    :class="`bn-checkbox--${props.color}`"
+    :class="[
+      `bn-checkbox--${props.color}`,
+      {'bn-checkbox--error': !meta.valid && meta.touched},
+    ]"
   >
     <input
       :checked="checked"

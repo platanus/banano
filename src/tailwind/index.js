@@ -12,6 +12,7 @@ const BnFileInput = require('../components/BnFileInput/BnFileInput.styles.js');
 const BnCheckbox = require('../components/BnCheckbox/BnCheckbox.styles.js');
 const BnToggle = require('../components/BnToggle/BnToggle.styles.js');
 const BnModal = require('../components/BnModal/BnModal.styles.js');
+const BnPagination = require('../components/BnPagination/BnPagination.styles.js');
 
 const componentList = {
   Btn,
@@ -22,6 +23,7 @@ const componentList = {
   BnCheckbox,
   BnToggle,
   BnModal,
+  BnPagination,
 };
 
 function parseColors(classes, colors = []) {

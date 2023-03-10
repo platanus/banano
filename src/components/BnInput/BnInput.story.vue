@@ -1,14 +1,24 @@
 <script setup lang="ts">
+import { GenericValidateFunction } from 'vee-validate';
 import { reactive } from 'vue';
 import BnInput from './BnInput.vue';
 
 const state = reactive({
   value: 'Hello world!',
   emptyValue: undefined,
+  validate: undefined,
 });
 
 // eslint-disable-next-line max-len, vue/max-len
 const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
+
+function isRequired(val: string) {
+  if (!val) {
+    return 'This field is required';
+  }
+
+  return true;
+}
 </script>
 
 <template>
@@ -121,6 +131,15 @@ const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2
             .00
           </template>
         </BnInput>
+      </template>
+    </Variant>
+    <Variant title="Validation">
+      <template #default>
+        <BnInput
+          v-model="state.validate"
+          name="validation"
+          :rules="(isRequired as GenericValidateFunction)"
+        />
       </template>
     </Variant>
   </Story>

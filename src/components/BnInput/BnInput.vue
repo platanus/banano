@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { useField } from 'vee-validate';
+import { RuleExpression, useField } from 'vee-validate';
 import { toRef, useAttrs } from 'vue';
 
 interface Props {
   modelValue?: string | number
   name: string
   color?: string
+  rules?: RuleExpression<unknown>,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   modelValue: undefined,
   color: 'base',
+  rules: undefined,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: number | string): void}>();
@@ -22,7 +24,9 @@ const {
   value: inputValue,
   handleBlur,
   handleChange,
-} = useField(name, undefined, {
+  meta,
+  errorMessage,
+} = useField(name, props.rules, {
   initialValue: props.modelValue,
   valueProp: props.modelValue,
 });
@@ -34,7 +38,7 @@ function onInput(event: Event) {
 }
 
 const attrs = useAttrs();
-const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key, _]) => key !== 'class'));
+const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
 
 <script lang="ts">
@@ -45,50 +49,59 @@ export default {
 
 <template>
   <div
-    class="bn-input flex"
+    class="bn-input"
     :class="`bn-input--${props.color} ${attrs.class ? attrs.class : ''}`"
   >
-    <div
-      v-if="$slots['prefix']"
-      class="bn-input__prefix"
-    >
-      <slot name="prefix" />
-    </div>
-    <div class="relative">
+    <div class="w-full flex">
       <div
-        v-if="$slots['icon-left']"
-        class="bn-input__icon-left"
+        v-if="$slots['prefix']"
+        class="bn-input__prefix"
       >
-        <slot name="icon-left" />
+        <slot name="prefix" />
       </div>
-      <input
-        v-bind="attrsWithoutClass"
-        :id="name"
-        :value="inputValue"
-        :name="name"
-        class="bn-input__input"
-        :class="{
-          'bn-input__input--icon-left': $slots['icon-left'],
-          'bn-input__input--icon-right': $slots['icon-right'],
-          'bn-input__input--prefix': $slots['prefix'],
-          'bn-input__input--suffix': $slots['suffix'],
-        }"
-        @input="onInput"
-        @blur="handleBlur"
-      >
+      <div class="relative w-full">
+        <div
+          v-if="$slots['icon-left']"
+          class="bn-input__icon-left"
+        >
+          <slot name="icon-left" />
+        </div>
+        <input
+          v-bind="attrsWithoutClass"
+          :id="name"
+          :value="inputValue"
+          :name="name"
+          class="bn-input__input"
+          :class="{
+            'bn-input__input--icon-left': $slots['icon-left'],
+            'bn-input__input--icon-right': $slots['icon-right'],
+            'bn-input__input--prefix': $slots['prefix'],
+            'bn-input__input--suffix': $slots['suffix'],
+            'bn-input__input--error': !meta.valid && meta.touched,
+          }"
+          @input="onInput"
+          @blur="handleBlur"
+        >
+        <div
+          v-if="$slots['icon-right']"
+          class="bn-input__icon-right"
+        >
+          <slot name="icon-right" />
+        </div>
+      </div>
       <div
-        v-if="$slots['icon-right']"
-        class="bn-input__icon-right"
+        v-if="$slots['suffix']"
+        class="bn-input__suffix"
       >
-        <slot name="icon-right" />
+        <slot name="suffix" />
       </div>
     </div>
-    <div
-      v-if="$slots['suffix']"
-      class="bn-input__suffix"
+    <p
+      v-if="errorMessage && meta.touched"
+      class="bn-input__error-message"
     >
-      <slot name="suffix" />
-    </div>
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 

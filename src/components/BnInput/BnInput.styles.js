@@ -1,5 +1,6 @@
 module.exports = {
   '.bn-input': {
+    '@apply w-full': {},
     '&__input': {
       '@apply py-3 px-3 w-full rounded-lg border border-gray-200': {},
       '&[disabled]': {
@@ -22,6 +23,9 @@ module.exports = {
       '&--suffix': {
         '@apply rounded-r-none': {},
       },
+      '&--error': {
+        '@apply border border-red-300 text-red-700 ring-red-300 outline-red-300 !important': {},
+      },
     },
     '&__icon-left': {
       '@apply absolute top-0 left-0 bottom-0 flex items-center justify-center w-10': {},
@@ -36,6 +40,9 @@ module.exports = {
     '&__suffix': {
       '@apply px-3 py-2 flex items-center justify-center flex-shrink-0  rounded-r-lg': {},
       '@apply bg-gray-50 border-gray-200 border border-l-0 text-gray-500': {},
+    },
+    '&__error-message': {
+      '@apply text-sm text-red-600': {},
     },
   },
 };

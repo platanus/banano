@@ -16,6 +16,8 @@
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "vee-validate": "^4.6.9",
     "vue": "^3.2.25"
   },
   "main": "./dist/vue/banano.es.js",
@@ -32,6 +34,7 @@
     "@histoire/plugin-vue": "^0.10.7",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rushstack/eslint-patch": "^1.1.2",
+    "@tailwindcss/forms": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "@vitejs/plugin-vue": "^2.3.1",
@@ -44,6 +47,7 @@
     "postcss-nested": "^5.0.6",
     "tailwindcss": "^3.1.2",
     "typescript": "^4.5.4",
+    "vee-validate": "^4.6.9",
     "vite": "^2.9.2",
     "vite-dts": "^1.0.4",
     "vue": "^3.2.25",

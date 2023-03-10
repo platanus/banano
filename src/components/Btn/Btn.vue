@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 
 interface Props {
   as?: string
@@ -21,12 +21,14 @@ const props = withDefaults(defineProps<Props>(), {
   loadingReplacesContent: false,
 });
 
+const attrs = useAttrs();
+
 const tag = computed(() => {
   if (props.as) {
     return props.as;
   }
 
-  return 'button';
+  return attrs.href ? 'a' : 'button';
 });
 </script>
 

@@ -10,6 +10,7 @@ interface Props {
   rules?: RuleExpression<unknown>
   multiple?: boolean
   disabled?: boolean
+  placeholder?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -18,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   rules: undefined,
   multiple: false,
   disabled: false,
+  placeholder: 'No file selected',
 });
 
 const fileInputRef = ref<HTMLInputElement>();
@@ -59,7 +61,7 @@ const fileList = computed(() => {
     return inputValue.value.map((file) => file.name).join(', ');
   }
 
-  return 'No file selected';
+  return '';
 });
 </script>
 
@@ -86,8 +88,18 @@ const fileList = computed(() => {
     >
       Browse
     </BnBtn>
-    <span class="bn-file-input__label">
-      {{ fileList }}
-    </span>
+    <div class="bn-file-input__label">
+      <template
+        v-if="fileList"
+      >
+        {{ fileList }}
+      </template>
+      <span
+        v-else
+        class="bn-file-input__placeholder"
+      >
+        {{ props.placeholder }}
+      </span>
+    </div>
   </label>
 </template>

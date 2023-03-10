@@ -13,5 +13,8 @@ module.exports = {
     '&__label': {
       '@apply truncate text-sm': {},
     },
+    '&__placeholder': {
+      '@apply text-gray-500': {},
+    },
   },
 };

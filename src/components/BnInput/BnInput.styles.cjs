@@ -2,7 +2,8 @@ module.exports = {
   '.bn-input': {
     '@apply w-full flex': {},
     '&__input': {
-      '@apply py-3 px-3 w-full rounded-lg border border-gray-200 h-12': {},
+      '@apply py-3 px-3 w-full rounded-lg border border-gray-200 h-12 text-banano-text-foreground bg-banano-bg': {},
+      '@apply placeholder:text-banano-text-muted': {},
       '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
       colors: {
         '@apply focus:outline focus:outline-1 focus:outline-varColor-600': {},

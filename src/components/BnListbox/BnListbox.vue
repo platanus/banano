@@ -109,9 +109,12 @@ watch(
       :class="{'bn-listbox__button--error': !meta.valid && meta.touched}"
       @blur="setTouched(true)"
     >
-      <template v-if="placeholder && isEmpty(value)">
+      <span
+        v-if="placeholder && isEmpty(value)"
+        class="bn-listbox__placeholder"
+      >
         {{ placeholder }}
-      </template>
+      </span>
       <template v-if="multiple">
         <div class="overflow-hidden">
           <template

@@ -107,6 +107,9 @@ function mergeArray(objValue, srcValue) {
 
 const themeColors = {
   'banano-base': tailwindColors.blue,
+  'banano-text-foreground': tailwindColors.gray['900'],
+  'banano-text-muted': tailwindColors.gray['500'],
+  'banano-bg': tailwindColors.white,
 };
 const defaultOptions = { colors: themeColors, components: {} };
 

@@ -121,7 +121,7 @@ module.exports = {
         theme: {
           extend: {
             colors: {
-              base: tailwindColors.blue,
+              'banano-base': tailwindColors.blue,
             },
           },
         },

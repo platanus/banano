@@ -72,7 +72,7 @@ module.exports = {
       },
     },
     '&--variants-no-border': {
-      '@apply text-base-600 bg-transparent': {},
+      '@apply text-banano-base-600 bg-transparent': {},
       '@apply border border-transparent': {},
       '@apply focus:outline-none': {},
       colors: {

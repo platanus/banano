@@ -28,7 +28,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  color: 'base',
+  color: 'banano-base',
   rules: undefined,
   disabled: false,
   multiple: false,

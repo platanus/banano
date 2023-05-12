@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   size: 'md',
   shape: 'default',
-  color: 'base',
+  color: 'banano-base',
   loading: false,
   loadingReplacesContent: false,
 });

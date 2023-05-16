@@ -110,6 +110,7 @@ const themeColors = {
   'banano-text-foreground': tailwindColors.gray['900'],
   'banano-text-muted': tailwindColors.gray['500'],
   'banano-bg': tailwindColors.white,
+  'banano-error': tailwindColors.red['500'],
 };
 const defaultOptions = { colors: themeColors, components: {} };
 

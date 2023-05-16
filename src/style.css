@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.histoire-generic-render-story {
+  padding: .5rem;
+}

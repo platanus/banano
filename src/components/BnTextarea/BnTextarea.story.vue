@@ -35,7 +35,7 @@ function isRequired(val: string) {
         <BnTextarea
           v-model="state.value"
           name="color"
-          color="orange"
+          color="lime"
         />
       </template>
     </Variant>

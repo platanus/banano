@@ -92,7 +92,7 @@ function isRequired(val: string) {
           v-model="state.single"
           name="color"
           :options="selectOptions"
-          color="orange"
+          color="lime"
         />
       </template>
     </Variant>

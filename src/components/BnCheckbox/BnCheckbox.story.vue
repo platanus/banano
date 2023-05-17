@@ -102,7 +102,7 @@ function isRequired(val: string) {
           v-model="state.single"
           name="color"
           value="Checked"
-          color="orange"
+          color="lime"
         >
           This is a checkbox
         </BnCheckbox>
@@ -115,7 +115,7 @@ function isRequired(val: string) {
           :rules="(isRequired as GenericValidateFunction)"
           name="color"
           value="Checked"
-          color="orange"
+          color="lime"
         >
           This is a checkbox
         </BnCheckbox>

@@ -17,7 +17,7 @@ This will generate a `banano.json` file with all the current classes and compone
     require('@tailwindcss/forms'),
     require('@headlessui/tailwindcss'),
     banano.tailwindPlugin({
-      colors: ['orange'],
+      colors: ['lime'],
       components: require('./banano.json') // [!code ++]
     }),
   ],
@@ -31,7 +31,7 @@ This will generate a `banano.json` file with all the current classes and compone
     require('@tailwindcss/forms'),
     require('@headlessui/tailwindcss'),
     banano.tailwindPlugin({
-      colors: ['orange'],
+      colors: ['lime'],
       components: {
         BnInput: { // [!code ++]
           '.bn-input': { // [!code ++]

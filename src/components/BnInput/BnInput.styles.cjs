@@ -6,8 +6,7 @@ module.exports = {
       '@apply placeholder:text-banano-text-muted': {},
       '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
       colors: {
-        '@apply focus:outline focus:outline-1 focus:outline-varColor-600': {},
-        '@apply focus:border-varColor-600 focus:ring-varColor-600': {},
+        '@apply focus:outline-none focus:ring focus:border-varColor-600 focus:ring-varColor-600/25': {},
       },
       '&--icon-left': {
         '@apply pl-10': {},
@@ -22,7 +21,7 @@ module.exports = {
         '@apply rounded-r-none': {},
       },
       '&--error': {
-        '@apply border border-red-300 text-red-700 ring-red-300 outline-red-300 !important': {},
+        '@apply border-banano-error focus:ring-banano-error/25 !important': {},
       },
     },
     '&__icon-left': {

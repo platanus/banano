@@ -10,10 +10,7 @@ module.exports = {
       '@apply p-0 border-0 h-auto bg-banano-bg text-banano-text-foreground': {},
     },
     '&--error': {
-      '@apply border border-red-300 text-red-700 ring-red-300 outline-red-300 !important': {},
-      '.bn-file-input__placeholder': {
-        '@apply text-red-500': {},
-      },
+      '@apply border border-banano-error !important': {},
     },
     '&__input': {
       '@apply hidden': {},

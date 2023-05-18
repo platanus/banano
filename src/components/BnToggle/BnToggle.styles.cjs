@@ -5,9 +5,9 @@ module.exports = {
       '@apply cursor-not-allowed opacity-75': {},
     },
     '&--error': {
-      '@apply text-red-500': {},
+      '@apply text-banano-error': {},
       '.bn-toggle__input': {
-        '@apply border-red-500': {},
+        '@apply border-banano-error': {},
       },
     },
     '&__wrapper': {

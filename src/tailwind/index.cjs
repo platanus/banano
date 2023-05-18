@@ -44,20 +44,19 @@ function parseColors(classes, colors = {}) {
 function parseStyles(obj, colors, componentClass, elementClasses = []) {
   return Object.entries(obj).reduce((prev, [key, value]) => {
     const newElementClasses = [...elementClasses];
-    if (key !== 'colors') {
+    if (key === 'colors') {
+      const colorClasses = parseColors(value, colors);
+      const isElement = newElementClasses[1] && newElementClasses[1].startsWith('&__');
+      const newElementClass = newElementClasses.join('').replace(/&/g, '');
+
+      Object.keys(colorClasses).forEach((color) => {
+        prev[`@at-root ${componentClass}--${color}${isElement ? ' ' : ''}${newElementClass}`] = parseStyles(colorClasses[color], colors, componentClass, newElementClasses);
+      });
+    } else {
       if (!key.startsWith('@')) {
         newElementClasses.push(key);
       }
       prev[key] = parseStyles(value, colors, componentClass, newElementClasses);
-      const colorClasses = value.colors ? parseColors(value.colors, colors) : {};
-      if (colorClasses) {
-        const isElement = newElementClasses[1] && newElementClasses[1].startsWith('&__');
-        const newElementClass = newElementClasses.join('').replace(/&/g, '');
-
-        Object.keys(colorClasses).forEach((color) => {
-          prev[`@at-root ${componentClass}--${color}${isElement ? ' ' : ''}${newElementClass}`] = parseStyles(colorClasses[color], colors, componentClass, newElementClasses);
-        });
-      }
     }
 
     return prev;

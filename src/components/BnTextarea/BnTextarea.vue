@@ -12,7 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   modelValue: undefined,
-  color: 'base',
+  color: 'banano-base',
   rules: undefined,
 });
 

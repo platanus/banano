@@ -54,6 +54,7 @@ function isRequired(val: string) {
           v-model="state.validate"
           name="validation"
           :rules="(isRequired as GenericValidateFunction)"
+          placeholder="Once upon a time..."
         />
       </template>
     </Variant>

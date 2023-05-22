@@ -1,6 +1,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-len, vue/max-len*/
 const mergeWith = require('lodash/mergeWith');
+const isPlainObject = require('lodash/isPlainObject');
 const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
@@ -26,10 +27,12 @@ const componentList = {
   BnPagination,
 };
 
-function parseColors(classes, colors = []) {
-  return colors.reduce((colorObj, color) => {
-    colorObj[color] = Object.entries(classes).reduce((prev, [cssString]) => {
-      prev[cssString.replace(/varColor/g, color)] = {};
+function parseColors(classes, colors = {}) {
+  return Object.entries(colors).reduce((colorObj, [colorName, colorValue]) => {
+    colorObj[colorName] = Object.entries(classes).reduce((prev, [cssString]) => {
+      if (isPlainObject(colorValue)) {
+        prev[cssString.replace(/varColor/g, colorName)] = {};
+      }
 
       return prev;
     }, {});
@@ -94,8 +97,6 @@ function parseComponents(components, colors) {
   }, {});
 }
 
-const defaultOptions = { colors: ['base'], components: {} };
-
 function mergeArray(objValue, srcValue) {
   if (Array.isArray(objValue)) {
     return objValue.concat(srcValue);
@@ -103,6 +104,14 @@ function mergeArray(objValue, srcValue) {
 
   return undefined;
 }
+
+const themeColors = {
+  'banano-base': tailwindColors.blue,
+  'banano-text-foreground': tailwindColors.gray['900'],
+  'banano-text-muted': tailwindColors.gray['500'],
+  'banano-bg': tailwindColors.white,
+};
+const defaultOptions = { colors: themeColors, components: {} };
 
 module.exports = {
   tailwindPlugin: plugin.withOptions(
@@ -113,6 +122,11 @@ module.exports = {
       addComponents(parsedComponents);
     },
     (options) => {
+      options.colors = options.colors.reduce((prev, color) => {
+        prev[color] = tailwindColors[color];
+
+        return prev;
+      }, {});
       const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
       const components = mergeWith({}, componentList, optionsWithDefaults.components);
       const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
@@ -120,9 +134,7 @@ module.exports = {
       return {
         theme: {
           extend: {
-            colors: {
-              base: tailwindColors.blue,
-            },
+            colors: themeColors,
           },
         },
         safelist: mergeClasses(parsedComponents),

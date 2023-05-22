@@ -6,6 +6,8 @@ import { Form, ErrorMessage } from 'vee-validate';
 const input = ref('');
 const validate = ref('');
 
+const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
+
 function isRequired(val: string) {
   if (!val) {
     return 'This field is required';
@@ -97,8 +99,9 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
   </div>
 </code-preview>
 
+## Slots
 
-## Prefix
+### prefix
 
 ```html
 <BnInput
@@ -110,8 +113,20 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
   </template>
 </BnInput>
 ```
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <BnInput
+      v-model="phoneNumber"
+      name="phone-number"
+    >
+      <template #prefix>
+      +56 9
+      </template>
+    </BnInput>
+  </div>
+</code-preview>
 
-### Suffix
+### suffix
 
 ```html
 <BnInput
@@ -123,6 +138,100 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
   </template>
 </BnInput>
 ```
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <BnInput
+      v-model="email"
+      name="email"
+    >
+      <template #suffix>
+      @gmail
+      </template>
+    </BnInput>
+  </div>
+</code-preview>
+
+### icon-left
+
+```html
+<BnInput
+  v-model="email"
+  name="email"
+>
+  <template #icon-left>
+    <svg
+      viewBox="0 0 24 24"
+      class="h-4 w-4 text-gray-400"
+    >
+      <path
+        fill="currentColor"
+        :d="letterIcon"
+      />
+    </svg>
+  </template>
+</BnInput>
+```
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <BnInput
+      v-model="email"
+      name="email"
+    >
+      <template #icon-left>
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4 text-gray-400"
+        >
+          <path
+            fill="currentColor"
+            :d="letterIcon"
+          />
+        </svg>
+      </template>
+    </BnInput>
+  </div>
+</code-preview>
+
+### icon-right
+
+```html
+<BnInput
+  v-model="email"
+  name="email"
+>
+  <template #icon-right>
+    <svg
+      viewBox="0 0 24 24"
+      class="h-4 w-4 text-gray-400"
+    >
+      <path
+        fill="currentColor"
+        :d="letterIcon"
+      />
+    </svg>
+  </template>
+</BnInput>
+```
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <BnInput
+      v-model="email"
+      name="email"
+    >
+      <template #icon-right>
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4 text-gray-400"
+        >
+          <path
+            fill="currentColor"
+            :d="letterIcon"
+          />
+        </svg>
+      </template>
+    </BnInput>
+  </div>
+</code-preview>
 
 ## Customization
 There are three ways to customize the appearance of the `BnInput` component:

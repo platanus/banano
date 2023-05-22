@@ -15,6 +15,7 @@ export default defineConfig({
             },
             {
               text: 'Theme Customization',
+              link: '/theme-customization',
               collapsed: false,
               items: [
                 {

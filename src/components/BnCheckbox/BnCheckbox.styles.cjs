@@ -5,17 +5,17 @@ module.exports = {
       '@apply cursor-not-allowed opacity-75': {},
     },
     '&--error': {
-      '@apply text-red-500': {},
+      '@apply text-banano-error !important': {},
       '.bn-checkbox__input': {
-        '@apply border-red-500': {},
+        '@apply border-banano-error focus:ring-banano-error !important': {},
       },
     },
     '&__input': {
-      '@apply mr-2 rounded border-gray-300': {},
+      '@apply mr-2 rounded border-gray-300 focus:outline-none focus:ring-0 focus:ring-offset-0': {},
+      '@apply focus-visible:ring-offset-2 focus-visible:ring-2': {},
       colors: {
         '@apply text-varColor-600': {},
-        '@apply focus:outline focus:outline-1 focus:outline-varColor-600': {},
-        '@apply focus:border-varColor-600 focus:ring-varColor-600': {},
+        '@apply focus-visible:border-varColor-600 focus-visible:ring-varColor-600': {},
       },
     },
   },

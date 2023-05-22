@@ -5,9 +5,9 @@ module.exports = {
       '@apply cursor-not-allowed opacity-75': {},
     },
     '&--error': {
-      '@apply text-red-500': {},
+      '@apply text-banano-error': {},
       '.bn-toggle__input': {
-        '@apply border-red-500': {},
+        '@apply border-banano-error': {},
       },
     },
     '&__wrapper': {
@@ -30,14 +30,9 @@ module.exports = {
           '@apply bg-varColor-500': {},
         },
       },
-      '&:focus ~ .bn-toggle__track': {
+      '&:focus-visible ~ .bn-toggle__track': {
         colors: {
-          '@apply ring-2 ring-offset-2 ring-varColor-500': {},
-        },
-      },
-      '&:active ~ .bn-toggle__track': {
-        colors: {
-          '@apply ring-2 ring-offset-2 ring-varColor-500': {},
+          '@apply ring-2 ring-offset-4 ring-varColor-500': {},
         },
       },
     },

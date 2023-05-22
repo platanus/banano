@@ -47,7 +47,7 @@ function isRequired(val: string) {
       <template #default>
         <BnInput
           v-model="state.value"
-          color="orange"
+          color="lime"
           name="placeholder"
         />
       </template>

@@ -9,6 +9,7 @@ The colors are as follows:
 | banano&#x2011;text&#x2011;foreground | `tailwindColors.gray['900']`<br />(string) | Color used for regular texts inside inputs (regular, area, filet, etc.) |
 | banano&#x2011;text&#x2011;muted | `tailwindColors.gray['500']`<br />(string) | Color used for placeholder texts inside inputs (regular, area, filet, etc.) |
 | banano&#x2011;bg | `tailwindColors.white`<br />(string) | Color used for the background in inputs |
+| banano&#x2011;error | `tailwindColors.red['500']`<br />(string) | Color used for all error related style changes: texts, borders, focus rings, etc. For rings in particular, a 25% opacity of this color is used |
 
 A config that overrides these colors would look like this:
 
@@ -27,6 +28,7 @@ module.exports = {
             muted: tailwindColors.zinc['300'],
           },
           bg: tailwindColors.lime['50'],
+          error: tailwindColors.rose['500'],
         },
       },
     },

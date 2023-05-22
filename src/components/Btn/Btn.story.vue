@@ -26,8 +26,8 @@ const variantVariants = [
 ];
 
 const colorVariants = [
-  { color: 'orange' },
-  { color: 'orange', variant: 'outline' },
+  { color: 'lime' },
+  { color: 'lime', variant: 'outline' },
 ];
 
 const loadingVariants = [

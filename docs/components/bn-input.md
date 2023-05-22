@@ -84,16 +84,16 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 // tailwind.config.js
 {
 ...
-  require('banano').tailwindPlugin({ colors: ['orange']}),
+  require('banano').tailwindPlugin({ colors: ['lime']}),
 }
 ```
 
 ```html
-<bn-input name="input" color="orange" />
+<bn-input name="input" color="lime" />
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <bn-input name="input" color="orange" />
+    <bn-input name="input" color="lime" />
   </div>
 </code-preview>
 

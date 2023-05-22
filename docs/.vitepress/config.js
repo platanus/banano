@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitepress';
 
+const h2 = 2;
+const h3 = 3;
+
 export default defineConfig({
   title: 'Banano',
   base: '/banano/',
@@ -45,5 +48,6 @@ export default defineConfig({
         },
       ],
     },
+    outline: [h2, h3],
   },
 });

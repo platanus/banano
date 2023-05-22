@@ -233,6 +233,48 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
   </div>
 </code-preview>
 
+### bottom
+
+Useful for hints or errors. Includes the following slot props:
+- `errorMessage`: `vee-validate` property, if the input is invalid
+- `valid`: `vee-validate` meta property
+- `touched`: `vee-validate` meta property
+
+```html
+<BnInput
+  v-model="email"
+  name="email"
+  :rules="isRequired"
+>
+  <template #bottom="{ errorMessage, valid, touched }">
+    <span
+      class="mt-1 text-sm"
+      :class="!valid && touched ? 'text-rose-700' : 'text-gray-500'"
+    >
+      {{ !valid && touched ? errorMessage : "We'll never share your email with anyone else." }}
+    </span>
+  </template>
+</BnInput>
+```
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <BnInput
+      v-model="email"
+      name="email"
+      :rules="isRequired"
+    >
+      <template #bottom="{ errorMessage, valid, touched }">
+        <span
+          class="mt-1 text-sm"
+          :class="!valid && touched ? 'text-rose-700' : 'text-gray-500'"
+        >
+          {{ !valid && touched ? errorMessage : "We'll never share your email with anyone else." }}
+        </span>
+      </template>
+    </BnInput>
+  </div>
+</code-preview>
+
 ## Customization
 There are three ways to customize the appearance of the `BnInput` component:
 

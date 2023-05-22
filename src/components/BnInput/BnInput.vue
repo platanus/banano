@@ -24,9 +24,11 @@ const {
   handleBlur,
   handleChange,
   meta,
+  errorMessage,
 } = useField(name, props.rules, {
   initialValue: props.modelValue,
   valueProp: props.modelValue,
+  validateOnMount: true,
 });
 
 function onInput(event: Event) {
@@ -50,48 +52,64 @@ export default {
     class="bn-input"
     :class="`bn-input--${props.color} ${attrs.class ? attrs.class : ''}`"
   >
-    <div
-      v-if="$slots['prefix']"
-      class="bn-input__prefix"
-    >
-      <slot name="prefix" />
-    </div>
-    <div class="relative w-full">
+    <div class="bn-input__wrapper">
       <div
-        v-if="$slots['icon-left']"
-        class="bn-input__icon-left"
+        v-if="$slots['prefix']"
+        class="bn-input__prefix"
       >
-        <slot name="icon-left" />
+        <slot name="prefix" />
       </div>
-      <input
-        v-bind="attrsWithoutClass"
-        :id="name"
-        :value="inputValue"
+      <div class="relative w-full">
+        <div
+          v-if="$slots['icon-left']"
+          class="bn-input__icon-left"
+        >
+          <slot name="icon-left" />
+        </div>
+        <input
+          v-bind="attrsWithoutClass"
+          :id="name"
+          :value="inputValue"
+          :name="name"
+          class="bn-input__input"
+          :class="{
+            'bn-input__input--icon-left': $slots['icon-left'],
+            'bn-input__input--icon-right': $slots['icon-right'],
+            'bn-input__input--prefix': $slots['prefix'],
+            'bn-input__input--suffix': $slots['suffix'],
+            'bn-input__input--error': !meta.valid && meta.touched,
+          }"
+          @input="onInput"
+          @blur="handleBlur"
+        >
+        <div
+          v-if="$slots['icon-right']"
+          class="bn-input__icon-right"
+        >
+          <slot name="icon-right" />
+        </div>
+      </div>
+      <div
+        v-if="$slots['suffix']"
+        class="bn-input__suffix"
+      >
+        <slot name="suffix" />
+      </div>
+    </div>
+    <slot
+      name="bottom"
+      :error-message="errorMessage"
+      :valid="meta.valid"
+      :touched="meta.touched"
+    >
+      <p
+        v-if="!meta.valid && meta.touched"
         :name="name"
-        class="bn-input__input"
-        :class="{
-          'bn-input__input--icon-left': $slots['icon-left'],
-          'bn-input__input--icon-right': $slots['icon-right'],
-          'bn-input__input--prefix': $slots['prefix'],
-          'bn-input__input--suffix': $slots['suffix'],
-          'bn-input__input--error': !meta.valid && meta.touched,
-        }"
-        @input="onInput"
-        @blur="handleBlur"
+        class="bn-input__error-message"
       >
-      <div
-        v-if="$slots['icon-right']"
-        class="bn-input__icon-right"
-      >
-        <slot name="icon-right" />
-      </div>
-    </div>
-    <div
-      v-if="$slots['suffix']"
-      class="bn-input__suffix"
-    >
-      <slot name="suffix" />
-    </div>
+        {{ errorMessage }}
+      </p>
+    </slot>
   </div>
 </template>
 

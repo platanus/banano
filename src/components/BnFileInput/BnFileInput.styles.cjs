@@ -1,16 +1,24 @@
 module.exports = {
   '.bn-file-input': {
     '&--variants-default': {
-      '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2 bg-banano-bg': {},
+      '.bn-file-input__wrapper': {
+        '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2 bg-banano-bg': {},
+      },
     },
     '&--disabled': {
-      '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
+      '.bn-file-input__wrapper': {
+        '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
+      },
     },
     '&--custom': {
-      '@apply p-0 border-0 h-auto bg-banano-bg text-banano-text-foreground': {},
+      '.bn-file-input__wrapper': {
+        '@apply p-0 border-0 h-auto bg-banano-bg text-banano-text-foreground': {},
+      },
     },
     '&--error': {
-      '@apply border border-banano-error !important': {},
+      '.bn-file-input__wrapper': {
+        '@apply border border-banano-error !important': {},
+      },
     },
     '&__input': {
       '@apply hidden': {},
@@ -34,6 +42,9 @@ module.exports = {
         '@apply rounded-full overflow-hidden': {},
       },
       '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
+    },
+    '&__error-message': {
+      '@apply text-banano-error text-sm px-4': {},
     },
   },
 };

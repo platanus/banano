@@ -1,7 +1,9 @@
 module.exports = {
   '.bn-listbox': {
     '&--disabled': {
-      '@apply cursor-not-allowed bg-gray-100 opacity-75': {},
+      '.bn-listbox__listbox': {
+        '@apply cursor-not-allowed bg-gray-100 opacity-75': {},
+      },
     },
     '&__button': {
       '@apply flex h-12 w-full items-center truncate rounded-lg border border-gray-200 p-3 bg-banano-bg': {},
@@ -22,7 +24,7 @@ module.exports = {
       },
     },
     '&__error-message': {
-      '@apply text-sm text-red-600': {},
+      '@apply text-banano-error text-sm px-4': {},
     },
     '&__placeholder': {
       '@apply text-banano-text-muted': {},

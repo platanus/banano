@@ -50,8 +50,9 @@ const emit = defineEmits<{(
 
 const name = toRef(props, 'name');
 
-const { value, meta, setTouched } = useField<inputValue>(name, props.rules, {
+const { value, meta, setTouched, errorMessage } = useField<inputValue>(name, props.rules, {
   initialValue: props.modelValue,
+  validateOnMount: true,
 });
 
 const listboxButtonRef = ref<ComponentPublicInstance>();
@@ -94,107 +95,125 @@ watch(
 </script>
 
 <template>
-  <Listbox
-    v-model="value"
-    :multiple="props.multiple"
-    :disabled="props.disabled"
-    as="div"
+  <div
     class="bn-listbox"
     :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
-    :by="props.trackBy"
   >
-    <ListboxButton
-      ref="listboxButtonRef"
-      class="bn-listbox__button"
-      :class="{'bn-listbox__button--error': !meta.valid && meta.touched}"
-      @blur="setTouched(true)"
+    <Listbox
+      v-model="value"
+      :multiple="props.multiple"
+      :disabled="props.disabled"
+      as="div"
+      class="bn-listbox__listbox"
+      :by="props.trackBy"
     >
-      <span
-        v-if="placeholder && isEmpty(value)"
-        class="bn-listbox__placeholder"
+      <ListboxButton
+        ref="listboxButtonRef"
+        class="bn-listbox__button"
+        :class="{'bn-listbox__button--error': !meta.valid && meta.touched}"
+        @blur="setTouched(true)"
       >
-        {{ placeholder }}
-      </span>
-      <template v-if="multiple">
-        <div class="overflow-hidden">
-          <template
-            v-for="option in (value as string[] | Record<string, unknown>[])"
-            :key="isObjectValue(option) ?
-              option[props.trackBy] as string : option as string"
+        <span
+          v-if="placeholder && isEmpty(value)"
+          class="bn-listbox__placeholder"
+        >
+          {{ placeholder }}
+        </span>
+        <template v-if="multiple">
+          <div class="overflow-hidden">
+            <template
+              v-for="option in (value as string[] | Record<string, unknown>[])"
+              :key="isObjectValue(option) ?
+                option[props.trackBy] as string : option as string"
+            >
+              <slot
+                name="selected-multiple-template"
+                :value="option"
+              >
+                <span class="bn-listbox__tag">
+                  {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+                </span>
+              </slot>
+            </template>
+          </div>
+        </template>
+        <slot
+          v-else
+          name="selected-template"
+          :value="value"
+        >
+          <span class="truncate">
+            {{ isObjectValue(value as string | Record<string, unknown>) ?
+              (value as Record<string, unknown>)[props.optionLabel] : value
+            }}
+          </span>
+        </slot>
+        <svg
+          class="ml-auto h-6 w-6 shrink-0 text-gray-500"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z"
+          />
+        </svg>
+      </ListboxButton>
+      <Teleport to="body">
+        <ListboxOptions
+          ref="listboxOptionsRef"
+          class="bn-listbox-options"
+          :class="[`bn-listbox-options--${props.color}`]"
+          :style="`width: ${listboxButtonWidth}px`"
+        >
+          <ListboxOption
+            v-for="option in options"
+            v-slot="{ selected }"
+            :key="isObjectValue(option) ? option[props.trackBy] as string : option as string"
+            :value="option"
+            class="bn-listbox-options__option"
           >
             <slot
-              name="selected-multiple-template"
-              :value="option"
+              name="option-template"
+              :option="option"
+              :selected="selected"
             >
-              <span class="bn-listbox__tag">
-                {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+              <span class="truncate">
+                <template v-if="isObjectValue(option)">
+                  {{ option[props.trackBy] ? option[props.optionLabel] : placeholder }}
+                </template>
+                <template v-else>
+                  {{ option ? option : placeholder }}
+                </template>
               </span>
+              <svg
+                v-if="selected"
+                class="ml-auto h-[14px] w-[18px] shrink-0"
+                viewBox="0 0 18 14"
+                fill="none"
+              >
+                <path
+                  d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
+                  fill="currentColor"
+                />
+              </svg>
             </slot>
-          </template>
-        </div>
-      </template>
-      <slot
-        v-else
-        name="selected-template"
-        :value="value"
+          </ListboxOption>
+        </ListboxOptions>
+      </Teleport>
+    </Listbox>
+    <slot
+      name="bottom"
+      :error-message="errorMessage"
+      :valid="meta.valid"
+      :touched="meta.touched"
+    >
+      <p
+        v-if="!meta.valid && meta.touched"
+        :name="name"
+        class="bn-listbox__error-message"
       >
-        <span class="truncate">
-          {{ isObjectValue(value as string | Record<string, unknown>) ?
-            (value as Record<string, unknown>)[props.optionLabel] : value
-          }}
-        </span>
-      </slot>
-      <svg
-        class="ml-auto h-6 w-6 shrink-0 text-gray-500"
-        viewBox="0 0 24 24"
-      >
-        <path
-          fill="currentColor"
-          d="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z"
-        />
-      </svg>
-    </ListboxButton>
-    <Teleport to="body">
-      <ListboxOptions
-        ref="listboxOptionsRef"
-        class="bn-listbox-options"
-        :class="[`bn-listbox-options--${props.color}`]"
-        :style="`width: ${listboxButtonWidth}px`"
-      >
-        <ListboxOption
-          v-for="option in options"
-          v-slot="{ selected }"
-          :key="isObjectValue(option) ? option[props.trackBy] as string : option as string"
-          :value="option"
-          class="bn-listbox-options__option"
-        >
-          <slot
-            name="option-template"
-            :option="option"
-            :selected="selected"
-          >
-            <span class="truncate">
-              <template v-if="isObjectValue(option)">
-                {{ option[props.trackBy] ? option[props.optionLabel] : placeholder }}
-              </template>
-              <template v-else>
-                {{ option ? option : placeholder }}
-              </template>
-            </span>
-            <svg
-              v-if="selected"
-              class="ml-auto h-[14px] w-[18px] shrink-0"
-              viewBox="0 0 18 14"
-              fill="none"
-            >
-              <path
-                d="M6 11.17L1.83 7.00003L0.410004 8.41003L6 14L18 2.00003L16.59 0.590027L6 11.17Z"
-                fill="currentColor"
-              />
-            </svg>
-          </slot>
-        </ListboxOption>
-      </ListboxOptions>
-    </Teleport>
-  </Listbox>
+        {{ errorMessage }}
+      </p>
+    </slot>
+  </div>
 </template>

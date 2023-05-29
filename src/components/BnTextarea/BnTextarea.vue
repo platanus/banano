@@ -25,9 +25,11 @@ const {
   handleBlur,
   handleChange,
   meta,
+  errorMessage,
 } = useField(name, props.rules, {
   initialValue: props.modelValue,
   valueProp: props.modelValue,
+  validateOnMount: true,
 });
 
 function onInput(event: Event) {
@@ -40,15 +42,33 @@ const attrs = useAttrs();
 </script>
 
 <template>
-  <textarea
+  <div
     class="bn-textarea"
     :class="[
       `bn-textarea--${props.color} ${attrs.class ? attrs.class : ''}`,
       {'bn-textarea--error': !meta.valid && meta.touched},
     ]"
-    :value="(inputValue as string)"
-    :name="name"
-    @input="onInput"
-    @blur="handleBlur"
-  />
+  >
+    <textarea
+      class="bn-textarea__textarea"
+      :value="(inputValue as string)"
+      :name="name"
+      @input="onInput"
+      @blur="handleBlur"
+    />
+    <slot
+      name="bottom"
+      :error-message="errorMessage"
+      :valid="meta.valid"
+      :touched="meta.touched"
+    >
+      <p
+        v-if="!meta.valid && meta.touched"
+        :name="name"
+        class="bn-textarea__error-message"
+      >
+        {{ errorMessage }}
+      </p>
+    </slot>
+  </div>
 </template>

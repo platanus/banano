@@ -1,16 +1,19 @@
 module.exports = {
   '.bn-toggle': {
-    '@apply flex items-center': {},
+    '&__wrapper': {
+      '@apply flex items-center': {},
+    },
     '&--disabled': {
-      '@apply cursor-not-allowed opacity-75': {},
+      '.bn-toggle__wrapper': {
+        '@apply cursor-not-allowed opacity-75': {},
+      },
     },
     '&--error': {
-      '@apply text-banano-error': {},
       '.bn-toggle__input': {
         '@apply border-banano-error': {},
       },
     },
-    '&__wrapper': {
+    '&__toggle': {
       '@apply relative mr-2 h-6 w-12 cursor-pointer items-center justify-center': {},
     },
     '&__track': {
@@ -35,6 +38,9 @@ module.exports = {
           '@apply ring-2 ring-offset-4 ring-varColor-500': {},
         },
       },
+    },
+    '&__error-message': {
+      '@apply text-banano-error text-sm px-4': {},
     },
   },
 };

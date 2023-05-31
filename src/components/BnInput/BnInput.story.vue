@@ -7,10 +7,13 @@ const state = reactive({
   value: 'Hello world!',
   emptyValue: undefined,
   validate: undefined,
+  validateCustom: undefined,
 });
 
-// eslint-disable-next-line max-len, vue/max-len
+/* eslint-disable max-len, vue/max-len */
 const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
+const warningIcon = 'M11.9998 9.00006V12.7501M2.69653 16.1257C1.83114 17.6257 2.91371 19.5001 4.64544 19.5001H19.3541C21.0858 19.5001 22.1684 17.6257 21.303 16.1257L13.9487 3.37819C13.0828 1.87736 10.9167 1.87736 10.0509 3.37819L2.69653 16.1257ZM11.9998 15.7501H12.0073V15.7576H11.9998V15.7501Z';
+/* eslint-enable max-len, vue/max-len */
 
 function isRequired(val: string) {
   if (!val) {
@@ -61,7 +64,7 @@ function isRequired(val: string) {
           <template #icon-left>
             <svg
               viewBox="0 0 24 24"
-              class="w-4 h-4 text-gray-400"
+              class="h-4 w-4 text-gray-400"
             >
               <path
                 fill="currentColor"
@@ -72,7 +75,7 @@ function isRequired(val: string) {
           <template #icon-right>
             <svg
               viewBox="0 0 24 24"
-              class="w-4 h-4 text-gray-400"
+              class="h-4 w-4 text-gray-400"
             >
               <path
                 fill="currentColor"
@@ -119,7 +122,7 @@ function isRequired(val: string) {
           <template #icon-left>
             <svg
               viewBox="0 0 24 24"
-              class="w-4 h-4 text-gray-400"
+              class="h-4 w-4 text-gray-400"
             >
               <path
                 fill="currentColor"
@@ -140,6 +143,42 @@ function isRequired(val: string) {
           name="validation"
           :rules="(isRequired as GenericValidateFunction)"
         />
+      </template>
+    </Variant>
+    <Variant title="Validation with custom bottom error text">
+      <template #default>
+        <BnInput
+          v-model="state.validateCustom"
+          name="validation"
+          :rules="(isRequired as GenericValidateFunction)"
+        >
+          <template #bottom="{ errorMessage, valid, touched }">
+            <div
+              v-if="!valid && touched"
+              class="mt-1 flex items-center text-rose-700"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
+              >
+                <path
+                  :d="warningIcon"
+                />
+              </svg>
+              <span class="mr-1">
+                {{ errorMessage }}
+              </span>
+              <svg
+                viewBox="0 0 24 24"
+                class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
+              >
+                <path
+                  :d="warningIcon"
+                />
+              </svg>
+            </div>
+          </template>
+        </BnInput>
       </template>
     </Variant>
   </Story>

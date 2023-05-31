@@ -25,10 +25,11 @@ const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueType
 
 const name = toRef(props, 'name');
 
-const { handleChange, checked, meta, setTouched } = useField(props.name, props.rules, {
+const { handleChange, checked, meta, setTouched, errorMessage } = useField(props.name, props.rules, {
   type: 'checkbox',
   checkedValue: props.value,
   initialValue: props.modelValue,
+  validateOnMount: true,
 });
 
 function onChange(e: Event) {
@@ -54,7 +55,7 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
 </script>
 
 <template>
-  <label
+  <div
     class="bn-toggle"
     :class="[
       `bn-toggle--${props.color}`,
@@ -62,20 +63,36 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
       {'bn-toggle--disabled': props.disabled},
     ]"
   >
-    <div class="bn-toggle__wrapper">
-      <input
-        :checked="checked"
-        :value="value"
-        type="checkbox"
+    <label class="bn-toggle__wrapper">
+      <div class="bn-toggle__toggle">
+        <input
+          :checked="checked"
+          :value="value"
+          type="checkbox"
+          :name="name"
+          class="bn-toggle__input"
+          v-bind="attrsWithoutClass"
+          :disabled="props.disabled"
+          @change="onChange"
+        >
+        <div class="bn-toggle__track" />
+        <div class="bn-toggle__ball" />
+      </div>
+      <slot />
+    </label>
+    <slot
+      name="bottom"
+      :error-message="errorMessage"
+      :valid="meta.valid"
+      :touched="meta.touched"
+    >
+      <p
+        v-if="!meta.valid && meta.touched"
         :name="name"
-        class="bn-toggle__input "
-        v-bind="attrsWithoutClass"
-        :disabled="props.disabled"
-        @change="onChange"
+        class="bn-toggle__error-message"
       >
-      <div class="bn-toggle__track" />
-      <div class="bn-toggle__ball" />
-    </div>
-    <slot />
-  </label>
+        {{ errorMessage }}
+      </p>
+    </slot>
+  </div>
 </template>

@@ -10,6 +10,7 @@ interface Props {
   rules?: RuleExpression<unknown>
   multiple?: boolean
   disabled?: boolean
+  buttonText?: string
   placeholder?: string
   variant?: string
   avatarShape?: string
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   disabled: false,
   placeholder: 'No file selected',
+  buttonText: 'Browse',
   variant: 'default',
   avatarShape: 'default',
 });
@@ -161,7 +163,7 @@ function removeFile(file: File) {
             :disabled="props.disabled"
             @click="openFileDialog"
           >
-            Browse
+            {{ props.buttonText }}
           </BnBtn>
         </template>
         <template v-if="variant === 'avatar'">

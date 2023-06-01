@@ -32,6 +32,10 @@ export default defineConfig({
               ],
             },
             {
+              text: 'Localization',
+              link: '/localization',
+            },
+            {
               text: 'Histoire (Component Library)',
               link: 'https://platanus.github.io/banano/histoire/',
             },

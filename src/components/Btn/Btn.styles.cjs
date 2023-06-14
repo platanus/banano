@@ -82,11 +82,26 @@ module.exports = {
         '@apply focus:text-varColor-400': {},
       },
     },
+    '&__icon-left': {
+      '@apply mr-2': {},
+    },
+    '&__content-and-loading-wrapper': {
+      '@apply flex shrink-0 flex-row items-center': {},
+    },
     '&__loading': {
       '@apply animate-spin mr-3': {},
       '&--no-content': {
         '@apply mr-0': {},
       },
+    },
+    '&__loading-circle': {
+      '@apply opacity-25': {},
+    },
+    '&__loading-arc': {
+      '@apply opacity-75': {},
+    },
+    '&__icon-right': {
+      '@apply ml-2': {},
     },
   },
 };

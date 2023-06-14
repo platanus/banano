@@ -17,11 +17,20 @@ module.exports = {
         '@apply ui-open:ring-varColor-600/25 focus:ring-varColor-600/25': {},
       },
     },
+    '&__tags': {
+      '@apply overflow-hidden': {},
+    },
     '&__tag': {
       '@apply ml-1 inline-flex rounded py-1 px-2': {},
       colors: {
         '@apply bg-varColor-100': {},
       },
+    },
+    '&__selected-value': {
+      '@apply truncate': {},
+    },
+    '&__icon': {
+      '@apply ml-auto h-6 w-6 shrink-0 text-gray-500': {},
     },
     '&__error-message': {
       '@apply text-banano-error text-sm px-4': {},
@@ -38,6 +47,12 @@ module.exports = {
       colors: {
         '@apply hover:bg-varColor-600 ui-selected:bg-varColor-600': {},
       },
+    },
+    '&__option-text': {
+      '@apply truncate': {},
+    },
+    '&__selected-option-icon': {
+      '@apply ml-auto h-3.5 w-4 shrink-0': {},
     },
   },
 };

@@ -16,6 +16,9 @@ module.exports = {
       '@apply absolute top-0 right-0 ml-auto flex h-12 w-12': {},
       '@apply items-center justify-center text-gray-500 focus:outline-none': {},
     },
+    '&__close-button-icon': {
+      '@apply h-6 w-6': {},
+    },
     '&__header': {
       '@apply flex flex-row border-b px-6 py-2 text-lg text-gray-800 font-semibold': {},
     },

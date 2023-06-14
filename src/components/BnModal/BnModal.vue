@@ -45,7 +45,7 @@ const emit = defineEmits<{
           @click="emit('close', false)"
         >
           <svg
-            class="h-6 w-6"
+            class="bn-modal__close-button-icon"
             viewBox="0 0 24 24"
           >
             <path

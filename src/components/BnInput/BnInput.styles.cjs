@@ -26,6 +26,9 @@ module.exports = {
         '@apply border-banano-error focus:ring-banano-error/25 !important': {},
       },
     },
+    '&__input-and-icons-wrapper': {
+      '@apply relative w-full': {},
+    },
     '&__icon-left': {
       '@apply absolute top-0 left-0 bottom-0 flex items-center justify-center w-10': {},
     },

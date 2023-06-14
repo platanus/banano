@@ -85,17 +85,18 @@ describe('BnTextarea', () => {
     input.trigger('blur');
     await flushPromises();
     await waitForExpect(() => {
-      expect(input.classes().includes('bn-textarea--error')).toBe(true);
+      expect(wrapper.classes().includes('bn-textarea--error')).toBe(true);
     });
   });
 
   it('should validate using form rules', async () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { input: isRequired } } });
-    const input = wrapper.getComponent(BnTextarea).find('textarea');
+    const inputWrapper = wrapper.getComponent(BnTextarea);
+    const input = inputWrapper.find('textarea');
     input.trigger('blur');
     await flushPromises();
     await waitForExpect(() => {
-      expect(input.classes().includes('bn-textarea--error')).toBe(true);
+      expect(inputWrapper.classes().includes('bn-textarea--error')).toBe(true);
     });
   });
 });

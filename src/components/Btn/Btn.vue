@@ -46,11 +46,11 @@ const tag = computed(() => {
     <template v-if="!loading || loading && !loadingReplacesContent">
       <div
         v-if="$slots['icon-left']"
-        class="mr-2"
+        class="bn-btn__icon-left"
       >
         <slot name="icon-left" />
       </div>
-      <span class="flex-shrink-0 flex flex-row items-center">
+      <span class="bn-btn__content-and-loading-wrapper">
         <svg
           v-if="loading"
           class="bn-btn__loading"
@@ -59,7 +59,7 @@ const tag = computed(() => {
           viewBox="0 0 24 24"
         >
           <circle
-            class="opacity-25"
+            class="bn-btn__loading-circle"
             cx="12"
             cy="12"
             r="10"
@@ -67,7 +67,7 @@ const tag = computed(() => {
             stroke-width="4"
           />
           <path
-            class="opacity-75"
+            class="bn-btn__loading-arc"
             fill="currentColor"
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135
               5.824 3 7.938l3-2.647z"
@@ -77,7 +77,7 @@ const tag = computed(() => {
       </span>
       <div
         v-if="$slots['icon-right']"
-        class="ml-2"
+        class="bn-btn__icon-right"
       >
         <slot name="icon-right" />
       </div>
@@ -90,7 +90,7 @@ const tag = computed(() => {
         viewBox="0 0 24 24"
       >
         <circle
-          class="opacity-25"
+          class="bn-btn__loading-circle"
           cx="12"
           cy="12"
           r="10"
@@ -98,7 +98,7 @@ const tag = computed(() => {
           stroke-width="4"
         />
         <path
-          class="opacity-75"
+          class="bn-btn__loading-arc"
           fill="currentColor"
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135
               5.824 3 7.938l3-2.647z"

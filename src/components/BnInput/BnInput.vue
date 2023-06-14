@@ -59,7 +59,7 @@ export default {
       >
         <slot name="prefix" />
       </div>
-      <div class="relative w-full">
+      <div class="bn-input__input-and-icons-wrapper">
         <div
           v-if="$slots['icon-left']"
           class="bn-input__icon-left"

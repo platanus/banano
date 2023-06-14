@@ -119,37 +119,37 @@ watch(
         >
           {{ placeholder }}
         </span>
-        <template v-else-if="multiple && !isEmpty(value)">
-          <div class="overflow-hidden">
-            <template
-              v-for="option in (value as string[] | Record<string, unknown>[])"
-              :key="isObjectValue(option) ?
-                option[props.trackBy] as string : option as string"
+        <div
+          v-else-if="multiple && !isEmpty(value)"
+          class="bn-listbox__tags"
+        >
+          <template
+            v-for="option in (value as string[] | Record<string, unknown>[])"
+            :key="isObjectValue(option) ? (option[props.trackBy] as string) : (option as string)"
+          >
+            <slot
+              name="selected-multiple-template"
+              :value="option"
             >
-              <slot
-                name="selected-multiple-template"
-                :value="option"
-              >
-                <span class="bn-listbox__tag">
-                  {{ isObjectValue(option) ? option[props.optionLabel] : option }}
-                </span>
-              </slot>
-            </template>
-          </div>
-        </template>
+              <span class="bn-listbox__tag">
+                {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+              </span>
+            </slot>
+          </template>
+        </div>
         <slot
           v-else-if="!isEmpty(value)"
           name="selected-template"
           :value="value"
         >
-          <span class="truncate">
+          <span class="bn-listbox__selected-value">
             {{ isObjectValue(value as string | Record<string, unknown>) ?
               (value as Record<string, unknown>)[props.optionLabel] : value
             }}
           </span>
         </slot>
         <svg
-          class="ml-auto h-6 w-6 shrink-0 text-gray-500"
+          class="bn-listbox__icon"
           viewBox="0 0 24 24"
         >
           <path
@@ -168,7 +168,7 @@ watch(
           <ListboxOption
             v-for="option in options"
             v-slot="{ selected }"
-            :key="isObjectValue(option) ? option[props.trackBy] as string : option as string"
+            :key="isObjectValue(option) ? (option[props.trackBy] as string) : (option as string)"
             :value="option"
             class="bn-listbox-options__option"
           >
@@ -177,7 +177,7 @@ watch(
               :option="option"
               :selected="selected"
             >
-              <span class="truncate">
+              <span class="bn-listbox-options__option-text">
                 <template v-if="isObjectValue(option)">
                   {{ option[props.trackBy] ? option[props.optionLabel] : placeholder }}
                 </template>
@@ -187,7 +187,7 @@ watch(
               </span>
               <svg
                 v-if="selected"
-                class="ml-auto h-[14px] w-[18px] shrink-0"
+                class="bn-listbox-options__selected-option-icon"
                 viewBox="0 0 18 14"
                 fill="none"
               >

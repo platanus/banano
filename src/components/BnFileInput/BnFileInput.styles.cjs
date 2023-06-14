@@ -29,6 +29,18 @@ module.exports = {
     '&__label': {
       '@apply w-full overflow-hidden text-sm text-banano-text-foreground': {},
     },
+    '&__file-list': {
+      '@apply flex w-full items-center': {},
+    },
+    '&__file-names': {
+      '@apply truncate': {},
+    },
+    '&__clear-button': {
+      '@apply ml-auto shrink-0 text-gray-500': {},
+    },
+    '&__clear-button-icon': {
+      '@apply h-5 w-5': {},
+    },
     '&__placeholder': {
       '@apply text-banano-text-muted': {},
     },
@@ -42,6 +54,9 @@ module.exports = {
         '@apply rounded-full overflow-hidden': {},
       },
       '@apply disabled:bg-gray-100 disabled:opacity-75 disabled:cursor-not-allowed': {},
+    },
+    '&__avatar-preview': {
+      '@apply w-full h-full object-cover': {},
     },
     '&__error-message': {
       '@apply text-banano-error text-sm px-4': {},

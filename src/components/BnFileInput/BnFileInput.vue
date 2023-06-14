@@ -84,7 +84,7 @@ watch(
   },
 );
 
-const fileList = computed(() => {
+const fileNames = computed(() => {
   if (inputValue.value) {
     return inputValue.value.map((file) => file.name).join(', ');
   }
@@ -176,7 +176,7 @@ function removeFile(file: File) {
             <img
               v-if="inputValue && inputValue[0] && imagePreviewPath(inputValue[0])"
               :src="imagePreviewPath(inputValue[0])"
-              class="h-full w-full object-cover"
+              class="bn-file-input__avatar-preview"
             >
             <template v-else>
               +
@@ -188,18 +188,18 @@ function removeFile(file: File) {
           class="bn-file-input__label"
         >
           <div
-            v-if="fileList"
-            class="flex w-full items-center"
+            v-if="fileNames"
+            class="bn-file-input__file-list"
           >
-            <span class="truncate">
-              {{ fileList }}
+            <span class="bn-file-input__file-names">
+              {{ fileNames }}
             </span>
             <button
-              class="ml-auto shrink-0 text-gray-500"
+              class="bn-file-input__clear-button"
               @click="inputValue = []"
             >
               <svg
-                class="h-5 w-5"
+                class="bn-file-input__clear-button-icon"
                 viewBox="0 0 24 24"
               >
                 <path

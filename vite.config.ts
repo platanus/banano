@@ -22,7 +22,7 @@ export default defineConfig({
     },
     outDir: 'dist/vue',
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'vee-validate'],
       output: {
         sourcemapExcludeSources: true,
       },

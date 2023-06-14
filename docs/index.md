@@ -34,7 +34,7 @@ app.mount();
 module.exports = {
   content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   plugins: [
-    require('banano').tailwindPlugin(),
+    require('banano/tailwind'),
     require('@tailwindcss/forms'),
     require('@headlessui/tailwindcss'),
   ],

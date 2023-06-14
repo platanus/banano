@@ -113,32 +113,30 @@ const themeColors = {
 };
 const defaultOptions = { colors: themeColors, components: {} };
 
-module.exports = {
-  tailwindPlugin: plugin.withOptions(
-    (options) => ({ addComponents }) => {
-      const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const components = mergeWith({}, componentList, optionsWithDefaults.components);
-      const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
-      addComponents(parsedComponents);
-    },
-    (options) => {
-      options.colors = options.colors.reduce((prev, color) => {
-        prev[color] = tailwindColors[color];
+module.exports = plugin.withOptions(
+  (options) => ({ addComponents }) => {
+    const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
+    const components = mergeWith({}, componentList, optionsWithDefaults.components);
+    const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
+    addComponents(parsedComponents);
+  },
+  (options = {}) => {
+    options.colors = (options.colors || []).reduce((prev, color) => {
+      prev[color] = tailwindColors[color];
 
-        return prev;
-      }, {});
-      const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
-      const components = mergeWith({}, componentList, optionsWithDefaults.components);
-      const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
+      return prev;
+    }, {});
+    const optionsWithDefaults = mergeWith({}, options, defaultOptions, mergeArray);
+    const components = mergeWith({}, componentList, optionsWithDefaults.components);
+    const parsedComponents = parseComponents(components, optionsWithDefaults.colors);
 
-      return {
-        theme: {
-          extend: {
-            colors: themeColors,
-          },
+    return {
+      theme: {
+        extend: {
+          colors: themeColors,
         },
-        safelist: mergeClasses(parsedComponents),
-      };
-    },
-  ),
-};
+      },
+      safelist: mergeClasses(parsedComponents),
+    };
+  },
+);

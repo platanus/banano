@@ -86,7 +86,7 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 // tailwind.config.js
 {
 ...
-  require('banano').tailwindPlugin({ colors: ['lime']}),
+  require('banano/tailwind')({ colors: ['lime']}),
 }
 ```
 

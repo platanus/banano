@@ -119,7 +119,7 @@ watch(
         >
           {{ placeholder }}
         </span>
-        <template v-if="multiple">
+        <template v-else-if="multiple && !isEmpty(value)">
           <div class="overflow-hidden">
             <template
               v-for="option in (value as string[] | Record<string, unknown>[])"
@@ -138,7 +138,7 @@ watch(
           </div>
         </template>
         <slot
-          v-else
+          v-else-if="!isEmpty(value)"
           name="selected-template"
           :value="value"
         >

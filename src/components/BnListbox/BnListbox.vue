@@ -162,6 +162,23 @@ const formValue = computed({
     class="bn-listbox"
     :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
   >
+    <template v-if="!props.keepObjectValue">
+      <template v-if="props.multiple">
+        <input
+          v-for="(val, idx) in modelValue"
+          :key="idx"
+          :value="val"
+          type="hidden"
+          :name="`${name}[]`"
+        >
+      </template>
+      <input
+        v-else
+        :value="modelValue"
+        type="hidden"
+        :name="name"
+      >
+    </template>
     <Listbox
       v-model="formValue"
       :multiple="props.multiple"

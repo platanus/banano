@@ -80,6 +80,7 @@ function generateExampleForm(component = generateBaseInput(), input?: number) {
   });
 }
 
+// eslint-disable-next-line max-statements
 describe('BnListbox', () => {
   const options = { props: { name: 'test', options: selectOptions, placeholder: 'Select an option' } };
   it('should mount', () => {
@@ -178,6 +179,29 @@ describe('BnListbox', () => {
     await flushPromises();
     await waitForExpect(() => {
       expect(button.classes().includes('bn-listbox__button--error')).toBe(true);
+    });
+  });
+
+  describe('hidden inputs', () => {
+    it('should create one hidden input with selected value when prop.multiple is false', async () => {
+      const wrapper = mount(BnListbox, options);
+      expect(wrapper.find('input[type="hidden"][name="test"]').exists()).toBe(true);
+      expect(wrapper.find('input[type="hidden"][name="test"]').attributes('value')).toBe(undefined);
+      await wrapper.setProps({
+        modelValue: 'Option 1',
+      });
+
+      expect(wrapper.find('input[type="hidden"][name="test"]').attributes('value')).toBe('Option 1');
+    });
+
+    it('should create multiple hidden inputs with selected values when prop.multiple is true', async () => {
+      const wrapper = mount(BnListbox, { ...options, props: { ...options.props, multiple: true } });
+      expect(wrapper.find('input[type="hidden"][name="test[]"]').exists()).toBe(false);
+      await wrapper.setProps({
+        modelValue: ['Option 1', 'Option 2'],
+      });
+      expect(wrapper.findAll('input[type="hidden"][name="test[]"]')[0].attributes('value')).toBe('Option 1');
+      expect(wrapper.findAll('input[type="hidden"][name="test[]"]')[1].attributes('value')).toBe('Option 2');
     });
   });
 });

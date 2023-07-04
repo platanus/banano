@@ -120,7 +120,6 @@ describe('BnListbox', () => {
     wrapper.findComponent(ListboxOption).trigger('click');
     wrapper.find('form').trigger('submit');
 
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.vm.submittedValues).toStrictEqual({
         input: 'Option 1',
@@ -137,7 +136,6 @@ describe('BnListbox', () => {
     wrapper.findComponent(ListboxOption).trigger('click');
     wrapper.find('form').trigger('submit');
 
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.vm.submittedValues).toStrictEqual({
         input: 1,
@@ -154,7 +152,6 @@ describe('BnListbox', () => {
     wrapper.findComponent(ListboxOption).trigger('click');
     wrapper.find('form').trigger('submit');
 
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.vm.submittedValues).toStrictEqual({
         input: { name: 'Label 1', id: 1 },
@@ -166,7 +163,6 @@ describe('BnListbox', () => {
     const wrapper = mount(BnListbox, { props: { ...options.props, rules: isRequired } });
     const button = wrapper.get('button');
     button.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(button.classes().includes('bn-listbox__button--error')).toBe(true);
     });
@@ -176,7 +172,6 @@ describe('BnListbox', () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { input: isRequired } } });
     const button = wrapper.getComponent(BnListbox).get('button');
     button.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(button.classes().includes('bn-listbox__button--error')).toBe(true);
     });

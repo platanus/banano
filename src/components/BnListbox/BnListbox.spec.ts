@@ -30,13 +30,16 @@ const objectOptions = [
   { name: 'Label 5', id: 5 },
 ];
 
-const baseInput = `<BnListbox
-  v-model="input"
-  name="input"
-  :options="selectOptions"
-/>`;
+function generateBaseInput(options = 'selectOptions', props = '') {
+  return `<BnListbox
+    v-model="input"
+    name="input"
+    :options="${options}"
+    ${props}
+  />`;
+}
 
-function generateExampleForm(component = baseInput, input?: number) {
+function generateExampleForm(component = generateBaseInput(), input?: number) {
   type Data = {
     input?: number,
     selectOptions: string[],
@@ -98,11 +101,13 @@ describe('BnListbox', () => {
 
   it('should use optionLabel property if defined', async () => {
     const objectOptionsWithLabel = objectOptions.map((option) => ({ ...option, label: `Label: ${option.name}` }));
-    const wrapper = mount(BnListbox, { props: {
-      ...options.props,
-      options: objectOptionsWithLabel,
-      optionLabel: 'label',
-    } });
+    const wrapper = mount(BnListbox, {
+      props: {
+        ...options.props,
+        options: objectOptionsWithLabel,
+        optionLabel: 'label',
+      },
+    });
     await wrapper.find('button').trigger('click');
     expect(wrapper.findComponent(ListboxOption).text()).toContain('Label: Label 1');
   });
@@ -110,13 +115,48 @@ describe('BnListbox', () => {
   it('vee-validate submit should work', async () => {
     const wrapper = mount(generateExampleForm());
     const input = wrapper.getComponent(BnListbox);
-    input.setValue('Option 1');
+    await input.find('button').trigger('click');
+    wrapper.findComponent(ListboxOption).trigger('click');
     wrapper.find('form').trigger('submit');
 
     await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.vm.submittedValues).toStrictEqual({
         input: 'Option 1',
+      });
+    });
+  });
+
+  it('vee-validate submit should work with objects', async () => {
+    const wrapper = mount(generateExampleForm(
+      generateBaseInput('objectOptions', 'track-by="id" option-label="name"'),
+    ));
+    const input = wrapper.getComponent(BnListbox);
+    await input.find('button').trigger('click');
+    wrapper.findComponent(ListboxOption).trigger('click');
+    wrapper.find('form').trigger('submit');
+
+    await flushPromises();
+    await waitForExpect(() => {
+      expect(wrapper.vm.submittedValues).toStrictEqual({
+        input: 1,
+      });
+    });
+  });
+
+  it('vee-validate submit should work with keep-object-value', async () => {
+    const wrapper = mount(generateExampleForm(
+      generateBaseInput('objectOptions', 'track-by="id" option-label="name" :keep-object-value="true"'),
+    ));
+    const input = wrapper.getComponent(BnListbox);
+    await input.find('button').trigger('click');
+    wrapper.findComponent(ListboxOption).trigger('click');
+    wrapper.find('form').trigger('submit');
+
+    await flushPromises();
+    await waitForExpect(() => {
+      expect(wrapper.vm.submittedValues).toStrictEqual({
+        input: { name: 'Label 1', id: 1 },
       });
     });
   });

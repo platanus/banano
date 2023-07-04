@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, watch, ref, ComponentPublicInstance, watchEffect } from 'vue';
+import { toRef, ref, ComponentPublicInstance, watchEffect, computed } from 'vue';
 import { useElementBounding } from '@vueuse/core';
 import {
   Listbox,
@@ -11,18 +11,20 @@ import {
 import { computePosition, flip, offset } from '@floating-ui/dom';
 import isEmpty from 'lodash/isEmpty';
 
-type inputValue = string|string[]|Record<string, unknown>|Record<string, unknown>[];
+type InputValue = number | string | Record<string, unknown> | undefined;
 
 interface Props {
-  modelValue?: string | string[] | Record<string, unknown> | Record<string, unknown>[]
+  modelValue?: InputValue | InputValue[]
   options: string[] | Record<string, unknown>[]
   name: string
   color?: string
-  rules?: RuleExpression<unknown>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rules?: RuleExpression<any>
   disabled?: boolean
   multiple?: boolean
   trackBy?: string
   optionLabel?: string
+  keepObjectValue?: boolean
   placeholder?: string
 }
 
@@ -34,23 +36,83 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   trackBy: undefined,
   optionLabel: undefined,
+  keepObjectValue: false,
   placeholder: undefined,
 });
 
 const useObjectOptions = !!props.trackBy && !!props.optionLabel;
 
-function isObjectValue(value: string | Record<string, unknown>): value is Record<string, unknown> {
+function isObjectValue(value: InputValue): value is Record<string, unknown> {
   return useObjectOptions;
 }
 
-const emit = defineEmits<{(
-  e: 'update:modelValue',
-  value: string | string[] | Record<string, unknown> | Record<string, unknown>[]
-): void}>();
+function isObjectOptions(value: InputValue[]): value is Record<string, unknown>[] {
+  return useObjectOptions;
+}
+
+function isMultipleValue(value: InputValue | InputValue[]): value is InputValue[] {
+  return props.multiple;
+}
+
+const emit = defineEmits<{
+  (
+    e: 'update:modelValue',
+    value: InputValue | InputValue[],
+  ): void
+}>();
 
 const name = toRef(props, 'name');
 
-const { value, meta, setTouched, errorMessage } = useField<inputValue>(name, props.rules, {
+function parseValue(value: InputValue | InputValue[]) {
+  if (!value) {
+    return undefined;
+  }
+
+  if (isMultipleValue(value)) {
+    return value.map((val) => {
+      if (isObjectValue(val) && isObjectOptions(props.options) && !props.keepObjectValue) {
+        return props.options.find((option: Record<string, unknown>) => option[props.trackBy as string] === val);
+      }
+
+      return val;
+    });
+  }
+
+  if (isObjectValue(value) && isObjectOptions(props.options) && !props.keepObjectValue) {
+    return props.options.find((option: Record<string, unknown>) => option[props.trackBy as string] === value);
+  }
+
+  return value;
+}
+
+function unparseValue(value: InputValue | InputValue[]) {
+  if (!value) {
+    return undefined;
+  }
+
+  if (isMultipleValue(value)) {
+    return value.map((val) => {
+      if (isObjectValue(val) && !props.keepObjectValue) {
+        const foundOption = (props.options as Record<string, unknown>[])
+          .find((option) => option[props.trackBy as string] === val[props.trackBy as string]);
+
+        return foundOption ? foundOption[props.trackBy as string] as string : undefined;
+      }
+
+      return val;
+    }).filter((val) => val !== undefined);
+  }
+
+  if (isObjectValue(value) && !props.keepObjectValue) {
+    return value[props.trackBy as string] as string;
+  }
+
+  return value;
+}
+
+const parsedValue = computed(() => parseValue(props.modelValue));
+
+const { handleChange, value, meta, setTouched, errorMessage } = useField<InputValue | InputValue[]>(name, props.rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
 });
@@ -69,29 +131,30 @@ watchEffect(() => {
         strategy: 'fixed',
         placement: 'bottom-start',
         middleware: [flip(), offset(LISTBOX_OFFSET)],
-      }).then((val) => {
-      if (listboxOptionsRef.value && listboxOptionsRef.value.$el) {
-        listboxOptionsRef.value.$el.style.top = `${val.y}px`;
-        listboxOptionsRef.value.$el.style.left = `${val.x}px`;
-      }
-    });
+      })
+      .then((val) => {
+        if (listboxOptionsRef.value && listboxOptionsRef.value.$el) {
+          listboxOptionsRef.value.$el.style.top = `${val.y}px`;
+          listboxOptionsRef.value.$el.style.left = `${val.x}px`;
+        }
+      });
   }
 }, { flush: 'post' });
 
-watch(value, (newValue) => {
-  if (newValue !== props.modelValue) {
-    emit('update:modelValue', newValue);
-  }
-});
+function onUpdate(val: InputValue | InputValue[]) {
+  const unparsedValue = unparseValue(val);
+  handleChange(unparsedValue);
+  emit('update:modelValue', unparsedValue);
+}
 
-watch(
-  () => props.modelValue,
-  (newModel) => {
-    if (newModel !== value.value) {
-      value.value = newModel;
-    }
+const formValue = computed({
+  get() {
+    return parsedValue.value;
   },
-);
+  set(val: InputValue | InputValue[]) {
+    onUpdate(val);
+  },
+});
 </script>
 
 <template>
@@ -100,7 +163,7 @@ watch(
     :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
   >
     <Listbox
-      v-model="value"
+      v-model="formValue"
       :multiple="props.multiple"
       :disabled="props.disabled"
       as="div"
@@ -110,41 +173,41 @@ watch(
       <ListboxButton
         ref="listboxButtonRef"
         class="bn-listbox__button"
-        :class="{'bn-listbox__button--error': !meta.valid && meta.touched}"
+        :class="{ 'bn-listbox__button--error': !meta.valid && meta.touched }"
         @blur="setTouched(true)"
       >
         <span
-          v-if="placeholder && isEmpty(value)"
+          v-if="placeholder && isEmpty(parsedValue)"
           class="bn-listbox__placeholder"
         >
           {{ placeholder }}
         </span>
         <div
-          v-else-if="multiple && !isEmpty(value)"
+          v-else-if="isMultipleValue(parsedValue) && !isEmpty(parsedValue)"
           class="bn-listbox__tags"
         >
           <template
-            v-for="option in (value as string[] | Record<string, unknown>[])"
-            :key="isObjectValue(option) ? (option[props.trackBy] as string) : (option as string)"
+            v-for="option in parsedValue"
+            :key="isObjectValue(option) ? option[props.trackBy] : (option as string)"
           >
             <slot
               name="selected-multiple-template"
               :value="option"
             >
               <span class="bn-listbox__tag">
-                {{ isObjectValue(option) ? option[props.optionLabel] : option }}
+                {{ isObjectValue(option) ? option[props.optionLabel as string] : option }}
               </span>
             </slot>
           </template>
         </div>
         <slot
-          v-else-if="!isEmpty(value)"
+          v-else-if="!isEmpty(parsedValue)"
           name="selected-template"
-          :value="value"
+          :value="parsedValue"
         >
           <span class="bn-listbox__selected-value">
             {{ isObjectValue(value as string | Record<string, unknown>) ?
-              (value as Record<string, unknown>)[props.optionLabel] : value
+              (parsedValue as Record<string, unknown>)[props.optionLabel as string] : parsedValue
             }}
           </span>
         </slot>
@@ -166,9 +229,9 @@ watch(
           :style="`width: ${listboxButtonWidth}px`"
         >
           <ListboxOption
-            v-for="option in options"
+            v-for="option in props.options"
             v-slot="{ selected }"
-            :key="isObjectValue(option) ? (option[props.trackBy] as string) : (option as string)"
+            :key="isObjectValue(option) ? (option[props.trackBy as string] as string) : option"
             :value="option"
             class="bn-listbox-options__option"
           >
@@ -179,7 +242,7 @@ watch(
             >
               <span class="bn-listbox-options__option-text">
                 <template v-if="isObjectValue(option)">
-                  {{ option[props.trackBy] ? option[props.optionLabel] : placeholder }}
+                  {{ option[props.trackBy as string] ? option[props.optionLabel as string] : placeholder }}
                 </template>
                 <template v-else>
                   {{ option ? option : placeholder }}

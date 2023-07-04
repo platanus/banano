@@ -6,8 +6,11 @@ import BnListbox from './BnListbox.vue';
 const state = reactive({
   single: 'Super Long Text lorem ipsum dolor sit amet, consectetur adipiscing elit',
   multiple: ['Option 2', 'Option 3', 'Option 4'],
-  object: { name: 'Label 1', id: 1 },
-  objectMultiple: [{ name: 'Label 1', id: 1 }, { name: 'Label 2', id: 2 }],
+  object: 1,
+  // eslint-disable-next-line no-magic-numbers
+  objectMultiple: [1, 2],
+  objectWithObjectValue: { name: 'Label 1', id: 1 },
+  objectMultipleWithObjectValue: [{ name: 'Label 1', id: 1 }, { name: 'Label 2', id: 2 }],
   empty: undefined,
   validate: undefined,
   validateCustom: undefined,
@@ -135,6 +138,31 @@ function isRequired(val: string) {
         />
       </template>
     </Variant>
+    <Variant title="object with object value">
+      <template #default>
+        <BnListbox
+          v-model="state.objectWithObjectValue"
+          track-by="id"
+          option-label="name"
+          name="objectWithObjectValue"
+          :options="objectOptions"
+          keep-object-value
+        />
+      </template>
+    </Variant>
+    <Variant title="object multiple with object value">
+      <template #default>
+        <BnListbox
+          v-model="state.objectMultipleWithObjectValue"
+          track-by="id"
+          option-label="name"
+          name="objectMultipleWithObjectValue"
+          multiple
+          :options="objectOptions"
+          keep-object-value
+        />
+      </template>
+    </Variant>
     <Variant title="option template">
       <template #default>
         <BnListbox
@@ -142,7 +170,7 @@ function isRequired(val: string) {
           name="optionTemplate"
           :options="selectOptions"
         >
-          <template #option-template="{option, selected}">
+          <template #option-template="{ option, selected }">
             <div class="flex overflow-hidden">
               <span class="mr-2">{{ selected ? '✔' : '❌' }}</span>
               <span class="truncate">{{ option }}</span>
@@ -158,7 +186,7 @@ function isRequired(val: string) {
           name="optionTemplate"
           :options="selectOptions"
         >
-          <template #selected-template="{value}">
+          <template #selected-template="{ value }">
             <div class="flex overflow-hidden">
               <span>✔</span>
               <span class="mx-2 truncate">{{ value }}</span>
@@ -176,7 +204,7 @@ function isRequired(val: string) {
           :options="selectOptions"
           multiple
         >
-          <template #selected-multiple-template="{value}">
+          <template #selected-multiple-template="{ value }">
             <div class="mr-1 inline-flex rounded border border-purple-800 bg-purple-300 px-1 text-purple-800">
               <span class="mr-1">📑</span>
               {{ value }}
@@ -214,9 +242,7 @@ function isRequired(val: string) {
                 viewBox="0 0 24 24"
                 class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
               >
-                <path
-                  :d="warningIcon"
-                />
+                <path :d="warningIcon" />
               </svg>
               <span class="mr-1">
                 {{ errorMessage }}
@@ -225,9 +251,7 @@ function isRequired(val: string) {
                 viewBox="0 0 24 24"
                 class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
               >
-                <path
-                  :d="warningIcon"
-                />
+                <path :d="warningIcon" />
               </svg>
             </div>
           </template>
@@ -238,7 +262,7 @@ function isRequired(val: string) {
 </template>
 
 <style>
-  .__histoire-sandbox {
-    padding: 10px;
-  }
-  </style>
+.__histoire-sandbox {
+  padding: 10px;
+}
+</style>

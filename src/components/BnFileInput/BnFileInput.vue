@@ -3,11 +3,13 @@ import { RuleExpression, useField } from 'vee-validate';
 import { computed, ref, toRef, watch } from 'vue';
 import BnBtn from '../Btn/Btn.vue';
 
+export type FileType = File[] | File | undefined;
+
 interface Props {
-  modelValue?: File[]
+  modelValue?: FileType
   name: string
   color?: string
-  rules?: RuleExpression<unknown>
+  rules?: RuleExpression<FileType>
   multiple?: boolean
   disabled?: boolean
   buttonText?: string
@@ -17,8 +19,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: () => [],
   color: 'banano-base',
+  modelValue: undefined,
   rules: undefined,
   multiple: false,
   disabled: false,
@@ -28,22 +30,26 @@ const props = withDefaults(defineProps<Props>(), {
   avatarShape: 'default',
 });
 
+const emit = defineEmits<{(e: 'update:modelValue', value: FileType): void}>();
+
 const fileInputRef = ref<HTMLInputElement>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: File[]): void}>();
-
 const name = toRef(props, 'name');
+const rules = toRef(props, 'rules');
 
 const addingFile = ref(false);
+
+function isFileList(object: FileType): object is File[] {
+  return props.multiple;
+}
 
 const {
   value: inputValue,
   handleBlur,
-  handleChange,
   setTouched,
   meta,
   errorMessage,
-} = useField<File[]>(props.name, props.rules, {
+} = useField<FileType >(name, rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
 });
@@ -51,9 +57,13 @@ const {
 function updateInputFiles() {
   const dataTransfer = new DataTransfer();
 
-  inputValue.value.forEach((file) => {
-    dataTransfer.items.add(file);
-  });
+  if (inputValue.value) {
+    const files = isFileList(inputValue.value) ? inputValue.value : [inputValue.value];
+    files.forEach((file) => {
+      dataTransfer.items.add(file);
+    });
+  }
+
   if (fileInputRef.value) {
     fileInputRef.value.files = dataTransfer.files;
   }
@@ -61,16 +71,17 @@ function updateInputFiles() {
 
 function setFile(e: Event) {
   const files = Array.from((e.target as HTMLInputElement).files || []);
-  if (addingFile.value) {
+
+  if (isFileList(inputValue.value) && addingFile.value) {
     inputValue.value = [...inputValue.value, ...files];
     addingFile.value = false;
-  } else {
+  } else if (isFileList(inputValue.value)) {
     inputValue.value = files;
+  } else {
+    inputValue.value = files[0];
   }
-  updateInputFiles();
-  handleChange(files);
-  setTouched(true);
   emit('update:modelValue', inputValue.value);
+  updateInputFiles();
 }
 
 watch(
@@ -85,11 +96,12 @@ watch(
 );
 
 const fileNames = computed(() => {
-  if (inputValue.value) {
-    return inputValue.value.map((file) => file.name).join(', ');
+  if (!inputValue.value) {
+    return '';
   }
+  const files = isFileList(inputValue.value) ? inputValue.value : [inputValue.value];
 
-  return '';
+  return files.map((file) => file.name).join(', ');
 });
 
 function imagePreviewPath(file: File) {
@@ -103,6 +115,7 @@ function imagePreviewPath(file: File) {
 function openFileDialog() {
   if (fileInputRef.value) {
     fileInputRef.value.click();
+    setTouched(true);
   }
 }
 
@@ -112,10 +125,15 @@ function addFile() {
 }
 
 function removeFile(file: File) {
-  const index = inputValue.value.indexOf(file);
-  if (index > -1) {
-    inputValue.value.splice(index, 1);
+  if (isFileList(inputValue.value)) {
+    const index = inputValue.value.indexOf(file);
+    if (index > -1) {
+      inputValue.value.splice(index, 1);
+    }
+  } else {
+    inputValue.value = undefined;
   }
+
   updateInputFiles();
 }
 </script>
@@ -153,7 +171,7 @@ function removeFile(file: File) {
         :image-preview-path="imagePreviewPath"
         :remove-file="removeFile"
         :add-file="addFile"
-        :files="inputValue"
+        :value="inputValue"
       >
         <template v-if="variant === 'default'">
           <BnBtn
@@ -174,8 +192,8 @@ function removeFile(file: File) {
             @click="openFileDialog"
           >
             <img
-              v-if="inputValue && inputValue[0] && imagePreviewPath(inputValue[0])"
-              :src="imagePreviewPath(inputValue[0])"
+              v-if="inputValue && !isFileList(inputValue) && inputValue && imagePreviewPath(inputValue)"
+              :src="imagePreviewPath(inputValue)"
               class="bn-file-input__avatar-preview"
             >
             <template v-else>
@@ -196,7 +214,7 @@ function removeFile(file: File) {
             </span>
             <button
               class="bn-file-input__clear-button"
-              @click="inputValue = []"
+              @click="inputValue = undefined"
             >
               <svg
                 class="bn-file-input__clear-button-icon"
@@ -234,3 +252,4 @@ function removeFile(file: File) {
     </slot>
   </div>
 </template>
+

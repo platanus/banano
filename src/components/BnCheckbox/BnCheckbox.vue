@@ -2,14 +2,14 @@
 import { RuleExpression, useField } from 'vee-validate';
 import { toRef, useAttrs, computed } from 'vue';
 
-type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
+export type ValueType = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
-  modelValue?: valueTypes | valueTypes[],
-  value: valueTypes,
+  modelValue?: ValueType | ValueType[],
+  value?: ValueType,
   name: string,
   color?: string,
-  rules?: RuleExpression<unknown>,
+  rules?: RuleExpression<ValueType | ValueType[]>,
   disabled?: boolean,
 }
 
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueTypes[]): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: ValueType | ValueType[]): void }>();
 
 const name = toRef(props, 'name');
 

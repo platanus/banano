@@ -3,9 +3,9 @@ import waitForExpect from 'wait-for-expect';
 import { defineComponent } from 'vue';
 import { Form } from 'vee-validate';
 import { mount } from '@vue/test-utils';
-import BnCheckbox from './BnCheckbox.vue';
+import BnCheckbox, { type ValueType } from './BnCheckbox.vue';
 
-function isRequired(val: string) {
+function isRequired(val: ValueType | ValueType[]) {
   if (!val) {
     return 'This field is required';
   }

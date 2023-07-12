@@ -11,14 +11,16 @@ interface Props {
   color?: string,
   rules?: RuleExpression<ValueType | ValueType[]>,
   disabled?: boolean,
+  uncheckedValue?: ValueType,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  value: undefined,
+  value: true,
   color: 'banano-base',
   rules: undefined,
   disabled: false,
+  uncheckedValue: undefined,
 });
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: ValueType | ValueType[]): void }>();
@@ -29,6 +31,7 @@ const { handleChange, checked, meta, setTouched } = useField(props.name, props.r
   type: 'checkbox',
   checkedValue: props.value,
   initialValue: props.modelValue,
+  uncheckedValue: props.uncheckedValue,
 });
 const hasError = computed(() => !meta.valid && meta.touched);
 

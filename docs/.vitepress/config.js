@@ -52,6 +52,10 @@ export default defineConfig({
               text: 'BnFileInput',
               link: '/components/bn-file-input',
             },
+            {
+              text: 'BnCheckbox',
+              link: '/components/bn-checkbox',
+            },
           ],
         },
       ],

@@ -1197,7 +1197,7 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.3.4.tgz#06e83c5027f464eef861c329be81454bc8b70780"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
 
-"@vue/test-utils@2.4.0":
+"@vue/test-utils@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.4.0.tgz#7bc7fb2d0af1ad88e4e9ebd04b09545ce0eaceec"
   integrity sha512-BKB9aj1yky63/I3IwSr1FjUeHYsKXI7D6S9F378AHt7a5vC0dLkOBtSsFXoRGC/7BfHmiB9HRhT+i9xrUHoAKw==

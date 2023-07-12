@@ -73,6 +73,7 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
         {'bn-checkbox__input--error': hasError}
       ]"
       v-bind="attrsWithoutClass"
+      :disabled="props.disabled"
       @change="onChange"
     >
     <slot />

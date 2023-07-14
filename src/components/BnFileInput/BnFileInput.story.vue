@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { GenericValidateFunction } from 'vee-validate';
 import { reactive } from 'vue';
 import BnFileInput from './BnFileInput.vue';
 
@@ -231,7 +230,7 @@ function isRequired(val: File[] | File | undefined) {
         <BnFileInput
           v-model="state.single"
           name="required"
-          :rules="(isRequired as GenericValidateFunction)"
+          :rules="isRequired"
         />
       </template>
     </Variant>
@@ -240,7 +239,7 @@ function isRequired(val: File[] | File | undefined) {
         <BnFileInput
           v-model="state.validateCustom"
           name="required"
-          :rules="(isRequired as GenericValidateFunction)"
+          :rules="isRequired"
         >
           <template #bottom="{ errorMessage, valid, touched }">
             <div

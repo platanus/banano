@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GenericValidateFunction } from 'vee-validate';
-import { reactive, Ref } from 'vue';
+import { reactive } from 'vue';
 import BnFileInput from './BnFileInput.vue';
 
 const icons = [
@@ -34,20 +34,26 @@ const state = reactive({
   single: undefined,
   multiple: undefined,
   avatar: undefined,
-  custom: [
+  customMultiple: [
     createSVGFile('icon1.svg', icons[0]),
     createSVGFile('icon2.svg', icons[1]),
   ],
   validateCustom: undefined,
+  customSingle: createSVGFile('icon1.svg', icons[0]),
 });
 
-function isRequired(val: File[]) {
-  if (val.length === 0) {
+function isFileList(object: File[] | File): object is File[] {
+  return !(object instanceof File);
+}
+
+function isRequired(val: File[] | File | undefined) {
+  if (val === undefined || val.length === 0) {
     return 'This field is required';
   }
 
   return true;
 }
+
 </script>
 
 <template>
@@ -121,17 +127,17 @@ function isRequired(val: File[]) {
         />
       </template>
     </Variant>
-    <Variant title="custom template">
+    <Variant title="custom template multiple file">
       <template #default>
         <BnFileInput
-          v-model="state.custom"
-          name="custom-template"
+          v-model="state.customMultiple"
+          name="custom-template-multiple"
           multiple
         >
-          <template #default="{ imagePreviewPath, openFileDialog, files, addFile, removeFile }">
+          <template #default="{ imagePreviewPath, openFileDialog, value, addFile, removeFile }">
             <div class="w-full">
               <button
-                v-if="files.length > 0"
+                v-if="value && value.length > 0"
                 class="mb-2 rounded border border-gray-300 py-1 px-2 text-sm shadow"
                 @click="addFile()"
               >
@@ -144,9 +150,61 @@ function isRequired(val: File[]) {
               >
                 Browse
               </button>
-              <ul class="w-full">
+              <ul
+                v-if="value && isFileList(value)"
+                class="w-full"
+              >
                 <li
-                  v-for="file in files"
+                  v-for="file in value"
+                  :key="file.name"
+                  class="flex w-full items-center border border-t-0 p-1 text-sm first:border-t"
+                >
+                  <img
+                    :src="imagePreviewPath(file)"
+                    class="mr-2 h-6 w-6 rounded-full"
+                  >
+                  <span class="truncate">{{ file.name }}</span> ({{ file.size / 1000 }} KB)
+                  <button
+                    class="ml-auto"
+                    @click="removeFile(file)"
+                  >
+                    🗑
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </BnFileInput>
+      </template>
+    </Variant>
+    <Variant title="custom template single file">
+      <template #default>
+        <BnFileInput
+          v-model="state.customSingle"
+          name="custom-template-single"
+        >
+          <template #default="{ imagePreviewPath, openFileDialog, value, addFile, removeFile }">
+            <div class="w-full">
+              <button
+                v-if="value"
+                class="mb-2 rounded border border-gray-300 py-1 px-2 text-sm shadow"
+                @click="addFile()"
+              >
+                Add File
+              </button>
+              <button
+                v-else
+                class="mb-2 rounded border border-gray-300 py-1 px-2 text-sm shadow"
+                @click="openFileDialog()"
+              >
+                Browse
+              </button>
+              <ul
+                v-if="value && !isFileList(value)"
+                class="w-full"
+              >
+                <li
+                  v-for="file in [value]"
                   :key="file.name"
                   class="flex w-full items-center border border-t-0 p-1 text-sm first:border-t"
                 >

@@ -14,7 +14,7 @@ interface Props {
   disabled?: boolean
   buttonText?: string
   placeholder?: string
-  variant?: string
+  variant?: 'default' | 'avatar'
   avatarShape?: string
 }
 

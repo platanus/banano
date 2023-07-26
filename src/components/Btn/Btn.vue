@@ -39,6 +39,7 @@ const tag = computed(() => {
     :class="[
       `bn-btn--sizes-${props.size}`,
       `bn-btn--shapes-${props.shape}`,
+      `bn-btn--shapes-${props.shape}-${props.size}`,
       `bn-btn--variants-${props.variant}`,
       `bn-btn--${props.color}`,
     ]"
@@ -54,6 +55,7 @@ const tag = computed(() => {
         <svg
           v-if="loading"
           class="bn-btn__loading"
+          :class="`bn-btn__loading--sizes-${props.size}`"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -85,6 +87,7 @@ const tag = computed(() => {
     <template v-else>
       <svg
         class="bn-btn__loading bn-btn__loading--no-content"
+        :class="`bn-btn__loading--sizes-${props.size}`"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

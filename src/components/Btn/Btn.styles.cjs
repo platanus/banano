@@ -5,41 +5,29 @@ module.exports = {
     '&--sizes-xs': {
       '@apply text-xs': {},
       '@apply px-3 py-1.5': {},
-      '.bn-btn__loading': {
-        '@apply w-4 h-4': {},
-      },
     },
     '&--sizes-sm': {
       '@apply text-sm': {},
       '@apply px-3 py-1.5': {},
-      '.bn-btn__loading': {
-        '@apply w-4 h-4': {},
-      },
     },
     '&--sizes-md': {
       '@apply text-base': {},
       '@apply px-4 py-2': {},
-      '.bn-btn__loading': {
-        '@apply w-5 h-5': {},
-      },
     },
     '&--sizes-lg': {
       '@apply text-lg': {},
       '@apply px-6 py-3': {},
-      '.bn-btn__loading': {
-        '@apply w-6 h-6': {},
-      },
     },
     '&--shapes-circle': {
       '@apply rounded-full': {},
       '@apply !p-0 leading-tight': {},
-      '&.bn-btn--sizes-sm': {
+      '&-sm': {
         '@apply w-6 h-6': {},
       },
-      '&.bn-btn--sizes-md': {
+      '&-md': {
         '@apply w-8 h-8': {},
       },
-      '&.bn-btn--sizes-lg': {
+      '&-lg': {
         '@apply w-10 h-10': {},
       },
     },
@@ -64,7 +52,7 @@ module.exports = {
       '@apply border border-solid': {},
       '@apply focus:outline-none focus:ring-2': {},
       colors: {
-        '@apply text-varColor-600 bg-transparent': {},
+        '@apply text-varColor-600': {},
         '@apply border-varColor-600': {},
         '@apply hover:bg-varColor-100': {},
 
@@ -76,7 +64,7 @@ module.exports = {
       '@apply border border-transparent': {},
       '@apply focus:outline-none': {},
       colors: {
-        '@apply text-varColor-600 bg-transparent': {},
+        '@apply text-varColor-600': {},
         '@apply hover:text-varColor-400': {},
 
         '@apply focus:text-varColor-400': {},
@@ -92,6 +80,18 @@ module.exports = {
       '@apply animate-spin mr-3': {},
       '&--no-content': {
         '@apply mr-0': {},
+      },
+      '&--sizes-xs': {
+        '@apply w-4 h-4': {},
+      },
+      '&--sizes-sm': {
+        '@apply w-4 h-4': {},
+      },
+      '&--sizes-md': {
+        '@apply w-5 h-5': {},
+      },
+      '&--sizes-lg': {
+        '@apply w-6 h-6': {},
       },
     },
     '&__loading-circle': {

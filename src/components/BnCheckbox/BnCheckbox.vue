@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, useAttrs, computed } from 'vue';
+import { toRefs, useAttrs, computed } from 'vue';
 
 export type ValueType = undefined | boolean | string | number | Record<string, unknown>;
 
@@ -25,13 +25,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: ValueType | ValueType[]): void }>();
 
-const name = toRef(props, 'name');
+const { name, uncheckedValue, rules, value } = toRefs(props);
 
-const { handleChange, checked, meta, setTouched } = useField(props.name, props.rules, {
+const { handleChange, checked, meta, setTouched } = useField(name, rules, {
   type: 'checkbox',
-  checkedValue: props.value,
+  checkedValue: value,
   initialValue: props.modelValue,
-  uncheckedValue: props.uncheckedValue,
+  uncheckedValue,
 });
 const hasError = computed(() => !meta.valid && meta.touched);
 

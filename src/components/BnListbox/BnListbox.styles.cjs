@@ -1,16 +1,14 @@
 module.exports = {
   '.bn-listbox': {
-    '&--disabled': {
-      '.bn-listbox__listbox': {
-        '@apply cursor-not-allowed bg-gray-100 opacity-75': {},
-      },
-    },
     '&__button': {
       '@apply flex h-12 w-full items-center truncate rounded-lg border border-gray-200 p-3 bg-banano-bg': {},
       '@apply text-banano-text-foreground': {},
       '@apply ui-open:outline-none focus:outline-none focus:ring ui-open:ring': {},
       '&--error': {
         '@apply border border-banano-error ring-banano-error/25 !important': {},
+      },
+      '&--disabled': {
+        '@apply cursor-not-allowed bg-gray-100 opacity-75': {},
       },
       colors: {
         '@apply ui-open:border-varColor-600 focus:border-varColor-600': {},

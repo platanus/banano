@@ -160,7 +160,7 @@ const formValue = computed({
 <template>
   <div
     class="bn-listbox"
-    :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
+    :class="`bn-listbox--${props.color}`"
   >
     <template v-if="!props.keepObjectValue">
       <template v-if="props.multiple">
@@ -190,7 +190,10 @@ const formValue = computed({
       <ListboxButton
         ref="listboxButtonRef"
         class="bn-listbox__button"
-        :class="{ 'bn-listbox__button--error': !meta.valid && meta.touched }"
+        :class="{
+          'bn-listbox__button--error': !meta.valid && meta.touched,
+          'bn-listbox__button--disabled': props.disabled
+        }"
         @blur="setTouched(true)"
       >
         <span

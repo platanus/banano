@@ -1,22 +1,16 @@
 module.exports = {
   '.bn-file-input': {
-    '&--variants-default': {
-      '.bn-file-input__wrapper': {
+    '&__wrapper': {
+      '&--variants-default': {
         '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2 bg-banano-bg': {},
       },
-    },
-    '&--disabled': {
-      '.bn-file-input__wrapper': {
+      '&--disabled': {
         '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
       },
-    },
-    '&--custom': {
-      '.bn-file-input__wrapper': {
+      '&--custom': {
         '@apply p-0 border-0 h-auto bg-banano-bg text-banano-text-foreground': {},
       },
-    },
-    '&--error': {
-      '.bn-file-input__wrapper': {
+      '&--error': {
         '@apply border border-banano-error !important': {},
       },
     },

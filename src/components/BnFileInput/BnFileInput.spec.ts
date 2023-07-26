@@ -22,12 +22,12 @@ function generateFile(name: string) {
   });
 }
 
-const baseFileInput = `<BnFileInput 
+const baseFileInput = `<BnFileInput
   v-model="image"
   name="image"
 />`;
 
-const arrayFileInput = `<BnFileInput 
+const arrayFileInput = `<BnFileInput
   v-model="imagesArray"
   name="image"
   multiple
@@ -180,9 +180,10 @@ describe('BnFileInput', () => {
     const wrapper = mount(BnFileInput, { props: { name: 'image', rules: isRequired } });
     expect(wrapper.classes().includes('bn-file-input--error')).toBe(false);
     const input = wrapper.find('button');
+    expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
     input.trigger('click');
     await waitForExpect(() => {
-      expect(wrapper.classes().includes('bn-file-input--error')).toBe(true);
+      expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 
@@ -190,10 +191,10 @@ describe('BnFileInput', () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { image: isRequired } } });
     const input = wrapper.find('button');
     const inputWrapper = wrapper.find('div');
-    expect(inputWrapper.classes().includes('bn-file-input--error')).toBe(false);
+    expect(inputWrapper.find('[class$="--error"]').exists()).toBe(false);
     input.trigger('click');
     await waitForExpect(() => {
-      expect(inputWrapper.classes().includes('bn-file-input--error')).toBe(true);
+      expect(inputWrapper.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 

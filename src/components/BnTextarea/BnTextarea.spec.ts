@@ -80,12 +80,12 @@ describe('BnTextarea', () => {
 
   it('should validate using prop rules', async () => {
     const wrapper = mount(BnTextarea, { props: { name: 'input', value: false, rules: isRequired } });
-    expect(wrapper.classes().includes('bn-textarea--error')).toBe(false);
+    expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
     const input = wrapper.find('textarea');
     input.trigger('blur');
     await flushPromises();
     await waitForExpect(() => {
-      expect(wrapper.classes().includes('bn-textarea--error')).toBe(true);
+      expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 
@@ -93,10 +93,11 @@ describe('BnTextarea', () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { input: isRequired } } });
     const inputWrapper = wrapper.getComponent(BnTextarea);
     const input = inputWrapper.find('textarea');
+    expect(inputWrapper.find('[class$="--error"]').exists()).toBe(false);
     input.trigger('blur');
     await flushPromises();
     await waitForExpect(() => {
-      expect(inputWrapper.classes().includes('bn-textarea--error')).toBe(true);
+      expect(inputWrapper.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 });

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { GenericValidateFunction } from 'vee-validate';
 import { reactive } from 'vue';
 import BnFileInput from './BnFileInput.vue';
 
@@ -204,18 +203,16 @@ function isRequired(val: File[] | File | undefined) {
                 class="w-full"
               >
                 <li
-                  v-for="file in [value]"
-                  :key="file.name"
                   class="flex w-full items-center border border-t-0 p-1 text-sm first:border-t"
                 >
                   <img
-                    :src="imagePreviewPath(file)"
+                    :src="imagePreviewPath(value)"
                     class="mr-2 h-6 w-6 rounded-full"
                   >
-                  <span class="truncate">{{ file.name }}</span> ({{ file.size / 1000 }} KB)
+                  <span class="truncate">{{ value.name }}</span> ({{ value.size / 1000 }} KB)
                   <button
                     class="ml-auto"
-                    @click="removeFile(file)"
+                    @click="removeFile(value)"
                   >
                     🗑
                   </button>
@@ -231,7 +228,7 @@ function isRequired(val: File[] | File | undefined) {
         <BnFileInput
           v-model="state.single"
           name="required"
-          :rules="(isRequired as GenericValidateFunction)"
+          :rules="isRequired"
         />
       </template>
     </Variant>
@@ -240,7 +237,7 @@ function isRequired(val: File[] | File | undefined) {
         <BnFileInput
           v-model="state.validateCustom"
           name="required"
-          :rules="(isRequired as GenericValidateFunction)"
+          :rules="isRequired"
         >
           <template #bottom="{ errorMessage, valid, touched }">
             <div

@@ -14,7 +14,7 @@ interface Props {
   disabled?: boolean
   buttonText?: string
   placeholder?: string
-  variant?: string
+  variant?: 'default' | 'avatar'
   avatarShape?: string
 }
 
@@ -52,6 +52,14 @@ const {
 } = useField<FileType >(name, rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
+});
+
+const inputValueList = computed(() => {
+  if (isFileList(inputValue.value)) {
+    return inputValue.value;
+  }
+
+  return inputValue.value ? [inputValue.value] : undefined;
 });
 
 function updateInputFiles() {
@@ -162,6 +170,7 @@ function removeFile(file: File) {
         class="bn-file-input__input"
         :multiple="props.multiple"
         :disabled="props.disabled"
+        :model-value="inputValueList"
         @change="setFile"
         @blur="handleBlur"
       >
@@ -176,6 +185,7 @@ function removeFile(file: File) {
         <template v-if="variant === 'default'">
           <BnBtn
             size="xs"
+            type="button"
             class="bn-file-input__button"
             variant="outline"
             :disabled="props.disabled"
@@ -186,6 +196,7 @@ function removeFile(file: File) {
         </template>
         <template v-if="variant === 'avatar'">
           <button
+            type="button"
             class="bn-file-input__avatar"
             :class="`bn-file-input__avatar--${props.avatarShape}`"
             :disabled="props.disabled"
@@ -213,6 +224,7 @@ function removeFile(file: File) {
               {{ fileNames }}
             </span>
             <button
+              type="button"
               class="bn-file-input__clear-button"
               @click="inputValue = undefined"
             >

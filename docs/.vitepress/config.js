@@ -48,6 +48,10 @@ export default defineConfig({
               text: 'BnInput',
               link: '/components/bn-input',
             },
+            {
+              text: 'BnFileInput',
+              link: '/components/bn-file-input',
+            },
           ],
         },
       ],

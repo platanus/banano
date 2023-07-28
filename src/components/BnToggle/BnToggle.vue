@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { useAttrs, ref, toRefs } from 'vue';
+import { toRefs, ref } from 'vue';
 import { type ComponentClassType } from '../../types/class';
+import useAttrsWithoutClass from '../../composables/useAttrsWithoutClass';
 
 interface ClassesProp {
   ball?: ComponentClassType,
   track?: ComponentClassType,
 }
-export type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
+
+export type ValueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
-  modelValue?: valueTypes | valueTypes[],
-  value: valueTypes,
+  modelValue?: ValueTypes | ValueTypes[],
+  value: ValueTypes,
   name: string,
   color?: string,
-  rules?: RuleExpression<valueTypes | valueTypes[]>,
+  rules?: RuleExpression<ValueTypes | ValueTypes[]>,
   disabled?: boolean,
   classes?: ClassesProp,
 }
@@ -27,6 +29,9 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   classes: () => ({}),
 });
+
+const { attrClass, attrsWithoutClass } = useAttrsWithoutClass();
+defineOptions({ inheritAttrs: false });
 
 const { name, rules, value } = toRefs(props);
 
@@ -65,14 +70,12 @@ function setIsFocusedVisible(event: Event) {
   }
 }
 
-const attrs = useAttrs();
-const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
 
 <template>
   <div
     class="bn-toggle"
-    :class="`bn-toggle--${props.color}`"
+    :class="[`bn-toggle--${props.color}`, attrClass]"
   >
     <label
       class="bn-toggle__wrapper"

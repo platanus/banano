@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import Btn from '../Btn/Btn.vue';
+import BnBtn from '../BnBtn/BnBtn.vue';
 import BnModal from './BnModal.vue';
 
 const state = reactive({
@@ -21,9 +21,9 @@ const state = reactive({
       auto-props-disabled
     >
       <template #default>
-        <Btn @click="state.open = true">
+        <BnBtn @click="state.open = true">
           Open modal
-        </Btn>
+        </BnBtn>
         <BnModal
           title="Modal title"
           :open="state.open"
@@ -42,9 +42,9 @@ const state = reactive({
       auto-props-disabled
     >
       <template #default>
-        <Btn @click="state.open = true">
+        <BnBtn @click="state.open = true">
           Open modal
-        </Btn>
+        </BnBtn>
         <BnModal
           title="Modal title"
           :open="state.open"

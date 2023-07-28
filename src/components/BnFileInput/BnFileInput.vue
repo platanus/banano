@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
 import { computed, ref, toRef, watch } from 'vue';
-import BnBtn from '../Btn/Btn.vue';
+import BnBtn from '../BnBtn/BnBtn.vue';
 
 export type FileType = File[] | File | undefined;
 

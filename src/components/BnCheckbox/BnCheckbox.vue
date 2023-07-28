@@ -1,34 +1,37 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, useAttrs, computed } from 'vue';
+import { toRefs, useAttrs, computed } from 'vue';
 
-type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
+export type ValueType = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
-  modelValue?: valueTypes | valueTypes[],
-  value: valueTypes,
+  modelValue?: ValueType | ValueType[],
+  value?: ValueType,
   name: string,
   color?: string,
-  rules?: RuleExpression<unknown>,
+  rules?: RuleExpression<ValueType | ValueType[]>,
   disabled?: boolean,
+  uncheckedValue?: ValueType,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  value: undefined,
+  value: true,
   color: 'banano-base',
   rules: undefined,
   disabled: false,
+  uncheckedValue: undefined,
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueTypes[]): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: ValueType | ValueType[]): void }>();
 
-const name = toRef(props, 'name');
+const { name, uncheckedValue, rules, value } = toRefs(props);
 
-const { handleChange, checked, meta, setTouched } = useField(props.name, props.rules, {
+const { handleChange, checked, meta, setTouched } = useField(name, rules, {
   type: 'checkbox',
-  checkedValue: props.value,
+  checkedValue: value,
   initialValue: props.modelValue,
+  uncheckedValue,
 });
 const hasError = computed(() => !meta.valid && meta.touched);
 
@@ -73,6 +76,7 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
         {'bn-checkbox__input--error': hasError}
       ]"
       v-bind="attrsWithoutClass"
+      :disabled="props.disabled"
       @change="onChange"
     >
     <slot />

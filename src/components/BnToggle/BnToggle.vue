@@ -90,8 +90,8 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
         <div
           class="bn-toggle__track"
           :class="{
-            'bn-toggle__track--checked': checked,
-            'bn-toggle__track--focus-visible': isFocusedVisible,
+            [`bn-toggle__track--checked bn-toggle__track--checked-${props.color}`]: checked,
+            [`bn-toggle__track--focus-visible bn-toggle__track--focus-visible-${props.color}`]: isFocusedVisible,
           }"
         />
         <div

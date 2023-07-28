@@ -46,11 +46,19 @@ function parseStyles(obj, colors, componentClass, elementClasses = []) {
     const newElementClasses = [...elementClasses];
     if (key === 'colors') {
       const colorClasses = parseColors(value, colors);
-      const isElement = newElementClasses[1] && newElementClasses[1].startsWith('&__');
       const newElementClass = newElementClasses.join('').replace(/&/g, '');
+      const isBlock = !newElementClass.includes('--') && !newElementClass.includes('__');
+      const isElement = !newElementClass.includes('--') && newElementClass.includes('__');
+      const isModifier = newElementClass.includes('--');
 
       Object.keys(colorClasses).forEach((color) => {
-        prev[`@at-root ${componentClass}--${color}${isElement ? ' ' : ''}${newElementClass}`] = parseStyles(colorClasses[color], colors, componentClass, newElementClasses);
+        let colorClass;
+        if (isBlock || isElement) {
+          colorClass = `&--${color}`;
+        } else if (isModifier) {
+          colorClass = `&-${color}`;
+        }
+        prev[colorClass] = parseStyles(colorClasses[color], colors, componentClass, newElementClasses);
       });
     } else {
       if (!key.startsWith('@')) {

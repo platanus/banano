@@ -58,7 +58,6 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
   <label
     class="bn-checkbox"
     :class="[
-      `bn-checkbox--${props.color}`,
       {'bn-checkbox--error': hasError},
       {'bn-checkbox--disabled': props.disabled},
     ]"
@@ -69,7 +68,10 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
       type="checkbox"
       :name="name"
       class="bn-checkbox__input"
-      :class="{'bn-checkbox__input--error': hasError}"
+      :class="[
+        `bn-checkbox__input--${props.color}`,
+        {'bn-checkbox__input--error': hasError}
+      ]"
       v-bind="attrsWithoutClass"
       @change="onChange"
     >

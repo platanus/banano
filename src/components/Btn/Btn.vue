@@ -41,6 +41,7 @@ const tag = computed(() => {
       `bn-btn--shapes-${props.shape}`,
       `bn-btn--shapes-${props.shape}-${props.size}`,
       `bn-btn--variants-${props.variant}`,
+      `bn-btn--variants-${props.variant}-${props.color}`,
       `bn-btn--${props.color}`,
     ]"
   >

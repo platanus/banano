@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import Btn from './Btn.vue';
+import BnBtn from './BnBtn.vue';
 
 const state = reactive({
   text: 'Click me!',
@@ -54,23 +54,23 @@ defineExpose({
   >
     <Variant title="default">
       <template #default>
-        <Btn>
+        <BnBtn>
           {{ state.text }}
-        </Btn>
+        </BnBtn>
       </template>
     </Variant>
     <Variant title="disabled">
       <template #default>
-        <Btn disabled>
+        <BnBtn disabled>
           {{ state.text }}
-        </Btn>
+        </BnBtn>
       </template>
     </Variant>
     <Variant title="with href">
       <template #default>
-        <Btn href="#">
+        <BnBtn href="#">
           {{ state.text }}
-        </Btn>
+        </BnBtn>
       </template>
     </Variant>
     <Variant
@@ -79,36 +79,36 @@ defineExpose({
       :title="'Btn ' + props.size"
       class="bg-white"
     >
-      <Btn v-bind="props">
+      <BnBtn v-bind="props">
         {{ state.text }}
-      </Btn>
+      </BnBtn>
     </Variant>
     <Variant
       v-for="(props, key) of shapeVariants"
       :key="key"
       :title="'Btn ' + props.shape"
     >
-      <Btn v-bind="props">
+      <BnBtn v-bind="props">
         {{ props.text ? props.text : state.text }}
-      </Btn>
+      </BnBtn>
     </Variant>
     <Variant
       v-for="(props, key) of variantVariants"
       :key="key"
       :title="'Btn ' + props.variant"
     >
-      <Btn v-bind="props">
+      <BnBtn v-bind="props">
         {{ state.text }}
-      </Btn>
+      </BnBtn>
     </Variant>
     <Variant
       v-for="(props, key) of colorVariants"
       :key="key"
       :title="'Btn ' + Object.keys(props).join(' ')"
     >
-      <Btn v-bind="props">
+      <BnBtn v-bind="props">
         {{ state.text }}
-      </Btn>
+      </BnBtn>
     </Variant>
     <Variant
       v-for="(props, key) of sizeVariants"
@@ -116,7 +116,7 @@ defineExpose({
       :title="`Btn with icons ${props.size}`"
     >
       <template #default>
-        <Btn v-bind="props">
+        <BnBtn v-bind="props">
           <template #icon-left>
             <svg
               viewBox="0 0 24 24"
@@ -140,7 +140,7 @@ defineExpose({
               />
             </svg>
           </template>
-        </Btn>
+        </BnBtn>
       </template>
     </Variant>
     <Variant
@@ -149,9 +149,9 @@ defineExpose({
       :title="props.title"
     >
       <template #default>
-        <Btn v-bind="props">
+        <BnBtn v-bind="props">
           {{ props.text }}
-        </Btn>
+        </BnBtn>
       </template>
     </Variant>
   </Story>

@@ -18,7 +18,7 @@ module.exports = {
       '@apply hidden': {},
     },
     '&__button': {
-      '@apply mr-2 shrink-0 cursor-pointer': {},
+      '@apply mr-2 shrink-0 cursor-pointer outline-none': {},
     },
     '&__label': {
       '@apply w-full overflow-hidden text-sm text-banano-text-foreground': {},

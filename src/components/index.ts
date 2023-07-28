@@ -1,4 +1,4 @@
-import Btn from './Btn/Btn.vue';
+import BnBtn from './BnBtn/BnBtn.vue';
 import BnInput from './BnInput/BnInput.vue';
 import BnListbox from './BnListbox/BnListbox.vue';
 import BnModal from './BnModal/BnModal.vue';
@@ -8,4 +8,4 @@ import BnTextarea from './BnTextarea/BnTextarea.vue';
 import BnFileInput from './BnFileInput/BnFileInput.vue';
 import BnCheckbox from './BnCheckbox/BnCheckbox.vue';
 
-export { Btn, BnInput, BnListbox, BnModal, BnToggle, BnPagination, BnTextarea, BnFileInput, BnCheckbox };
+export { BnBtn, BnInput, BnListbox, BnModal, BnToggle, BnPagination, BnTextarea, BnFileInput, BnCheckbox };

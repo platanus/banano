@@ -115,22 +115,23 @@ describe('BnToggle', () => {
 
   it('should validate using prop rules', async () => {
     const wrapper = mount(BnToggle, { props: { name: 'checkbox', value: false, rules: isRequired } });
-    expect(wrapper.classes().includes('bn-toggle--error')).toBe(false);
+    expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
     const input = wrapper.getComponent(BnToggle);
     input.find('input').trigger('change');
     await flushPromises();
     await waitForExpect(() => {
-      expect(wrapper.classes().includes('bn-toggle--error')).toBe(true);
+      expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 
   it('should validate using form rules', async () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { checkbox: isRequired } } });
     const input = wrapper.getComponent(BnToggle);
+    expect(input.find('[class$="--error"]').exists()).toBe(false);
     input.find('input').trigger('change');
     await flushPromises();
     await waitForExpect(() => {
-      expect(input.classes().includes('bn-toggle--error')).toBe(true);
+      expect(input.find('[class$="--error"]').exists()).toBe(true);
     });
   });
 });

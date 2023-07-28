@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, useAttrs } from 'vue';
+import { toRef, useAttrs, ref } from 'vue';
 
 type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
@@ -50,6 +50,16 @@ function onChange(e: Event) {
   handleChange(e);
 }
 
+const isFocusedVisible = ref(false);
+function setIsFocusedVisible(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.matches(':focus-visible')) {
+    isFocusedVisible.value = true;
+  } else {
+    isFocusedVisible.value = false;
+  }
+}
+
 const attrs = useAttrs();
 const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
@@ -57,13 +67,12 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
 <template>
   <div
     class="bn-toggle"
-    :class="[
-      `bn-toggle--${props.color}`,
-      {'bn-toggle--error': !meta.valid && meta.touched},
-      {'bn-toggle--disabled': props.disabled},
-    ]"
+    :class="`bn-toggle--${props.color}`"
   >
-    <label class="bn-toggle__wrapper">
+    <label
+      class="bn-toggle__wrapper"
+      :class="{ 'bn-toggle__wrapper--disabled': props.disabled }"
+    >
       <div class="bn-toggle__toggle">
         <input
           :checked="checked"
@@ -71,12 +80,24 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
           type="checkbox"
           :name="name"
           class="bn-toggle__input"
+          :class="{'bn-toggle__input--error': !meta.valid && meta.touched}"
           v-bind="attrsWithoutClass"
           :disabled="props.disabled"
           @change="onChange"
+          @focusin="setIsFocusedVisible"
+          @focusout="isFocusedVisible = false"
         >
-        <div class="bn-toggle__track" />
-        <div class="bn-toggle__ball" />
+        <div
+          class="bn-toggle__track"
+          :class="{
+            [`bn-toggle__track--checked bn-toggle__track--checked-${props.color}`]: checked,
+            [`bn-toggle__track--focus-visible bn-toggle__track--focus-visible-${props.color}`]: isFocusedVisible,
+          }"
+        />
+        <div
+          class="bn-toggle__ball"
+          :class="{ 'bn-toggle__ball--checked': checked }"
+        />
       </div>
       <slot />
     </label>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, useAttrs } from 'vue';
+import { toRef, useAttrs, computed } from 'vue';
 
 type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
@@ -30,6 +30,7 @@ const { handleChange, checked, meta, setTouched } = useField(props.name, props.r
   checkedValue: props.value,
   initialValue: props.modelValue,
 });
+const hasError = computed(() => !meta.valid && meta.touched);
 
 function onChange(e: Event) {
   const input = e.target as HTMLInputElement;
@@ -57,8 +58,7 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
   <label
     class="bn-checkbox"
     :class="[
-      `bn-checkbox--${props.color}`,
-      {'bn-checkbox--error': !meta.valid && meta.touched},
+      {'bn-checkbox--error': hasError},
       {'bn-checkbox--disabled': props.disabled},
     ]"
   >
@@ -68,6 +68,10 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
       type="checkbox"
       :name="name"
       class="bn-checkbox__input"
+      :class="[
+        `bn-checkbox__input--${props.color}`,
+        {'bn-checkbox__input--error': hasError}
+      ]"
       v-bind="attrsWithoutClass"
       @change="onChange"
     >

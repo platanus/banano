@@ -2,15 +2,8 @@ module.exports = {
   '.bn-toggle': {
     '&__wrapper': {
       '@apply flex items-center': {},
-    },
-    '&--disabled': {
-      '.bn-toggle__wrapper': {
+      '&--disabled': {
         '@apply cursor-not-allowed opacity-75': {},
-      },
-    },
-    '&--error': {
-      '.bn-toggle__input': {
-        '@apply border-banano-error': {},
       },
     },
     '&__toggle': {
@@ -18,25 +11,29 @@ module.exports = {
     },
     '&__track': {
       '@apply absolute left-1/2 top-1/2 h-5 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gray-300': {},
-    },
-    '&__ball': {
-      '@apply absolute h-6 w-6 rounded-full border bg-white shadow': {},
-      '@apply transition-transform translate-x-0': {},
-    },
-    '&__input': {
-      '@apply sr-only': {},
-      '&:checked ~ .bn-toggle__ball': {
-        '@apply translate-x-full': {},
-      },
-      '&:checked ~ .bn-toggle__track': {
+      '&--checked': {
         colors: {
           '@apply bg-varColor-500': {},
         },
       },
-      '&:focus-visible ~ .bn-toggle__track': {
+      '&--focus-visible': {
+        '@apply ring-2 ring-offset-4': {},
         colors: {
-          '@apply ring-2 ring-offset-4 ring-varColor-500': {},
+          '@apply ring-varColor-500': {},
         },
+      },
+    },
+    '&__ball': {
+      '@apply absolute h-6 w-6 rounded-full border bg-white shadow': {},
+      '@apply transition-transform translate-x-0': {},
+      '&--checked': {
+        '@apply translate-x-full': {},
+      },
+    },
+    '&__input': {
+      '@apply sr-only': {},
+      '&--error': {
+        '@apply border-banano-error': {},
       },
     },
     '&__error-message': {

@@ -50,7 +50,9 @@ export default {
 <template>
   <div
     class="bn-input"
-    :class="`bn-input--${props.color} ${attrs.class ? attrs.class : ''}`"
+    :class="{
+      [attrs.class as string]: attrs.class
+    }"
   >
     <div class="bn-input__wrapper">
       <div
@@ -72,13 +74,16 @@ export default {
           :value="inputValue"
           :name="name"
           class="bn-input__input"
-          :class="{
-            'bn-input__input--icon-left': $slots['icon-left'],
-            'bn-input__input--icon-right': $slots['icon-right'],
-            'bn-input__input--prefix': $slots['prefix'],
-            'bn-input__input--suffix': $slots['suffix'],
-            'bn-input__input--error': !meta.valid && meta.touched,
-          }"
+          :class="[
+            `bn-input__input--${props.color}`,
+            {
+              'bn-input__input--icon-left': $slots['icon-left'],
+              'bn-input__input--icon-right': $slots['icon-right'],
+              'bn-input__input--prefix': $slots['prefix'],
+              'bn-input__input--suffix': $slots['suffix'],
+              'bn-input__input--error': !meta.valid && meta.touched,
+            }
+          ]"
           @input="onInput"
           @blur="handleBlur"
         >

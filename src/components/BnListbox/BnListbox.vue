@@ -158,10 +158,7 @@ const formValue = computed({
 </script>
 
 <template>
-  <div
-    class="bn-listbox"
-    :class="[`bn-listbox--${props.color}`, { 'bn-listbox--disabled': props.disabled }]"
-  >
+  <div class="bn-listbox">
     <template v-if="!props.keepObjectValue">
       <template v-if="props.multiple">
         <input
@@ -190,7 +187,13 @@ const formValue = computed({
       <ListboxButton
         ref="listboxButtonRef"
         class="bn-listbox__button"
-        :class="{ 'bn-listbox__button--error': !meta.valid && meta.touched }"
+        :class="[
+          `bn-listbox__button--${props.color}`,
+          {
+            'bn-listbox__button--error': !meta.valid && meta.touched,
+            'bn-listbox__button--disabled': props.disabled
+          }
+        ]"
         @blur="setTouched(true)"
       >
         <span
@@ -211,7 +214,10 @@ const formValue = computed({
               name="selected-multiple-template"
               :value="option"
             >
-              <span class="bn-listbox__tag">
+              <span
+                class="bn-listbox__tag"
+                :class="`bn-listbox__tag--${props.color}`"
+              >
                 {{ isObjectValue(option) ? option[props.optionLabel as string] : option }}
               </span>
             </slot>
@@ -251,6 +257,7 @@ const formValue = computed({
             :key="isObjectValue(option) ? (option[props.trackBy as string] as string) : option"
             :value="option"
             class="bn-listbox-options__option"
+            :class="`bn-listbox-options__option--${props.color}`"
           >
             <slot
               name="option-template"

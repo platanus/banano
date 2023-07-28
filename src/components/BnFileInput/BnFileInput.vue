@@ -151,17 +151,19 @@ function removeFile(file: File) {
     class="bn-file-input"
     :class="[
       `bn-file-input--${props.color}`,
-      `bn-file-input--variants-${props.variant}`,
-      {
-        'bn-file-input--disabled': props.disabled,
-        'bn-file-input--custom': $slots['default'],
-        'bn-file-input--error': meta.touched && !meta.valid,
-      }
     ]"
   >
     <component
       :is="$slots['default'] ? 'div' : 'label'"
       class="bn-file-input__wrapper"
+      :class="[
+        `bn-file-input__wrapper--variants-${props.variant}`,
+        {
+          'bn-file-input__wrapper--disabled': props.disabled,
+          'bn-file-input__wrapper--custom': $slots['default'],
+          'bn-file-input__wrapper--error': meta.touched && !meta.valid,
+        }
+      ]"
     >
       <input
         ref="fileInputRef"

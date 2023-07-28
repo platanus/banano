@@ -39,18 +39,26 @@ function onInput(event: Event) {
 }
 
 const attrs = useAttrs();
+const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
   <div
     class="bn-textarea"
-    :class="[
-      `bn-textarea--${props.color} ${attrs.class ? attrs.class : ''}`,
-      {'bn-textarea--error': !meta.valid && meta.touched},
-    ]"
+    :class="{
+      [attrs.class as string]: attrs.class
+    }"
   >
     <textarea
+      v-bind="attrsWithoutClass"
       class="bn-textarea__textarea"
+      :class="[
+        `bn-textarea__textarea--${props.color}`,
+        { 'bn-textarea__textarea--error': !meta.valid && meta.touched }
+      ]"
       :value="(inputValue as string)"
       :name="name"
       @input="onInput"

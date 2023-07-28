@@ -40,6 +40,9 @@ function onInput(event: Event) {
 
 const attrs = useAttrs();
 const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>

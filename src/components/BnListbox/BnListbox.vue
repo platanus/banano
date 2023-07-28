@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, ref, ComponentPublicInstance, watchEffect, computed } from 'vue';
+import { ref, ComponentPublicInstance, watchEffect, computed, toRefs } from 'vue';
 import { useElementBounding } from '@vueuse/core';
 import {
   Listbox,
@@ -61,7 +61,7 @@ const emit = defineEmits<{
   ): void
 }>();
 
-const name = toRef(props, 'name');
+const { name, rules } = toRefs(props);
 
 function parseValue(value: InputValue | InputValue[]) {
   if (!value) {
@@ -112,7 +112,7 @@ function unparseValue(value: InputValue | InputValue[]) {
 
 const parsedValue = computed(() => parseValue(props.modelValue));
 
-const { handleChange, value, meta, setTouched, errorMessage } = useField<InputValue | InputValue[]>(name, props.rules, {
+const { handleChange, value, meta, setTouched, errorMessage } = useField<InputValue | InputValue[]>(name, rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
 });

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRef, useAttrs } from 'vue';
+import { toRefs, useAttrs } from 'vue';
 
 interface Props {
   modelValue?: string | number
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'update:modelValue', value: number | string): void}>();
 
-const name = toRef(props, 'name');
+const { name, rules } = toRefs(props);
 
 const {
   value: inputValue,
@@ -25,9 +25,8 @@ const {
   handleChange,
   meta,
   errorMessage,
-} = useField(name, props.rules, {
+} = useField(name, rules, {
   initialValue: props.modelValue,
-  valueProp: props.modelValue,
   validateOnMount: true,
 });
 

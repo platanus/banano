@@ -49,7 +49,7 @@ defineExpose({
 
 <template>
   <Story
-    title="Btn"
+    title="BnBtn"
     :layout="{ type: 'grid', width: '300px' }"
   >
     <Variant title="default">
@@ -76,7 +76,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of sizeVariants"
       :key="key"
-      :title="'Btn ' + props.size"
+      :title="'BnBtn ' + props.size"
       class="bg-white"
     >
       <BnBtn v-bind="props">
@@ -86,7 +86,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of shapeVariants"
       :key="key"
-      :title="'Btn ' + props.shape"
+      :title="'BnBtn ' + props.shape"
     >
       <BnBtn v-bind="props">
         {{ props.text ? props.text : state.text }}
@@ -95,7 +95,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of variantVariants"
       :key="key"
-      :title="'Btn ' + props.variant"
+      :title="'BnBtn ' + props.variant"
     >
       <BnBtn v-bind="props">
         {{ state.text }}
@@ -104,7 +104,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of colorVariants"
       :key="key"
-      :title="'Btn ' + Object.keys(props).join(' ')"
+      :title="'BnBtn ' + Object.keys(props).join(' ')"
     >
       <BnBtn v-bind="props">
         {{ state.text }}
@@ -113,7 +113,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of sizeVariants"
       :key="key"
-      :title="`Btn with icons ${props.size}`"
+      :title="`BnBtn with icons ${props.size}`"
     >
       <template #default>
         <BnBtn v-bind="props">

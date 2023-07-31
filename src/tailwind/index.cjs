@@ -5,7 +5,7 @@ const isPlainObject = require('lodash/isPlainObject');
 const tailwindColors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
-const Btn = require('../components/Btn/Btn.styles.cjs');
+const BnBtn = require('../components/BnBtn/BnBtn.styles.cjs');
 const BnInput = require('../components/BnInput/BnInput.styles.cjs');
 const BnTextarea = require('../components/BnTextarea/BnTextarea.styles.cjs');
 const BnListbox = require('../components/BnListbox/BnListbox.styles.cjs');
@@ -16,7 +16,7 @@ const BnModal = require('../components/BnModal/BnModal.styles.cjs');
 const BnPagination = require('../components/BnPagination/BnPagination.styles.cjs');
 
 const componentList = {
-  Btn,
+  BnBtn,
   BnInput,
   BnTextarea,
   BnListbox,

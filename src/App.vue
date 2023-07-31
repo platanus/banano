@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Btn from './components/Btn.vue';
+import BnBtn from './components/BnBtn.vue';
 </script>
 
 <template>
-  <Btn>Button</Btn>
+  <BnBtn>Button</BnBtn>
 </template>

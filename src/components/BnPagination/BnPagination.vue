@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import Btn from '../Btn/Btn.vue';
+import BnBtn from '../BnBtn/BnBtn.vue';
 
 interface Props {
   as?: string,
@@ -76,20 +76,20 @@ function parseUrl(urlTemplate: string, page: number) {
   >
     <ul class="bn-pagination__list">
       <li v-if="pageItems.prev">
-        <Btn
+        <BnBtn
           :color="props.color"
           variant="no-border"
           :href="props.templateUrl ? parseUrl(props.templateUrl, pageItems.prev) : undefined"
           @click="emit('page-changed', pageItems.prev as number)"
         >
           &laquo;
-        </Btn>
+        </BnBtn>
       </li>
       <li
         v-for="page in computedPages"
         :key="page"
       >
-        <Btn
+        <BnBtn
           v-if="page !== '...'"
           :color="props.color"
           variant="no-border"
@@ -97,24 +97,24 @@ function parseUrl(urlTemplate: string, page: number) {
           @click="emit('page-changed', page as number)"
         >
           {{ page }}
-        </Btn>
-        <Btn
+        </BnBtn>
+        <BnBtn
           v-else
           :color="props.color"
           variant="no-border"
         >
           {{ page }}
-        </Btn>
+        </BnBtn>
       </li>
       <li v-if="pageItems.next">
-        <Btn
+        <BnBtn
           :color="props.color"
           variant="no-border"
           :href="props.templateUrl ? parseUrl(props.templateUrl, pageItems.next as number) : undefined"
           @click="emit('page-changed', pageItems.next as number)"
         >
           &raquo;
-        </Btn>
+        </BnBtn>
       </li>
     </ul>
   </component>

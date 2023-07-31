@@ -1,5 +1,5 @@
 import {
-  Btn,
+  BnBtn,
   BnInput,
   BnListbox,
   BnModal,
@@ -10,4 +10,4 @@ import {
   BnCheckbox,
 } from '../components';
 
-export { Btn, BnInput, BnListbox, BnModal, BnToggle, BnPagination, BnTextarea, BnFileInput, BnCheckbox };
+export { BnBtn, BnInput, BnListbox, BnModal, BnToggle, BnPagination, BnTextarea, BnFileInput, BnCheckbox };

@@ -6,7 +6,7 @@ interface Props {
   modelValue?: string | number
   name: string
   color?: string
-  rules?: RuleExpression<unknown>,
+  rules?: RuleExpression<string | number>,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -15,8 +15,6 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'banano-base',
   rules: undefined,
 });
-
-const emit = defineEmits<{(e: 'update:modelValue', value: number | string): void}>();
 
 const { name, rules } = toRefs(props);
 
@@ -29,13 +27,8 @@ const {
 } = useField(name, rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
+  syncVModel: true,
 });
-
-function onInput(event: Event) {
-  inputValue.value = (event.target as HTMLInputElement).value;
-  handleChange(event, true);
-  emit('update:modelValue', (event.target as HTMLInputElement).value);
-}
 
 const attrs = useAttrs();
 const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
@@ -60,7 +53,7 @@ defineOptions({
       ]"
       :value="(inputValue as string)"
       :name="name"
-      @input="onInput"
+      @input="handleChange"
       @blur="handleBlur"
     />
     <slot

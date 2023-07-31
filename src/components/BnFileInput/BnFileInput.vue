@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { computed, ref, toRef, watch } from 'vue';
+import { computed, ref, toRef } from 'vue';
 import BnBtn from '../BnBtn/BnBtn.vue';
 
 export type FileType = File[] | File | undefined;
@@ -30,8 +30,6 @@ const props = withDefaults(defineProps<Props>(), {
   avatarShape: 'default',
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: FileType): void}>();
-
 const fileInputRef = ref<HTMLInputElement>();
 
 const name = toRef(props, 'name');
@@ -45,6 +43,7 @@ function isFileList(object: FileType): object is File[] {
 
 const {
   value: inputValue,
+  handleChange,
   handleBlur,
   setTouched,
   meta,
@@ -52,6 +51,7 @@ const {
 } = useField<FileType >(name, rules, {
   initialValue: props.modelValue,
   validateOnMount: true,
+  syncVModel: true,
 });
 
 const inputValueList = computed(() => {
@@ -79,29 +79,18 @@ function updateInputFiles() {
 
 function setFile(e: Event) {
   const files = Array.from((e.target as HTMLInputElement).files || []);
-
+  let newValue: FileType;
   if (isFileList(inputValue.value) && addingFile.value) {
-    inputValue.value = [...inputValue.value, ...files];
+    newValue = [...inputValue.value, ...files];
     addingFile.value = false;
   } else if (isFileList(inputValue.value)) {
-    inputValue.value = files;
+    newValue = files;
   } else {
-    inputValue.value = files[0];
+    newValue = files[0];
   }
-  emit('update:modelValue', inputValue.value);
+  handleChange(newValue);
   updateInputFiles();
 }
-
-watch(
-  () => props.modelValue,
-  (newModel) => {
-    if (newModel === inputValue.value) {
-      return;
-    }
-    inputValue.value = newModel;
-    updateInputFiles();
-  },
-);
 
 const fileNames = computed(() => {
   if (!inputValue.value) {
@@ -136,10 +125,10 @@ function removeFile(file: File) {
   if (isFileList(inputValue.value)) {
     const index = inputValue.value.indexOf(file);
     if (index > -1) {
-      inputValue.value.splice(index, 1);
+      handleChange([...inputValue.value.slice(0, index), ...inputValue.value.slice(index + 1)]);
     }
   } else {
-    inputValue.value = undefined;
+    handleChange(undefined);
   }
 
   updateInputFiles();

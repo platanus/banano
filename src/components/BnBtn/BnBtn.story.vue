@@ -154,6 +154,18 @@ defineExpose({
         </BnBtn>
       </template>
     </Variant>
+    <Variant
+      title="With classes customization"
+    >
+      <template #default>
+        <BnBtn
+          :classes="{ loading: 'text-yellow-500' }"
+          :loading="true"
+        >
+          Loading ...
+        </BnBtn>
+      </template>
+    </Variant>
   </Story>
 </template>
 

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import BnBtn from '../BnBtn/BnBtn.vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  list?: ComponentClassType,
+}
 
 interface Props {
   as?: string,
@@ -9,6 +14,7 @@ interface Props {
   currentPage: number,
   delta?: number,
   color?: string,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   templateUrl: undefined,
   delta: 1,
   color: undefined,
+  classes: () => ({}),
 });
 
 const emit = defineEmits<{
@@ -74,7 +81,10 @@ function parseUrl(urlTemplate: string, page: number) {
     :is="props.as"
     class="bn-pagination"
   >
-    <ul class="bn-pagination__list">
+    <ul
+      class="bn-pagination__list"
+      :class="props.classes.list"
+    >
       <li v-if="pageItems.prev">
         <BnBtn
           :color="props.color"

@@ -56,6 +56,30 @@ export default defineConfig({
               text: 'BnCheckbox',
               link: '/components/bn-checkbox',
             },
+            {
+              text: 'BnBtn',
+              link: '/components/bn-btn',
+            },
+            {
+              text: 'BnListbox',
+              link: '/components/bn-listbox',
+            },
+            {
+              text: 'BnModal',
+              link: '/components/bn-modal',
+            },
+            {
+              text: 'BnPagination',
+              link: '/components/bn-pagination',
+            },
+            {
+              text: 'BnTextarea',
+              link: '/components/bn-textarea',
+            },
+            {
+              text: 'BnToggle',
+              link: '/components/bn-toggle',
+            },
           ],
         },
       ],

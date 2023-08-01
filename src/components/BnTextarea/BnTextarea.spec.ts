@@ -1,11 +1,10 @@
-import flushPromises from 'flush-promises';
 import waitForExpect from 'wait-for-expect';
 import { defineComponent } from 'vue';
 import { Form } from 'vee-validate';
 import { mount } from '@vue/test-utils';
 import BnTextarea from './BnTextarea.vue';
 
-function isRequired(val: string) {
+function isRequired(val: string | number) {
   if (!val) {
     return 'This field is required';
   }
@@ -59,7 +58,7 @@ describe('BnTextarea', () => {
   it('v-model should work', async () => {
     const wrapper = mount(generateExampleForm());
     const input = wrapper.getComponent(BnTextarea);
-    input.find('textarea').setValue('Hello World!');
+    await input.find('textarea').setValue('Hello World!');
 
     expect(wrapper.vm.input).toBe('Hello World!');
   });
@@ -70,7 +69,6 @@ describe('BnTextarea', () => {
     input.find('textarea').setValue('Hello World!');
     wrapper.find('form').trigger('submit');
 
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.vm.submittedValues).toStrictEqual({
         input: 'Hello World!',
@@ -83,7 +81,6 @@ describe('BnTextarea', () => {
     expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
     const input = wrapper.find('textarea');
     input.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
@@ -95,7 +92,6 @@ describe('BnTextarea', () => {
     const input = inputWrapper.find('textarea');
     expect(inputWrapper.find('[class$="--error"]').exists()).toBe(false);
     input.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(inputWrapper.find('[class$="--error"]').exists()).toBe(true);
     });

@@ -5,7 +5,7 @@ import { Form } from 'vee-validate';
 import { mount } from '@vue/test-utils';
 import BnInput from './BnInput.vue';
 
-function isRequired(val: string) {
+function isRequired(val: string | number) {
   if (!val) {
     return 'This field is required';
   }
@@ -59,7 +59,7 @@ describe('BnInput', () => {
   it('v-model should work', async () => {
     const wrapper = mount(generateExampleForm());
     const input = wrapper.getComponent(BnInput);
-    input.find('input').setValue('Hello World!');
+    await input.find('input').setValue('Hello World!');
 
     expect(wrapper.vm.input).toBe('Hello World!');
   });
@@ -83,7 +83,6 @@ describe('BnInput', () => {
     expect(wrapper.classes().includes('bn-input__input--error')).toBe(false);
     const input = wrapper.find('input');
     input.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(input.classes().includes('bn-input__input--error')).toBe(true);
     });
@@ -93,7 +92,6 @@ describe('BnInput', () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { input: isRequired } } });
     const input = wrapper.getComponent(BnInput).find('input');
     input.trigger('blur');
-    await flushPromises();
     await waitForExpect(() => {
       expect(input.classes().includes('bn-input__input--error')).toBe(true);
     });

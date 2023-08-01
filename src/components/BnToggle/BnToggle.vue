@@ -2,14 +2,14 @@
 import { RuleExpression, useField } from 'vee-validate';
 import { useAttrs, ref, toRefs } from 'vue';
 
-type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
+export type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
   modelValue?: valueTypes | valueTypes[],
   value: valueTypes,
   name: string,
   color?: string,
-  rules?: RuleExpression<unknown>,
+  rules?: RuleExpression<valueTypes | valueTypes[]>,
   disabled?: boolean,
 }
 
@@ -21,8 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: valueTypes | valueTypes[]): void}>();
-
 const { name, rules, value } = toRefs(props);
 
 const { handleChange, checked, meta, setTouched, errorMessage } = useField(name, rules, {
@@ -30,6 +28,7 @@ const { handleChange, checked, meta, setTouched, errorMessage } = useField(name,
   checkedValue: value,
   initialValue: props.modelValue,
   validateOnMount: true,
+  syncVModel: true,
 });
 
 function onChange(e: Event) {
@@ -43,11 +42,10 @@ function onChange(e: Event) {
     } else {
       newValue.splice(newValue.indexOf(props.value), 1);
     }
-    emit('update:modelValue', newValue);
+    handleChange(newValue);
   } else {
-    emit('update:modelValue', input.checked ? props.value : undefined);
+    handleChange(checked?.value ? value : undefined);
   }
-  handleChange(e);
 }
 
 const isFocusedVisible = ref(false);

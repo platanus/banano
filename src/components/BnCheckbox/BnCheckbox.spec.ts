@@ -65,6 +65,7 @@ function generateExampleForm(useArray?: boolean) {
     template: `
       <Form @submit="submit" :validation-schema="validationSchema">
         ${useArray ? arrayCheckboxes : baseCheckbox}
+        <button type="submit">Submit</button>
       </Form>
     `,
   });
@@ -80,7 +81,7 @@ describe('BnCheckbox', () => {
   it('v-model should work', async () => {
     const wrapper = mount(generateExampleForm());
     const input = wrapper.getComponent(BnCheckbox);
-    input.find('input').setValue();
+    await input.find('input').setValue();
 
     expect(wrapper.vm.checked).toBe('checked');
   });
@@ -118,7 +119,6 @@ describe('BnCheckbox', () => {
     expect(wrapper.classes().includes('bn-checkbox--error')).toBe(false);
     const input = wrapper.getComponent(BnCheckbox);
     input.find('input').trigger('change');
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.classes().includes('bn-checkbox--error')).toBe(true);
     });
@@ -127,8 +127,7 @@ describe('BnCheckbox', () => {
   it('should validate using form rules', async () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { checkbox: isRequired } } });
     const input = wrapper.getComponent(BnCheckbox);
-    input.find('input').trigger('change');
-    await flushPromises();
+    wrapper.find('form').trigger('submit');
     await waitForExpect(() => {
       expect(input.classes().includes('bn-checkbox--error')).toBe(true);
     });

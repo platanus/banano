@@ -23,8 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
   uncheckedValue: undefined,
 });
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: ValueType | ValueType[]): void }>();
-
 const { name, uncheckedValue, rules, value } = toRefs(props);
 
 const { handleChange, checked, meta, setTouched } = useField(name, rules, {
@@ -32,6 +30,7 @@ const { handleChange, checked, meta, setTouched } = useField(name, rules, {
   checkedValue: value,
   initialValue: props.modelValue,
   uncheckedValue,
+  syncVModel: true,
 });
 const hasError = computed(() => !meta.valid && meta.touched);
 
@@ -46,11 +45,10 @@ function onChange(e: Event) {
     } else {
       newValue.splice(newValue.indexOf(props.value), 1);
     }
-    emit('update:modelValue', newValue);
+    handleChange(newValue);
   } else {
-    emit('update:modelValue', input.checked ? props.value : undefined);
+    handleChange(checked?.value ? value : undefined);
   }
-  handleChange(e);
 }
 
 const attrs = useAttrs();

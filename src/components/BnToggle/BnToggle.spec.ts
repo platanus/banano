@@ -3,9 +3,9 @@ import waitForExpect from 'wait-for-expect';
 import { defineComponent } from 'vue';
 import { Form } from 'vee-validate';
 import { mount } from '@vue/test-utils';
-import BnToggle from './BnToggle.vue';
+import BnToggle, { type valueTypes } from './BnToggle.vue';
 
-function isRequired(val: string) {
+function isRequired(val: valueTypes | valueTypes[]) {
   if (!val) {
     return 'This field is required';
   }
@@ -80,7 +80,7 @@ describe('BnToggle', () => {
   it('v-model should work', async () => {
     const wrapper = mount(generateExampleForm());
     const input = wrapper.getComponent(BnToggle);
-    input.find('input').setValue();
+    await input.find('input').setValue();
 
     expect(wrapper.vm.checked).toBe('checked');
   });
@@ -118,7 +118,6 @@ describe('BnToggle', () => {
     expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
     const input = wrapper.getComponent(BnToggle);
     input.find('input').trigger('change');
-    await flushPromises();
     await waitForExpect(() => {
       expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
@@ -128,8 +127,7 @@ describe('BnToggle', () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { checkbox: isRequired } } });
     const input = wrapper.getComponent(BnToggle);
     expect(input.find('[class$="--error"]').exists()).toBe(false);
-    input.find('input').trigger('change');
-    await flushPromises();
+    wrapper.find('form').trigger('submit');
     await waitForExpect(() => {
       expect(input.find('[class$="--error"]').exists()).toBe(true);
     });

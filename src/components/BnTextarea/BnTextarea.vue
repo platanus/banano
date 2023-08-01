@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
 import { toRefs, useAttrs } from 'vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  textarea?: ComponentClassType,
+}
 
 interface Props {
   modelValue?: string | number
   name: string
   color?: string
   rules?: RuleExpression<string | number>,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -14,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   color: 'banano-base',
   rules: undefined,
+  classes: () => ({}),
 });
 
 const { name, rules } = toRefs(props);
@@ -49,7 +56,8 @@ defineOptions({
       class="bn-textarea__textarea"
       :class="[
         `bn-textarea__textarea--${props.color}`,
-        { 'bn-textarea__textarea--error': !meta.valid && meta.touched }
+        { 'bn-textarea__textarea--error': !meta.valid && meta.touched },
+        props.classes.textarea,
       ]"
       :value="(inputValue as string)"
       :name="name"

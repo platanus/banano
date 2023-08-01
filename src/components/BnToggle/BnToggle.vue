@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
 import { useAttrs, ref, toRefs } from 'vue';
+import { type ComponentClassType } from '../../types/class';
 
+interface ClassesProp {
+  ball?: ComponentClassType,
+  track?: ComponentClassType,
+}
 export type valueTypes = undefined | boolean | string | number | Record<string, unknown>;
 
 interface Props {
@@ -11,6 +16,7 @@ interface Props {
   color?: string,
   rules?: RuleExpression<valueTypes | valueTypes[]>,
   disabled?: boolean,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'banano-base',
   rules: undefined,
   disabled: false,
+  classes: () => ({}),
 });
 
 const { name, rules, value } = toRefs(props);
@@ -87,14 +94,20 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
         >
         <div
           class="bn-toggle__track"
-          :class="{
-            [`bn-toggle__track--checked bn-toggle__track--checked-${props.color}`]: checked,
-            [`bn-toggle__track--focus-visible bn-toggle__track--focus-visible-${props.color}`]: isFocusedVisible,
-          }"
+          :class="[
+            {
+              [`bn-toggle__track--checked bn-toggle__track--checked-${props.color}`]: checked,
+              [`bn-toggle__track--focus-visible bn-toggle__track--focus-visible-${props.color}`]: isFocusedVisible,
+            },
+            props.classes.track,
+          ]"
         />
         <div
           class="bn-toggle__ball"
-          :class="{ 'bn-toggle__ball--checked': checked }"
+          :class="[
+            { 'bn-toggle__ball--checked': checked },
+            props.classes.ball,
+          ]"
         />
       </div>
       <slot />

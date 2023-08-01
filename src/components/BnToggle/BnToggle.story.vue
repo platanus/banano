@@ -26,6 +26,7 @@ const state = reactive({
   object: [],
   disabled: undefined,
   validateCustom: undefined,
+  customClasses: false,
 });
 
 /* eslint-disable max-len, vue/max-len */
@@ -162,6 +163,21 @@ function isRequired(val: string) {
               </svg>
             </div>
           </template>
+        </BnToggle>
+      </template>
+    </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnToggle
+          v-model="state.customClasses"
+          name="custom-classes"
+          :value="true"
+          :classes="{
+            ball: { 'bg-yellow-500': state.customClasses },
+            track: { 'bg-purple-200': state.customClasses }
+          }"
+        >
+          This is a toggle
         </BnToggle>
       </template>
     </Variant>

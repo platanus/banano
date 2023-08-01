@@ -268,5 +268,32 @@ function isRequired(val: File[] | File | undefined) {
         </BnFileInput>
       </template>
     </Variant>
+    <Variant title="With classes customization (default)">
+      <template #default>
+        <BnFileInput
+          v-model="state.single"
+          name="custom-classes-default"
+          :classes="{
+            wrapper: 'border-yellow-300 bg-yellow-50/50',
+            button: 'rounded-full',
+            label: 'text-purple-500',
+            placeholder: 'text-purple-300',
+            'clear-button': 'text-red-500',
+          }"
+        />
+      </template>
+    </Variant>
+    <Variant title="With classes customization (avatar)">
+      <template #default>
+        <BnFileInput
+          v-model="state.avatar"
+          name="custom-classes-avatar"
+          variant="avatar"
+          :classes="{
+            avatar: 'rounded-3xl border-yellow-300 bg-yellow-50/50 text-yellow-500 overflow-hidden',
+          }"
+        />
+      </template>
+    </Variant>
   </Story>
 </template>

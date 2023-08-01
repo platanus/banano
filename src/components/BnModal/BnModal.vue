@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  overlay?: ComponentClassType,
+  content?: ComponentClassType,
+  'close-button'?: ComponentClassType,
+  header?: ComponentClassType,
+  body?: ComponentClassType,
+}
 
 interface Props {
   open?: boolean,
@@ -8,6 +17,7 @@ interface Props {
   fullScreenOnMobile?: boolean,
   showCloseButton?: boolean,
   closeOnOverlayClick?: boolean,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   fullScreenOnMobile: false,
   showCloseButton: true,
   closeOnOverlayClick: true,
+  classes: () => ({}),
 });
 
 const emit = defineEmits<{
@@ -31,17 +42,24 @@ const emit = defineEmits<{
     :open="open"
     @close="props.closeOnOverlayClick && emit('close', $event)"
   >
-    <div class="bn-modal__overlay" />
+    <div
+      class="bn-modal__overlay"
+      :class="props.classes.overlay"
+    />
     <div class="bn-modal__wrapper">
       <DialogPanel
         class="bn-modal__content"
-        :class="{
-          'bn-modal__content--full-screen-on-mobile': fullScreenOnMobile,
-        }"
+        :class="[
+          {
+            'bn-modal__content--full-screen-on-mobile': fullScreenOnMobile,
+          },
+          props.classes.content,
+        ]"
       >
         <button
           v-if="showCloseButton"
           class="bn-modal__close-button"
+          :class="props.classes['close-button']"
           @click="emit('close', false)"
         >
           <svg
@@ -57,10 +75,14 @@ const emit = defineEmits<{
         <DialogTitle
           v-if="props.title"
           class="bn-modal__header"
+          :class="props.classes.header"
         >
           {{ props.title }}
         </DialogTitle>
-        <div class="bn-modal__body">
+        <div
+          class="bn-modal__body"
+          :class="props.classes.body"
+        >
           <DialogDescription
             v-if="props.description"
             class="bn-modal__description"

@@ -276,27 +276,12 @@ Useful for hints or errors. Includes the following slot props:
 </code-preview>
 
 ## Customization
-There are three ways to customize the appearance of the `BnInput` component:
 
-### [TODO] Input Classes
+There are two ways to customize the appearance of the `BnInput` component:
 
-If you only need to change the appearance of the `input` element you can use the prop `input-classes`:
+### `classes` prop
 
-```html
-<bn-input name="name" input-classes="rounded-none" />
-<bn-input name="pink" input-classes="bg-pink-300" />
-```
-
-<code-preview>
-  <div class="grid col-span-1 gap-4">
-    <bn-input name="name" input-classes="rounded-none" />
-    <bn-input name="pink" input-classes="bg-pink-100" />
-  </div>
-</code-preview>
-
-### [TODO] Complex Style for Single Elements
-
-If you want to modify the style of something else, you can use the `classes` prop, which will accept an object with each element that can be modified.
+Every component has a `classes` prop that will accept an object where each key corresponds to an internal element of the component. The value of each key will be the classes that will be applied to that element. For the values, you can use strings, objects or arrays, the same way it works with [Vue's class binding](https://vuejs.org/guide/essentials/class-and-style.html).
 
 ```html
 <template>
@@ -311,6 +296,13 @@ If you want to modify the style of something else, you can use the `classes` pro
     <template #prefix>Hello</template>
   </bn-input>
 </code-preview>
+
+Default styles will still be applied, but the classes you provide will take precedence, so you can use this to override any existing style.
+
+The available keys for this component are:
+- `input`: The `<input>` element
+- `prefix`: The element surrounding the `prefix` slot
+- `suffix`: The element surrounding the `suffix` slot
 
 ### Theming
 

@@ -181,6 +181,26 @@ function isRequired(val: string) {
         </BnInput>
       </template>
     </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnInput
+          v-model="state.value"
+          name="custom-classes"
+          :classes="{
+            input: 'border-2 border-orange-500',
+            prefix: 'text-yellow-500',
+            suffix: 'text-purple-500',
+          }"
+        >
+          <template #prefix>
+            +56 9
+          </template>
+          <template #suffix>
+            .com
+          </template>
+        </BnInput>
+      </template>
+    </Variant>
   </Story>
 </template>
 

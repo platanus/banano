@@ -100,5 +100,19 @@ function isRequired(val: string) {
         </BnTextarea>
       </template>
     </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnTextarea
+          v-model="state.value"
+          name="default"
+          :classes="{
+            textarea: [
+              'border-4 border-purple-500',
+              { 'border-green-500': !!state.value }
+            ],
+          }"
+        />
+      </template>
+    </Variant>
   </Story>
 </template>

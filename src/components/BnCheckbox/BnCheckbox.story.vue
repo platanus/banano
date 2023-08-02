@@ -121,6 +121,21 @@ function isRequired(val: string) {
         </BnCheckbox>
       </template>
     </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnCheckbox
+          v-model="state.single"
+          name="custom-classes"
+          value="Checked"
+          color="lime"
+          :classes="{
+            input: 'rounded-full',
+          }"
+        >
+          This is a checkbox
+        </BnCheckbox>
+      </template>
+    </Variant>
   </Story>
 </template>
 

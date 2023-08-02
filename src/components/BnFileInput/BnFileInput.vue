@@ -2,6 +2,16 @@
 import { RuleExpression, useField } from 'vee-validate';
 import { computed, ref, toRef } from 'vue';
 import BnBtn from '../BnBtn/BnBtn.vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  wrapper?: ComponentClassType,
+  button?: ComponentClassType,
+  avatar?: ComponentClassType,
+  label?: ComponentClassType,
+  placeholder?: ComponentClassType,
+  'clear-button'?: ComponentClassType,
+}
 
 export type FileType = File[] | File | undefined;
 
@@ -16,6 +26,7 @@ interface Props {
   placeholder?: string
   variant?: 'default' | 'avatar'
   avatarShape?: string
+  classes?: ClassesProp
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   buttonText: 'Browse',
   variant: 'default',
   avatarShape: 'default',
+  classes: () => ({}),
 });
 
 const fileInputRef = ref<HTMLInputElement>();
@@ -151,7 +163,8 @@ function removeFile(file: File) {
           'bn-file-input__wrapper--disabled': props.disabled,
           'bn-file-input__wrapper--custom': $slots['default'],
           'bn-file-input__wrapper--error': meta.touched && !meta.valid,
-        }
+        },
+        props.classes.wrapper,
       ]"
     >
       <input
@@ -178,6 +191,7 @@ function removeFile(file: File) {
             size="xs"
             type="button"
             class="bn-file-input__button"
+            :class="props.classes.button"
             variant="outline"
             :disabled="props.disabled"
             @click="openFileDialog"
@@ -189,7 +203,10 @@ function removeFile(file: File) {
           <button
             type="button"
             class="bn-file-input__avatar"
-            :class="`bn-file-input__avatar--${props.avatarShape}`"
+            :class="[
+              `bn-file-input__avatar--${props.avatarShape}`,
+              props.classes.avatar,
+            ]"
             :disabled="props.disabled"
             @click="openFileDialog"
           >
@@ -206,6 +223,7 @@ function removeFile(file: File) {
         <div
           v-if="variant !== 'avatar'"
           class="bn-file-input__label"
+          :class="props.classes.label"
         >
           <div
             v-if="fileNames"
@@ -217,6 +235,7 @@ function removeFile(file: File) {
             <button
               type="button"
               class="bn-file-input__clear-button"
+              :class="props.classes['clear-button']"
               @click="inputValue = undefined"
             >
               <svg
@@ -233,6 +252,7 @@ function removeFile(file: File) {
           <span
             v-else
             class="bn-file-input__placeholder"
+            :class="props.classes.placeholder"
           >
             {{ props.placeholder }}
           </span>

@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  loading?: ComponentClassType
+}
 
 interface Props {
   as?: string
@@ -9,6 +14,7 @@ interface Props {
   color?: string
   loading?: boolean
   loadingReplacesContent?: boolean
+  classes?: ClassesProp
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'banano-base',
   loading: false,
   loadingReplacesContent: false,
+  classes: () => ({}),
 });
 
 const attrs = useAttrs();
@@ -56,7 +63,10 @@ const tag = computed(() => {
         <svg
           v-if="loading"
           class="bn-btn__loading"
-          :class="`bn-btn__loading--sizes-${props.size}`"
+          :class="[
+            `bn-btn__loading--sizes-${props.size}`,
+            props.classes.loading
+          ]"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -88,7 +98,10 @@ const tag = computed(() => {
     <template v-else>
       <svg
         class="bn-btn__loading bn-btn__loading--no-content"
-        :class="`bn-btn__loading--sizes-${props.size}`"
+        :class="[
+          `bn-btn__loading--sizes-${props.size}`,
+          props.classes.loading
+        ]"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

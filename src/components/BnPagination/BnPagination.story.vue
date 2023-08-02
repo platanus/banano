@@ -20,6 +20,18 @@ const state = reactive({
         />
       </template>
     </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnPagination
+          :total-pages="pages"
+          :current-page="state.currentPage"
+          :classes="{
+            list: 'justify-between flex-1',
+          }"
+          @page-changed="state.currentPage = $event"
+        />
+      </template>
+    </Variant>
   </Story>
 </template>
 

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
 import { toRefs, useAttrs, computed } from 'vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  input?: ComponentClassType,
+}
 
 export type ValueType = undefined | boolean | string | number | Record<string, unknown>;
 
@@ -12,6 +17,7 @@ interface Props {
   rules?: RuleExpression<ValueType | ValueType[]>,
   disabled?: boolean,
   uncheckedValue?: ValueType,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   rules: undefined,
   disabled: false,
   uncheckedValue: undefined,
+  classes: () => ({}),
 });
 
 const { name, uncheckedValue, rules, value } = toRefs(props);
@@ -71,7 +78,8 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
       class="bn-checkbox__input"
       :class="[
         `bn-checkbox__input--${props.color}`,
-        {'bn-checkbox__input--error': hasError}
+        {'bn-checkbox__input--error': hasError},
+        props.classes.input,
       ]"
       v-bind="attrsWithoutClass"
       :disabled="props.disabled"

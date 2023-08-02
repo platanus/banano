@@ -258,6 +258,22 @@ function isRequired(val: string) {
         </BnListbox>
       </template>
     </Variant>
+    <Variant title="With classes customization">
+      <template #default>
+        <BnListbox
+          v-model="state.multiple"
+          name="multiple"
+          multiple
+          :options="selectOptions"
+          :classes="{
+            button: 'bg-yellow-100',
+            tag: 'bg-purple-50 border border-purple-200',
+            options: 'border-purple-900',
+            option: 'ui-active:bg-purple-200 ui-selected:bg-purple-300',
+          }"
+        />
+      </template>
+    </Variant>
   </Story>
 </template>
 

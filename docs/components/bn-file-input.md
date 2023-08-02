@@ -115,12 +115,12 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 
 This slot allows you to customize the entire `FileInput` appearance. It includes the following slot props:
 
-- `imagePreviewPath`: A function that takes a file as input and generates a URL to preview it.
-- `disabled`: A boolean indicating whether the input is disabled.
-- `openFileDialog`: A function that allows you to open the file upload window.
-- `removeFile`: A function that removes the provided file from the value. If the input allows a single file, it sets the value to `undefined`. If it allows multiple files, it removes the selected file from the list.
-- `addFile`: A function that adds a file. If the input allows a single file, it replaces the older file with the new one. If it allows multiple files, it adds the file to the list.
-- `value`: The input value. If it's a single file input, it returns a file object. If it's a multiple file input, it returns a file list.
+- `imagePreviewPath`: A function that takes a file as input and generates a URL to preview it
+- `disabled`: A boolean indicating whether the input is disabled
+- `openFileDialog`: A function that allows you to open the file upload window
+- `removeFile`: A function that removes the provided file from the value. If the input allows a single file, it sets the value to `undefined`. If it allows multiple files, it removes the selected file from the list
+- `addFile`: A function that adds a file. If the input allows a single file, it replaces the older file with the new one. If it allows multiple files, it adds the file to the list
+- `value`: The input value. If it's a single file input, it returns a file object. If it's a multiple file input, it returns a file list
 
 ```html
 <bn-file-input
@@ -296,9 +296,35 @@ Useful for hints or errors. Includes the following slot props:
 </code-preview>
 
 
-## [TODO] Customization
 
-TO DO.
+## Customization
+
+There are two ways to customize the appearance of the `BnFileInput` component:
+
+### `classes` prop
+
+Every component has a `classes` prop that will accept an object where each key corresponds to an internal element of the component. The value of each key will be the classes that will be applied to that element. For the values, you can use strings, objects or arrays, the same way it works with [Vue's class binding](https://vuejs.org/guide/essentials/class-and-style.html).
+
+```html
+<bn-file-input name="input" :classes="{ button: 'rounded-full' }" />
+```
+
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <bn-file-input name="input" :classes="{ button: 'rounded-full' }" />
+  </div>
+</code-preview>
+
+Default styles will still be applied, but the classes you provide will take precedence, so you can use this to override any existing style.
+
+The available keys for this component are:
+
+- `wrapper`: The element surrounding everything but the `bottom` slot
+- `button`: The button that opens the file dialog
+- `avatar`: The `<button>` element when using the `avatar` variant. It contains the preview when file is selected
+- `label`: The element that contains either the placeholder or the file name and clear button
+- `placeholder`: The element that contains the placeholder text when no file is selected
+- `clear-button`: The button that clears the selected file(s)
 
 ### Theming
 

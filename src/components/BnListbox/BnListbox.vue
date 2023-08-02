@@ -10,6 +10,14 @@ import {
 } from '@headlessui/vue';
 import { computePosition, flip, offset } from '@floating-ui/dom';
 import isEmpty from 'lodash/isEmpty';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  button?: ComponentClassType,
+  tag?: ComponentClassType,
+  options?: ComponentClassType,
+  option?: ComponentClassType,
+}
 
 type InputValue = number | string | Record<string, unknown> | undefined;
 
@@ -26,6 +34,7 @@ interface Props {
   optionLabel?: string
   keepObjectValue?: boolean
   placeholder?: string
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   optionLabel: undefined,
   keepObjectValue: false,
   placeholder: undefined,
+  classes: () => ({}),
 });
 
 const useObjectOptions = !!props.trackBy && !!props.optionLabel;
@@ -185,7 +195,8 @@ const formValue = computed({
           {
             'bn-listbox__button--error': !meta.valid && meta.touched,
             'bn-listbox__button--disabled': props.disabled
-          }
+          },
+          props.classes.button
         ]"
         @blur="setTouched(true)"
       >
@@ -209,7 +220,9 @@ const formValue = computed({
             >
               <span
                 class="bn-listbox__tag"
-                :class="`bn-listbox__tag--${props.color}`"
+                :class="[
+                  `bn-listbox__tag--${props.color}`, props.classes.tag
+                ]"
               >
                 {{ isObjectValue(option) ? option[props.optionLabel as string] : option }}
               </span>
@@ -241,7 +254,10 @@ const formValue = computed({
         <ListboxOptions
           ref="listboxOptionsRef"
           class="bn-listbox-options"
-          :class="[`bn-listbox-options--${props.color}`]"
+          :class="[
+            `bn-listbox-options--${props.color}`,
+            props.classes.options
+          ]"
           :style="`width: ${listboxButtonWidth}px`"
         >
           <ListboxOption
@@ -250,7 +266,10 @@ const formValue = computed({
             :key="isObjectValue(option) ? (option[props.trackBy as string] as string) : option"
             :value="option"
             class="bn-listbox-options__option"
-            :class="`bn-listbox-options__option--${props.color}`"
+            :class="[
+              `bn-listbox-options__option--${props.color}`,
+              props.classes.option
+            ]"
           >
             <slot
               name="option-template"

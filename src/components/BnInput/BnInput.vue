@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
 import { toRefs, useAttrs } from 'vue';
+import { type ComponentClassType } from '../../types/class';
+
+interface ClassesProp {
+  input?: ComponentClassType,
+  prefix?: ComponentClassType,
+  suffix?: ComponentClassType,
+}
 
 interface Props {
   modelValue?: string | number
   name: string
   color?: string
   rules?: RuleExpression<string | number>,
+  classes?: ClassesProp,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   color: 'banano-base',
   rules: undefined,
+  classes: () => ({}),
 });
 
 const { name, rules } = toRefs(props);
@@ -50,6 +59,7 @@ export default {
       <div
         v-if="$slots['prefix']"
         class="bn-input__prefix"
+        :class="props.classes.prefix"
       >
         <slot name="prefix" />
       </div>
@@ -74,7 +84,8 @@ export default {
               'bn-input__input--prefix': $slots['prefix'],
               'bn-input__input--suffix': $slots['suffix'],
               'bn-input__input--error': !meta.valid && meta.touched,
-            }
+            },
+            props.classes.input,
           ]"
           @input="handleChange"
           @blur="handleBlur"
@@ -89,6 +100,7 @@ export default {
       <div
         v-if="$slots['suffix']"
         class="bn-input__suffix"
+        :class="props.classes.suffix"
       >
         <slot name="suffix" />
       </div>

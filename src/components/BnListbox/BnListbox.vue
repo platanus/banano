@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { ref, ComponentPublicInstance, watchEffect, computed, toRefs } from 'vue';
+import { ref, ComponentPublicInstance, watch, computed, toRefs } from 'vue';
 import { useElementBounding } from '@vueuse/core';
 import {
   Listbox,
@@ -122,11 +122,18 @@ const { handleChange, value, meta, setTouched, errorMessage } = useField<InputVa
 });
 
 const listboxButtonRef = ref<ComponentPublicInstance>();
-const { width: listboxButtonWidth } = useElementBounding(listboxButtonRef);
+const {
+  width: listboxButtonWidth, top: listboxButtonTop, left: listboxButtonLeft,
+} = useElementBounding(listboxButtonRef);
 
 const listboxOptionsRef = ref<ComponentPublicInstance>();
 const LISTBOX_OFFSET = 4;
-watchEffect(() => {
+const buttonPositionAndOptionsPresenceForWatchDependencies = computed(() => ([
+  listboxButtonTop.value,
+  listboxButtonLeft.value,
+  listboxOptionsRef.value?.$el,
+]));
+watch(buttonPositionAndOptionsPresenceForWatchDependencies, () => {
   if (listboxOptionsRef.value && listboxOptionsRef.value.$el && listboxButtonRef.value) {
     computePosition(
       listboxButtonRef.value.$el,

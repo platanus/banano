@@ -236,7 +236,7 @@ function removeFile(file: File) {
               type="button"
               class="bn-file-input__clear-button"
               :class="props.classes['clear-button']"
-              @click="inputValue = undefined"
+              @click.prevent="inputValue = undefined"
             >
               <svg
                 class="bn-file-input__clear-button-icon"

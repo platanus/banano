@@ -19,14 +19,16 @@ yarn add banano vee-validate
 # If using the tailwind plugin
 yarn add @headlessui/tailwindcss @tailwindcss/forms
 ```
-
+Then, in any component, you can import components from Banano as shown below:
 ```typescript
-import { createApp } from 'vue';
-import banano from 'banano';
+<script>
+import { BnInput } from 'banano';
+</script>
+<template>
+  <bn-input name="name">
+  </bn-input>
+</template>
 
-const app = createApp({...});
-app.use(banano);
-app.mount();
 ```
 
 ```javascript

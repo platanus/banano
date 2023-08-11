@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { computed, ref, toRef } from 'vue';
-import BnBtn from '../BnBtn/BnBtn.vue';
+import { computed, ref, toRef, useSlots } from 'vue';
 import { type ComponentClassType } from '../../types/class';
+import useAttrsWithoutClass from '../../composables/useAttrsWithoutClass';
+import BnBtn from '../BnBtn/BnBtn.vue';
 
 interface ClassesProp {
   wrapper?: ComponentClassType,
@@ -42,12 +43,23 @@ const props = withDefaults(defineProps<Props>(), {
   classes: () => ({}),
 });
 
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: FileType): void
+  (e: 'focus', event: Event): void
+  (e: 'blur', event: Event): void
+}>();
+
+const { attrClass, attrsWithoutClass } = useAttrsWithoutClass();
+defineOptions({ inheritAttrs: false });
+
 const fileInputRef = ref<HTMLInputElement>();
 
 const name = toRef(props, 'name');
 const rules = toRef(props, 'rules');
 
 const addingFile = ref(false);
+const isAvatar = computed(() => props.variant === 'avatar');
+const hasDefaultSlot = useSlots().default !== undefined;
 
 function isFileList(object: FileType): object is File[] {
   return props.multiple;
@@ -57,7 +69,6 @@ const {
   value: inputValue,
   handleChange,
   handleBlur,
-  setTouched,
   meta,
   errorMessage,
 } = useField<FileType >(name, rules, {
@@ -124,7 +135,6 @@ function imagePreviewPath(file: File) {
 function openFileDialog() {
   if (fileInputRef.value) {
     fileInputRef.value.click();
-    setTouched(true);
   }
 }
 
@@ -145,6 +155,11 @@ function removeFile(file: File) {
 
   updateInputFiles();
 }
+
+function blur(event: Event) {
+  handleBlur();
+  emit('blur', event);
+}
 </script>
 
 <template>
@@ -152,10 +167,11 @@ function removeFile(file: File) {
     class="bn-file-input"
     :class="[
       `bn-file-input--${props.color}`,
+      attrClass
     ]"
   >
     <component
-      :is="$slots['default'] ? 'div' : 'label'"
+      :is="hasDefaultSlot ? 'div' : 'label'"
       class="bn-file-input__wrapper"
       :class="[
         `bn-file-input__wrapper--variants-${props.variant}`,
@@ -166,6 +182,10 @@ function removeFile(file: File) {
         },
         props.classes.wrapper,
       ]"
+      :tabindex="props.disabled || hasDefaultSlot || isAvatar ? '-1' : '0'"
+      @blur="blur"
+      @focus="$emit('focus', $event)"
+      @keyup.enter="openFileDialog"
     >
       <input
         ref="fileInputRef"
@@ -175,12 +195,12 @@ function removeFile(file: File) {
         :multiple="props.multiple"
         :disabled="props.disabled"
         :model-value="inputValueList"
+        v-bind="attrsWithoutClass"
         @change="setFile"
-        @blur="handleBlur"
       >
       <slot
         :open-file-dialog="openFileDialog"
-        :disabled="disabled"
+        :disabled="props.disabled"
         :image-preview-path="imagePreviewPath"
         :remove-file="removeFile"
         :add-file="addFile"
@@ -194,12 +214,13 @@ function removeFile(file: File) {
             :class="props.classes.button"
             variant="outline"
             :disabled="props.disabled"
+            tabindex="-1"
             @click="openFileDialog"
           >
             {{ props.buttonText }}
           </BnBtn>
         </template>
-        <template v-if="variant === 'avatar'">
+        <template v-if="isAvatar">
           <button
             type="button"
             class="bn-file-input__avatar"
@@ -209,9 +230,11 @@ function removeFile(file: File) {
             ]"
             :disabled="props.disabled"
             @click="openFileDialog"
+            @blur="blur"
+            @focus="$emit('focus', $event)"
           >
             <img
-              v-if="inputValue && !isFileList(inputValue) && inputValue && imagePreviewPath(inputValue)"
+              v-if="inputValue && !isFileList(inputValue) && imagePreviewPath(inputValue)"
               :src="imagePreviewPath(inputValue)"
               class="bn-file-input__avatar-preview"
             >
@@ -221,7 +244,7 @@ function removeFile(file: File) {
           </button>
         </template>
         <div
-          v-if="variant !== 'avatar'"
+          v-else
           class="bn-file-input__label"
           :class="props.classes.label"
         >
@@ -236,6 +259,7 @@ function removeFile(file: File) {
               type="button"
               class="bn-file-input__clear-button"
               :class="props.classes['clear-button']"
+              :disabled="props.disabled"
               @click.prevent="inputValue = undefined"
             >
               <svg

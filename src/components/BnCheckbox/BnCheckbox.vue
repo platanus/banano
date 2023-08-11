@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRefs, useAttrs, computed } from 'vue';
+import { toRefs, computed } from 'vue';
 import { type ComponentClassType } from '../../types/class';
+import useAttrsWithoutClass from '../../composables/useAttrsWithoutClass';
 
 interface ClassesProp {
   input?: ComponentClassType,
@@ -29,6 +30,9 @@ const props = withDefaults(defineProps<Props>(), {
   uncheckedValue: undefined,
   classes: () => ({}),
 });
+
+const { attrClass, attrsWithoutClass } = useAttrsWithoutClass();
+defineOptions({ inheritAttrs: false });
 
 const { name, uncheckedValue, rules, value } = toRefs(props);
 
@@ -58,8 +62,6 @@ function onChange(e: Event) {
   }
 }
 
-const attrs = useAttrs();
-const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
 </script>
 
 <template>
@@ -68,6 +70,7 @@ const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]
     :class="[
       {'bn-checkbox--error': hasError},
       {'bn-checkbox--disabled': props.disabled},
+      attrClass,
     ]"
   >
     <input

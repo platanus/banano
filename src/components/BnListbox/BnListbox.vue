@@ -19,15 +19,14 @@ interface ClassesProp {
   option?: ComponentClassType,
 }
 
-type InputValue = number | string | Record<string, unknown> | undefined;
+export type InputValue = number | string | Record<string, unknown> | undefined;
 
 interface Props {
   modelValue?: InputValue | InputValue[]
   options: string[] | Record<string, unknown>[]
   name: string
   color?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rules?: RuleExpression<any>
+  rules?: RuleExpression<InputValue | InputValue[]>
   disabled?: boolean
   multiple?: boolean
   trackBy?: string
@@ -63,6 +62,11 @@ function isObjectOptions(value: InputValue[]): value is Record<string, unknown>[
 function isMultipleValue(value: InputValue | InputValue[]): value is InputValue[] {
   return props.multiple;
 }
+
+const emit = defineEmits<{
+  (e: 'focus', event: Event): void,
+  (e: 'blur', event: Event): void,
+}>();
 
 const { name, rules } = toRefs(props);
 
@@ -165,8 +169,12 @@ const formValue = computed({
     onUpdate(val);
   },
 });
-</script>
 
+function blur(e: Event) {
+  setTouched(true);
+  emit('blur', e);
+}
+</script>
 <template>
   <div class="bn-listbox">
     <template v-if="!props.keepObjectValue">
@@ -205,7 +213,8 @@ const formValue = computed({
           },
           props.classes.button
         ]"
-        @blur="setTouched(true)"
+        @blur="blur"
+        @focus="emit('focus', $event)"
       >
         <span
           v-if="placeholder && isEmpty(parsedValue)"

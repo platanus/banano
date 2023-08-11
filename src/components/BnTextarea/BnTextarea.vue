@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RuleExpression, useField } from 'vee-validate';
-import { toRefs, useAttrs } from 'vue';
+import { toRefs } from 'vue';
+import useAttrsWithoutClass from '../../composables/useAttrsWithoutClass';
 import { type ComponentClassType } from '../../types/class';
 
 interface ClassesProp {
@@ -23,6 +24,9 @@ const props = withDefaults(defineProps<Props>(), {
   classes: () => ({}),
 });
 
+const { attrClass, attrsWithoutClass } = useAttrsWithoutClass();
+defineOptions({ inheritAttrs: false });
+
 const { name, rules } = toRefs(props);
 
 const {
@@ -37,19 +41,12 @@ const {
   syncVModel: true,
 });
 
-const attrs = useAttrs();
-const attrsWithoutClass = Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
-defineOptions({
-  inheritAttrs: false,
-});
 </script>
 
 <template>
   <div
     class="bn-textarea"
-    :class="{
-      [attrs.class as string]: attrs.class
-    }"
+    :class="attrClass"
   >
     <textarea
       v-bind="attrsWithoutClass"

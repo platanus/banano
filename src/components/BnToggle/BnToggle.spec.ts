@@ -3,9 +3,9 @@ import waitForExpect from 'wait-for-expect';
 import { defineComponent } from 'vue';
 import { Form } from 'vee-validate';
 import { mount } from '@vue/test-utils';
-import BnToggle, { type valueTypes } from './BnToggle.vue';
+import BnToggle, { type ValueTypes } from './BnToggle.vue';
 
-function isRequired(val: valueTypes | valueTypes[]) {
+function isRequired(val: ValueTypes | ValueTypes[]) {
   if (!val) {
     return 'This field is required';
   }

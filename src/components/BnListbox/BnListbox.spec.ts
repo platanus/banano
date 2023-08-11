@@ -1,12 +1,11 @@
-import flushPromises from 'flush-promises';
 import waitForExpect from 'wait-for-expect';
 import { defineComponent } from 'vue';
 import { Form } from 'vee-validate';
 import { ListboxOption } from '@headlessui/vue';
 import { mount } from '@vue/test-utils';
-import BnListbox from './BnListbox.vue';
+import BnListbox, { type InputValue } from './BnListbox.vue';
 
-function isRequired(val: string) {
+function isRequired(val: InputValue | InputValue[]) {
   if (!val) {
     return 'This field is required';
   }

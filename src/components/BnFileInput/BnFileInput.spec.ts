@@ -179,9 +179,9 @@ describe('BnFileInput', () => {
   it('should validate using prop rules', async () => {
     const wrapper = mount(BnFileInput, { props: { name: 'image', rules: isRequired } });
     expect(wrapper.classes().includes('bn-file-input--error')).toBe(false);
-    const input = wrapper.find('button');
+    const input = wrapper.find('label');
     expect(wrapper.find('[class$="--error"]').exists()).toBe(false);
-    input.trigger('click');
+    await input.trigger('blur');
     await waitForExpect(() => {
       expect(wrapper.find('[class$="--error"]').exists()).toBe(true);
     });
@@ -189,10 +189,10 @@ describe('BnFileInput', () => {
 
   it('should validate using form rules', async () => {
     const wrapper = mount(generateExampleForm(), { props: { validationSchema: { image: isRequired } } });
-    const input = wrapper.find('button');
+    const input = wrapper.find('label');
     const inputWrapper = wrapper.find('div');
     expect(inputWrapper.find('[class$="--error"]').exists()).toBe(false);
-    input.trigger('click');
+    input.trigger('blur');
     await waitForExpect(() => {
       expect(inputWrapper.find('[class$="--error"]').exists()).toBe(true);
     });
@@ -221,6 +221,40 @@ describe('BnFileInput', () => {
 
     await waitForExpect(() => {
       expect(wrapper.vm.imagesArray).toStrictEqual([file]);
+    });
+  });
+
+  describe('with default slot', () => {
+    it('should trigger focus event', async () => {
+      const wrapper = mount(BnFileInput, { props: { name: 'image' } });
+      await wrapper.find('label').trigger('focus');
+      await waitForExpect(() => {
+        expect(wrapper.emitted('focus')).toBeTruthy();
+      });
+    });
+    it('should trigger blur event', async () => {
+      const wrapper = mount(BnFileInput, { props: { name: 'image' } });
+      await wrapper.find('label').trigger('blur');
+      await waitForExpect(() => {
+        expect(wrapper.emitted('blur')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('with avatar slot', () => {
+    it('should trigger focus event', async () => {
+      const wrapper = mount(BnFileInput, { props: { name: 'image', variant: 'avatar' } });
+      await wrapper.find('button').trigger('focus');
+      await waitForExpect(() => {
+        expect(wrapper.emitted('focus')).toBeTruthy();
+      });
+    });
+    it('should trigger blur event', async () => {
+      const wrapper = mount(BnFileInput, { props: { name: 'image', variant: 'avatar' } });
+      await wrapper.find('button').trigger('blur');
+      await waitForExpect(() => {
+        expect(wrapper.emitted('blur')).toBeTruthy();
+      });
     });
   });
 });

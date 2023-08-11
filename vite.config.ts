@@ -29,7 +29,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['./src/components/**/*.spec.ts'],
+    include: ['./src/components/**/*.spec.ts', './src/composables/**/*.spec.ts'],
     globals: true,
     environment: 'jsdom',
   },

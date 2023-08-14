@@ -1,4 +1,6 @@
 import { defineConfig } from 'vitepress';
+import { whyframe } from '@whyframe/core';
+import { whyframeVue } from '@whyframe/vue';
 
 const h2 = 2;
 const h3 = 3;
@@ -85,5 +87,15 @@ export default defineConfig({
       ],
     },
     outline: [h2, h3],
+  },
+  vite: {
+    plugins: [
+      whyframe({
+        defaultSrc: '/banano/frames/default', // provide our own html
+      }),
+      whyframeVue({
+        include: /\.(?:vue|md)$/, // also scan in markdown files
+      }),
+    ],
   },
 });

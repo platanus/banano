@@ -5,6 +5,7 @@ module.exports = {
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
     './docs/**/*.{html,md,vue}',
+    './docs/.vitepress/**/*.{html,md,vue}',
   ],
   theme: {
     extend: {},

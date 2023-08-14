@@ -16,6 +16,10 @@ function isRequired(val: string) {
 
   return true;
 }
+
+const validationSchema = {
+  terms: isRequired,
+};
 </script>
 
 # BnCheckbox
@@ -27,23 +31,42 @@ BnCheckbox is a wrapper for `<input type="checkbox">` elements.
 <bn-checkbox v-model="input" name="name">Name</bn-checkbox>
 ```
 <code-preview>
-  <bn-checkbox v-model="input"  name="name">Name</bn-checkbox>
+  <bn-checkbox v-model="input" name="name">Name</bn-checkbox>
+  <bn-checkbox v-model="input" name="name">Name</bn-checkbox>
+  <bn-checkbox v-model="input" name="name">Name</bn-checkbox>
 </code-preview>
 
 ## Input Attributes
-The underlying `input` receives all attributes passed to the component.
+The `BnCheckbox` component accepts all the attributes that a native `<input>` element accepts.
 
 ```html
-<bn-checkbox name="disabled" disabled>
+<bn-checkbox v-model="input" name="disabled" disabled>
   Disabled Checkbox
 </bn-checkbox>
 ```
 
 <code-preview>
-  <div class="grid col-span-1 gap-4">
-    <bn-checkbox name="disabled" disabled>
-    Disabled Checkbox</bn-checkbox>
-  </div>
+  <bn-checkbox v-model="input" name="disabled" disabled>
+    Disabled Checkbox
+  </bn-checkbox>
+</code-preview>
+
+
+## Value and Unchecked Value
+
+By default, the `BnCheckbox` component will return `true` when checked and `false` when unchecked. You can customize this behavior by using the `value` and `uncheckedValue` props.
+
+```html
+<bn-checkbox v-model="input" name="name" value="SELECTED" uncheckedValue="UNSELECTED">
+  Custom value
+</bn-checkbox>
+```
+
+<code-preview>
+  <bn-checkbox v-model="input" name="name" value="SELECTED" uncheckedValue="UNSELECTED">
+    Custom value
+  </bn-checkbox>
+  {{ input }}
 </code-preview>
 
 ## Vee-Validate
@@ -51,21 +74,55 @@ BnCheckbox works with vee-validate out of the box.
 
 ```vue
 <script setup lang="ts">
-import { Form } from 'vee-validate';
+import { Form, ErrorMessage } from 'vee-validate';
+import isRequired from '../rules';
+
+const validationSchema = {
+  terms: isRequired,
+};
+</script>
+
+<template>
+  <Form :validation-schema="validationSchema">
+    <bn-checkbox name="terms">
+      You accept our terms and conditions
+    </bn-checkbox>
+    <ErrorMessage name="terms" class="text-red-600"/>
+  </Form>
+</template>
+```
+
+<code-preview>
+  <Form :validation-schema="validationSchema">
+    <bn-checkbox name="terms">
+      You accept our terms and conditions
+    </bn-checkbox>
+    <ErrorMessage name="terms" class="text-red-600"/>
+  </Form>
+</code-preview>
+
+### Rules
+
+If you want to validate a field without being in the context of a `Form` or an `useForm`, you can use the `rules` prop.
+
+::: warning
+The `rules` prop will be ignored if the component is inside a `Form` or an `useForm` context with a `validationSchema`.
+:::
+
+```vue
+<script setup lang="ts">
 import isRequired from '../rules';
 </script>
 
 <template>
-  <Form>
-    <bn-checkbox
-      v-model="validate"
-      name="validation"
-      :rules="isRequired"
-    >
-      You accept our terms and conditions
-    </bn-checkbox>
-    <ErrorMessage name="validation" class="text-red-600"/>
-  </Form>
+  <bn-checkbox
+    v-model="validate"
+    name="validation"
+    :rules="isRequired"
+  >
+    You accept our terms and conditions
+  </bn-checkbox>
+  <ErrorMessage name="validation" class="text-red-600"/>
 </template>
 ```
 
@@ -82,50 +139,9 @@ import isRequired from '../rules';
   </Form>
 </code-preview>
 
-Including support for custom checked and unchecked values
-
-```vue
-<script setup lang="ts">
-import { Form } from 'vee-validate';
-</script>
-
-<template>
-  <Form v-slot="{ values }" :initial-values="{ values: 'UNSELECTED' }">
-    {{ values }}
-    <bn-checkbox
-      name="values" value="SELECTED" uncheckedValue="UNSELECTED"
-    >
-      Custom value
-    </bn-checkbox>
-  </Form>
-</template>
-```
-
-<code-preview>
-  <Form v-slot="{ values }" :initial-values="{ values: 'UNSELECTED' }">
-    {{ values }}
-    <bn-checkbox
-      v-model="validate"
-      name="values"
-      value="SELECTED"
-      uncheckedValue="UNSELECTED"
-    >
-      Custom value
-    </bn-checkbox>
-  </Form>
-</code-preview>
-
 ## Colors
 
-Due to the way Tailwind compiles classes, to avoid generating CSS for every single color it includes, Banano only has access to the colors you define in its configuration:
-
-```javascript
-// tailwind.config.js
-{
-...
-  require('banano/tailwind')({ colors: ['lime']}),
-}
-```
+You can change the color accent of the checkbox using the `color` prop.
 
 ```html
   <bn-checkbox name="selectedInput" color="lime" v-model="selectedInput">
@@ -139,6 +155,16 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
     </bn-checkbox>
   </div>
 </code-preview>
+
+Note: the color prop only supports the included colors when configuring the library.
+
+```javascript
+// tailwind.config.js
+{
+...
+  require('banano/tailwind')({ colors: ['lime']}),
+}
+```
 
 ## Slots
 
@@ -206,3 +232,32 @@ You can change the default appearance or even add variants by editing the config
 ```
 
 You can find more information about customizing the library in [Theme Customization](../theme-customization.md).
+
+## API Reference
+
+### Props
+
+```typescript
+type ValueType = undefined | boolean | string | number | Record<string, unknown>;
+```
+
+| Prop            | Default     | Description |
+| --------------- | ----------- | ----------- |
+| `modelValue`    | `undefined` | `ValueType \| ValueType[]` <br><br> The model value of the checkbox. |
+| `value`         | `true`      | `ValueType` <br><br> The value of the checkbox. |
+| `name`          | --          | `string` <br><br> The name of the checkbox. |
+| `color`         | `'banano-base'` | `string` <br><br> The color of the checkbox. |
+| `rules`         | `undefined` | `RuleExpression<ValueType \| ValueType[]>` <br><br> Validation rules for the checkbox. Usually a function that receives the value of the component and returns a boolean or a string if invalid. |
+| `disabled`      | `false`     | `boolean` <br><br> Determines if the checkbox is disabled. |
+| `uncheckedValue`| `undefined` | `ValueType` <br><br> The value of the checkbox when it is unchecked. |
+| `classes`       | `{}`| `object` <br><br> Allows to customize the classes of the component. |
+
+### Events
+
+This component does not emit any events, but it emits all the events from the underlying `<input>` element.
+
+### Slots
+
+| Slot        | Slot Props | Description |
+| ----------- | ---------- | ----------- |
+| `default`   | --         | Use to input the content within the checkbox label. |

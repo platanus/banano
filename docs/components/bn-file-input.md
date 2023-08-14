@@ -17,6 +17,12 @@ function isRequired(val: File[] | File | undefined) {
   return true;
 }
 
+const focused = ref(false);
+const blurred = ref(false);
+
+const validationSchema = {
+  file: isRequired,
+};
 </script>
 
 # BnFileInput
@@ -24,6 +30,8 @@ function isRequired(val: File[] | File | undefined) {
 BnFileInput is a wrapper for `<input type="file"> ` elements, designed to work with `v-model` to simplify management. It returns a file list if it allows multiple files or a single file if it's not.
 
 ## Basic Usage
+
+The only required prop for `BnFileInput` is `name`. The `name` prop is used to identify the input in the context of a `Form` or an `useForm`, or when submitting a form in the traditional way.
 
 ```html
 <bn-file-input v-model="file" name="name" />
@@ -34,7 +42,7 @@ BnFileInput is a wrapper for `<input type="file"> ` elements, designed to work w
 
 
 ## Input Attributes
-The underlying `input` element inherits common attributes from both `input` and `fileinput`, such as `disabled`, `multiple`, and `name`.
+The `BnFileInput` component inherits all attributes that a native `<input type="file">` element would accept but, since its appearance is customized, some attributes may not work as expected. Common attributes are `disabled` and `multiple`:
 
 ```html
 <bn-file-input name="disabled" placeholder="Disabled" disabled />
@@ -42,19 +50,55 @@ The underlying `input` element inherits common attributes from both `input` and 
 ```
 
 <code-preview>
-  <div class="grid col-span-1 gap-4">
+  <div class="grid gap-4">
     <bn-file-input name="disabled" placeholder="Disabled" disabled />
     <bn-file-input name="multiple" placeholder="Multiple" multiple />
   </div>
 </code-preview>
 
-It also supports the following props:
+## Variants
 
-- `buttonText`: The text that will appear on the button to open the window for file upload.
-- `placeholder`: The text for the placeholder in the default appearance.
-- `variant`: Can be 'default' or 'avatar'. If it is 'default', it uses a button; if it is 'avatar', it displays a preview image as the input.
-- `avatarShape`: It can take the values 'default' or 'circle' and determines the shape of the preview image.
+The `variant` prop can be used to change the appearance of the input. There are two variants included by default: `default` and `avatar`.
 
+```html
+<bn-file-input name="default" placeholder="Default" />
+<bn-file-input name="avatar" variant="avatar" />
+```
+
+<code-preview>
+  <div class="grid gap-4">
+    <bn-file-input name="default" placeholder="Default" />
+    <bn-file-input name="avatar" variant="avatar" />
+  </div>
+</code-preview>
+
+### Default Appearance
+
+The default appearance is a button with a text label. The `buttonText` prop can be used to change the text of the button. The `placeholder` prop can be used to change the text of the placeholder.
+
+```html
+<bn-file-input name="default" placeholder="Default" buttonText="Click me!" />
+```
+
+<code-preview>
+  <bn-file-input name="default" placeholder="Default" buttonText="Click me!" />
+</code-preview>
+
+### Avatar
+
+The `avatarShape` prop can be used to change the shape of the avatar. It can be `default` or `circle`.
+
+```html
+<bn-file-input name="default" variant="avatar" />
+<bn-file-input name="circle" variant="avatar" avatar-shape="circle" />
+```
+
+<code-preview>
+  <div class="grid gap-4">
+    <bn-file-input name="default" variant="avatar" />
+    <bn-file-input name="circle" variant="avatar" avatar-shape="circle" />
+  </div>
+</code-preview>
 
 ## Vee-Validate
 BnFileInput works with vee-validate out of the box.
@@ -63,34 +107,72 @@ BnFileInput works with vee-validate out of the box.
 <script setup lang="ts">
 import { Form } from 'vee-validate';
 import isRequired from '../rules';
+
+const validationSchema = {
+  file: isRequired,
+};
 </script>
 
 <template>
-  <Form>
-    <bn-file-input
-      v-model="validate"
-      name="validation"
-      :rules="isRequired"
-    />
-    <ErrorMessage name="validation" class="text-red-600"/>
+  <Form :validation-schema="validationSchema">
+    <bn-file-input name="file"/>
   </Form>
 </template>
 ```
 
 <code-preview>
-  <Form>
-    <bn-file-input
-      v-model="validate"
-      name="validation"
-      :rules="isRequired"
-    />
-    <ErrorMessage name="validation" class="text-red-600" />
+  <Form :validation-schema="validationSchema">
+    <bn-file-input name="file"/>
   </Form>
+</code-preview>
+
+### Rules
+
+If you want to validate a field without being in the context of a `Form` or an `useForm`, you can use the `rules` prop.
+
+::: warning
+The `rules` prop will be ignored if the component is inside a `Form` or an `useForm` context with a `validationSchema`.
+:::
+
+```vue
+<script setup lang="ts">
+import isRequired from '../rules';
+</script>
+
+<template>
+  <bn-file-input
+    v-model="validate"
+    name="validation"
+    :rules="isRequired"
+  />
+</template>
+```
+
+<code-preview>
+  <bn-file-input
+    v-model="validate"
+    name="validation"
+    :rules="isRequired"
+  />
 </code-preview>
 
 ## [TODO] Colors
 
-Due to the way Tailwind compiles classes, to avoid generating CSS for every single color it includes, Banano only has access to the colors you define in its configuration:
+You can change the color accent of the default variants of the file input using the `color` prop.
+
+```html
+  <bn-file-input name="input" color="lime" />
+  <bn-file-input name="avatar" color="lime" variant="avatar" />
+```
+
+<code-preview>
+  <div class="grid gap-4">
+    <bn-file-input name="input" color="lime" />
+    <bn-file-input name="avatar" color="lime" variant="avatar" />
+  </div>
+</code-preview>
+
+Note: the color prop only supports the included colors when configuring the library.
 
 ```javascript
 // tailwind.config.js
@@ -100,20 +182,11 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 }
 ```
 
-```html
-<bn-file-input name="input" color="lime" />
-```
-<code-preview>
-  <div class="grid col-span-1 gap-4">
-    <bn-file-input name="input" color="lime" />
-  </div>
-</code-preview>
-
 ## Slots
 
 ### default
 
-This slot allows you to customize the entire `FileInput` appearance. It includes the following slot props:
+The `default` slot allows you to customize the appearance of the entire `BnFileInput` component. It includes the following slot props:
 
 - `imagePreviewPath`: A function that takes a file as input and generates a URL to preview it
 - `disabled`: A boolean indicating whether the input is disabled
@@ -218,7 +291,7 @@ This slot allows you to customize the entire `FileInput` appearance. It includes
 
 ### bottom
 
-Useful for hints or errors. Includes the following slot props:
+The `bottom` slot is used to add content below the input. Useful for hints or errors. Includes the following slot props:
 - `errorMessage`: `vee-validate` property, if the input is invalid
 - `valid`: `vee-validate` meta property
 - `touched`: `vee-validate` meta property
@@ -259,40 +332,38 @@ Useful for hints or errors. Includes the following slot props:
 ```
 
 <code-preview>
-  <div class="grid col-span-1 gap-4">
-    <bn-file-input
-      v-model="file"
-      name="required"
-      :rules="isRequired"
-    >
-      <template #bottom="{ errorMessage, valid, touched }">
-        <div
-          v-if="!valid && touched"
-          class="mt-1 flex items-center text-rose-700"
+  <bn-file-input
+    v-model="file"
+    name="required"
+    :rules="isRequired"
+  >
+    <template #bottom="{ errorMessage, valid, touched }">
+      <div
+        v-if="!valid && touched"
+        class="mt-1 flex items-center text-rose-700"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
         >
-          <svg
-            viewBox="0 0 24 24"
-            class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
-          >
-            <path
-              :d="warningIcon"
-            />
-          </svg>
-          <span class="mr-1">
-            {{ errorMessage }}
-          </span>
-          <svg
-            viewBox="0 0 24 24"
-            class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
-          >
-            <path
-              :d="warningIcon"
-            />
-          </svg>
-        </div>
-      </template>
-    </bn-file-input>
-  </div>
+          <path
+            :d="warningIcon"
+          />
+        </svg>
+        <span class="mr-1">
+          {{ errorMessage }}
+        </span>
+        <svg
+          viewBox="0 0 24 24"
+          class="fill-none mr-1 h-4 w-4 stroke-current stroke-2"
+        >
+          <path
+            :d="warningIcon"
+          />
+        </svg>
+      </div>
+    </template>
+  </bn-file-input>
 </code-preview>
 
 
@@ -348,3 +419,37 @@ You can change the default appearance or even add variants by editing the config
 
 
 You can find more information about customizing the library in [Theme Customization](../theme-customization.md).
+
+## API Reference
+
+### Props
+
+| Prop                    | Default     | Description |
+| ----------------------- | ----------- | ----------- |
+| `modelValue`            | `undefined` | `FileType` (`File[] \| File \| undefined`) <br><br> Initial value for the file input. Can be a single file, an array of files, or undefined. |
+| `name`                  | --          | `string` <br><br> The name attribute of the file input. |
+| `color`                 | `'banano-base'` | `string` <br><br> Determines the color of the file input. |
+| `rules`                 | `undefined` | `RuleExpression<FileType>` <br><br> Validation rules for the checkbox. Usually a function that receives the value of the component and returns a boolean or a string if invalid. |
+| `multiple`              | `false`     | `boolean` <br><br> If true, the file input will accept multiple files. |
+| `disabled`              | `false`     | `boolean` <br><br> If true, the file input will be disabled. |
+| `buttonText`            | `'Browse'`  | `string` <br><br> The text displayed on the file input button. |
+| `placeholder`           | `'No file selected'` | `string` <br><br> The placeholder text for the file input when no file is selected. |
+| `variant`               | `'default'` | `'default' \| 'avatar'` <br><br> The variant of the file input. |
+| `avatarShape`           | `'default'` | `string` <br><br> The shape of the avatar in the file input. |
+| `classes`               | `{}` | `object` <br><br> Allows to customize the classes of the file input's elements. |
+
+### Events
+
+| Event      | Payload | Description |
+| ---------- | ------- | ----------- |
+| `focus`    | `Event` | Emitted when the file input is focused. |
+| `blur`     | `Event` | Emitted when the file input is blurred  |
+
+
+
+### Slots
+
+| Slot        | Slot Props | Description |
+| ----------- | ---------- | ----------- |
+| `default`   | <ul><li>`openFileDialog: Function`</li><li>`disabled: boolean`</li><li>`imagePreviewPath: Function`</li><li>`removeFile: Function`</li><li>`addFile: Function`</li><li>`value: FileType`</li></ul> | Use to input the content inside the file input wrapper. <br><br> `openFileDialog` function can be used to open the file dialog. <br> `disabled` is a boolean indicating whether the file input is disabled. <br> `imagePreviewPath` function can be used to get the preview path of a file. <br> `removeFile` function can be used to remove a file from the file input. <br> `addFile` function can be used to add a file to the file input. <br> `value` is the current value of the file input. |
+| `bottom`    | <ul><li>`errorMessage: string`</li><li>`valid: boolean`</li><li>`touched: boolean`</li></ul> | Use to input the content at the bottom of the file input. <br><br> `errorMessage` is the validation error message. <br> `valid` is a boolean indicating whether the file input value is valid. <br> `touched` is a boolean indicating whether the file input has been touched. |

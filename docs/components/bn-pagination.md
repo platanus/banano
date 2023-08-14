@@ -2,32 +2,124 @@
 import { ref } from 'vue';
 import BnPagination from '../../src/components/BnPagination/BnPagination.vue';
 
-const currentPage = ref(21);
+const currentPage = ref(10);
+function handlePageChange(newPage) {
+  currentPage.value = newPage;
+}
 </script>
 
 # BnPagination
 
-BnPagination is a wrapper for [HeadlessUI's Dialog](https://headlessui.dev/vue/dialog) component.
+BnPagination is a component to handle the pagination of content.
 
 ## Basic Usage
 
-TODO
+```html
+<bn-pagination
+  :total-pages="20"
+  :current-page="currentPage"
+  @page-changed="handlePageChange"
+/>
+```
+<code-preview>
+  <bn-pagination :total-pages="20" :current-page="currentPage" @page-changed="handlePageChange" />
+</code-preview>
 
-## Input Attributes
 
-TODO
+## Total Pages and Current Page
 
-## Vee-Validate
+The pagination component receives two props to configure its behavior:
 
-TODO
+- `total-pages`: The total number of pages.
+- `current-page`: The current page.
+
+```html
+<bn-pagination
+  :total-pages="100"
+  :current-page="30"
+/>
+```
+
+<code-preview>
+  <bn-pagination :total-pages="100" :current-page="30" />
+</code-preview>
+
+
+### Delta
+
+The `delta` prop allows you to configure the number of pages to display on either side of the current page. The default value is `1`.
+
+```html
+<bn-pagination
+  :total-pages="100"
+  :current-page="30"
+  :delta="3"
+/>
+```
+
+<code-preview>
+  <bn-pagination :total-pages="100" :current-page="30" :delta="3" />
+</code-preview>
+
+## Page Changed Event
+
+When the user clicks a page button, the pagination component will emit the `page-changed` event with the number of the new page. You can handle this event to update the current page either by using a function or by assigning the value directly.
+
+```javascript
+const currentPage = ref(10);
+
+function handlePageChange(newPage) {
+  currentPage.value = newPage;
+}
+```
+
+```html
+<bn-pagination
+  :total-pages="20"
+  :current-page="currentPage"
+  @page-changed="handlePageChange"
+/>
+```
+
+<code-preview>
+  <bn-pagination :total-pages="20" :current-page="currentPage" @page-changed="handlePageChange" />
+</code-preview>
+
+```html
+<bn-pagination
+  :total-pages="20"
+  :current-page="currentPage"
+  @page-changed="currentPage = $event"
+/>
+```
+
+<code-preview>
+  <bn-pagination :total-pages="20" :current-page="currentPage" @page-changed="currentPage = $event" />
+</code-preview>
 
 ## Colors
 
-TODO
+Due to the way Tailwind compiles classes, to avoid generating CSS for every single color it includes, Banano only has access to the colors you define in its configuration:
 
-## Slots
+```javascript
+// tailwind.config.js
+{
+...
+  require('banano/tailwind')({ colors: ['lime']}),
+}
+```
 
-TODO
+```html
+<bn-pagination
+  :total-pages="20"
+  :current-page="currentPage"
+  color="lime"
+/>
+```
+
+<code-preview>
+  <bn-pagination :total-pages="20" :current-page="currentPage" color="lime" />
+</code-preview>
 
 ## Customization
 
@@ -82,3 +174,24 @@ You can change the default appearance or even add variants by editing the config
 ```
 
 You can find more information about customizing the library in [Theme Customization](../theme-customization.md).
+
+
+## API Reference
+
+### Props
+
+| Prop                    | Default     | Description |
+| ----------------------- | ----------- | ----------- |
+| `as`                    | `'nav'`     | `string` <br><br> Determines the HTML element that will wrap the pagination elements. |
+| `templateUrl`           | `undefined` | `string` <br><br> If provided, the buttons of the pagination will be anchors (`<a>` tags) and this value should be a URL template where `{page}` will be replaced by the page number. If not provided, the buttons will be `<button>` tags. |
+| `totalPages`            | --          | `number` <br><br> The total number of pages. |
+| `currentPage`           | --          | `number` <br><br> The current page number. |
+| `delta`                 | `1`         | `number` <br><br> The number of page buttons to show before and after the current page. |
+| `color`                 | `undefined` | `string` <br><br> Determines the color of the pagination buttons. |
+| `classes`               | `{}`        | `object` <br><br> Allows you to customize the classes of the elements of the component. |
+
+### Events
+
+| Event          | Payload | Description |
+| -------------- | ------- | ----------- |
+| `page-changed` | `number` | Emitted when a page button is clicked. The payload is the number of the page clicked. |

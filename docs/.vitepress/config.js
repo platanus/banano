@@ -45,6 +45,10 @@ export default defineConfig({
           text: 'Components',
           items: [
             {
+              text: 'BnBtn',
+              link: '/components/bn-btn',
+            },
+            {
               text: 'BnInput',
               link: '/components/bn-input',
             },
@@ -55,10 +59,6 @@ export default defineConfig({
             {
               text: 'BnCheckbox',
               link: '/components/bn-checkbox',
-            },
-            {
-              text: 'BnBtn',
-              link: '/components/bn-btn',
             },
             {
               text: 'BnListbox',

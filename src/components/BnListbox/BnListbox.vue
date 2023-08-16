@@ -66,6 +66,7 @@ function isMultipleValue(value: InputValue | InputValue[]): value is InputValue[
 const emit = defineEmits<{
   (e: 'focus', event: Event): void,
   (e: 'blur', event: Event): void,
+  (e: 'update:modelValue', value: InputValue | InputValue[]): void,
 }>();
 
 const { name, rules } = toRefs(props);
@@ -117,13 +118,13 @@ function unparseValue(value: InputValue | InputValue[]) {
   return value;
 }
 
-const parsedValue = computed(() => parseValue(props.modelValue));
-
 const { handleChange, value, meta, setTouched, errorMessage } = useField<InputValue | InputValue[]>(name, rules, {
-  initialValue: props.modelValue,
+  initialValue: !props.modelValue && props.multiple ? [] : props.modelValue,
   validateOnMount: true,
   syncVModel: true,
 });
+
+const parsedValue = computed(() => parseValue(value.value));
 
 const listboxButtonRef = ref<ComponentPublicInstance>();
 const {
@@ -180,7 +181,7 @@ function blur(e: Event) {
     <template v-if="!props.keepObjectValue">
       <template v-if="props.multiple">
         <input
-          v-for="(val, idx) in modelValue"
+          v-for="(val, idx) in value"
           :key="idx"
           :value="val"
           type="hidden"
@@ -189,7 +190,7 @@ function blur(e: Event) {
       </template>
       <input
         v-else
-        :value="modelValue"
+        :value="value"
         type="hidden"
         :name="name"
       >

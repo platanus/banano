@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { GenericValidateFunction } from 'vee-validate';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 import { reactive } from 'vue';
 import BnInput from './BnInput.vue';
 
@@ -8,6 +10,7 @@ const state = reactive({
   emptyValue: undefined,
   validate: undefined,
   validateCustom: undefined,
+  date: new Date(),
 });
 
 /* eslint-disable max-len, vue/max-len */
@@ -201,6 +204,52 @@ function isRequired(val: string) {
         </BnInput>
       </template>
     </Variant>
+    <Variant
+      title="with @vuepic/vue-datepicker datepicker"
+    >
+      <template #default>
+        <VueDatePicker
+          v-model="state.date"
+          text-input
+        >
+          <template #dp-input="{ value, onInput, onEnter, onTab, onBlur, onKeypress, onPaste }">
+            <BnInput
+              :model-value="value"
+              name="datepicker"
+              autocomplete="off"
+              @update:model-value="onInput"
+              @keydown.enter="onEnter"
+              @keydown.tab="onTab"
+              @blur="onBlur"
+              @keypress="onKeypress"
+              @paste="onPaste"
+            />
+          </template>
+        </VueDatePicker>
+      </template>
+      <template #source>
+        <textarea v-pre>
+          <VueDatePicker
+            v-model="state.date"
+            text-input
+          >
+            <template #dp-input="{ value, onInput, onEnter, onTab, onBlur, onKeypress, onPaste }">
+              <BnInput
+                :model-value="value"
+                name="datepicker"
+                autocomplete="off"
+                @update:model-value="onInput"
+                @keydown.enter="onEnter"
+                @keydown.tab="onTab"
+                @blur="onBlur"
+                @keypress="onKeypress"
+                @paste="onPaste"
+              />
+            </template>
+          </VueDatePicker>
+        </textarea>
+      </template>
+    </Variant>
   </Story>
 </template>
 
@@ -208,4 +257,7 @@ function isRequired(val: string) {
   .__histoire-sandbox {
     padding: 10px;
   }
-  </style>
+  .__histoire-render-story:not(.__histoire-render-custom-controls) {
+    overflow: visible;
+  }
+</style>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BnInput from '../../src/components/BnInput/BnInput.vue'
-import { Form, ErrorMessage } from 'vee-validate';
+import { Form } from 'vee-validate';
 
 const input = ref('');
 const validate = ref('');
+const phoneNumber = ref('');
+const email = ref('');
 
 const letterIcon = 'M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z';
 
@@ -15,6 +17,10 @@ function isRequired(val: string) {
 
   return true;
 }
+
+const validationSchema = {
+  input: isRequired,
+};
 </script>
 
 # BnInput
@@ -22,6 +28,9 @@ function isRequired(val: string) {
 BnInput is a wrapper for `<input>` elements.
 
 ## Basic Usage
+
+The only required prop for `BnInput` is `name`. The `name` prop is used to identify the input in the context of a `Form` or an `useForm`, or when submitting a form in the traditional way.
+
 ```html
 <bn-input v-model="input" name="name" />
 ```
@@ -30,7 +39,7 @@ BnInput is a wrapper for `<input>` elements.
 </code-preview>
 
 ## Input Attributes
-The underlying `input` receives all attributes passed to the component.
+The `BnInput` component accepts all the attributes that a native `<input>` element accepts, such as `disabled` and `multiple`.
 
 ```html
 <bn-input name="disabled" disabled placeholder="Disabled">
@@ -47,40 +56,85 @@ The underlying `input` receives all attributes passed to the component.
 </code-preview>
 
 ## Vee-Validate
-BnInput works with vee-validate out of the box.
+
+`BnInput` works with vee-validate out of the box.
 
 ```vue
 <script setup lang="ts">
 import { Form } from 'vee-validate';
 import isRequired from '../rules';
+
+const validationSchema = {
+  input: isRequired,
+};
 </script>
 
 <template>
-  <Form>
-    <BnInput
-      v-model="validate"
-      name="validation"
-      :rules="isRequired"
+  <Form :validation-schema="validationSchema">
+    <bn-input
+      name="input"
+      placeholder="Click on me and then click out"
     />
-    <ErrorMessage name="validation" class="text-red-600"/>
   </Form>
 </template>
 ```
 
 <code-preview>
-  <Form>
-    <BnInput
-      v-model="validate"
-      name="validation"
-      :rules="isRequired"
+  <Form :validation-schema="validationSchema">
+    <bn-input
+      name="input"
+      placeholder="Click on me and then click out"
     />
-    <ErrorMessage name="validation" class="text-red-600" />
   </Form>
 </code-preview>
 
-## Colors
+### Rules
 
-Due to the way Tailwind compiles classes, to avoid generating CSS for every single color it includes, Banano only has access to the colors you define in its configuration:
+If you want to validate a field without being in the context of a `Form` or an `useForm`, you can use the `rules` prop.
+
+::: warning
+The `rules` prop will be ignored if the component is inside a `Form` or an `useForm` context with a `validationSchema`.
+:::
+
+```vue
+<script setup lang="ts">
+import isRequired from '../rules';
+</script>
+
+<template>
+  <bn-input
+    v-model="validate"
+    name="input"
+    :rules="isRequired"
+    placeholder="Click on me and then click out"
+  />
+</template>
+```
+
+<code-preview>
+  <bn-input
+    v-model="validate"
+    name="input"
+    :rules="isRequired"
+    placeholder="Click on me and then click out"
+  />
+</code-preview>
+
+## Color
+
+You can change the color accent of the input using the `color` prop.
+
+```html
+<bn-input name="input" color="lime" placeholder="Click on me" />
+```
+
+<code-preview>
+  <div class="grid col-span-1 gap-4">
+    <bn-input name="input" color="lime" placeholder="Click on me" />
+  </div>
+</code-preview>
+
+Note: the color prop only supports the included colors when configuring the library.
 
 ```javascript
 // tailwind.config.js
@@ -90,90 +144,86 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 }
 ```
 
-```html
-<bn-input name="input" color="lime" />
-```
-<code-preview>
-  <div class="grid col-span-1 gap-4">
-    <bn-input name="input" color="lime" />
-  </div>
-</code-preview>
-
 ## Slots
+
+`BnInput` provides five slots: `prefix`, `suffix`, `icon-left`, `icon-right` and `bottom` for adding additional content to the input.
 
 ### prefix
 
+The `prefix` slot is used to add content before the input, in a div with different styling than the input itself. Useful for adding a country code to a phone number input or a currency symbol to a price input.
+
 ```html
-<BnInput
+<bn-input
   v-model="phoneNumber"
   name="phone-number"
 >
   <template #prefix>
 	+56 9
   </template>
-</BnInput>
+</bn-input>
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <BnInput
+    <bn-input
       v-model="phoneNumber"
       name="phone-number"
     >
       <template #prefix>
       +56 9
       </template>
-    </BnInput>
+    </bn-input>
   </div>
 </code-preview>
 
 ### suffix
 
+The `suffix` slot is used to add content after the input, in a div with different style than the input itself. Useful for adding a domain to an email input or a unit of measurement to a quantity input.
+
 ```html
-<BnInput
+<bn-input
   v-model="email"
   name="email"
 >
   <template #suffix>
-	@gmail
+	@gmail.com
   </template>
-</BnInput>
+</bn-input>
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <BnInput
+    <bn-input
       v-model="email"
       name="email"
     >
       <template #suffix>
-      @gmail
+      @gmail.com
       </template>
-    </BnInput>
+    </bn-input>
   </div>
 </code-preview>
 
 ### icon-left
 
+The `icon-left` slot is used to add an icon or small content before the input but inside the input container. Useful for adding a letter icon to an email input or a lock icon to a password input.
+
 ```html
-<BnInput
+<bn-input
   v-model="email"
   name="email"
 >
   <template #icon-left>
-    <svg
-      viewBox="0 0 24 24"
-      class="h-4 w-4 text-gray-400"
-    >
+    <svg>
       <path
         fill="currentColor"
         :d="letterIcon"
-      />
+      >
     </svg>
   </template>
-</BnInput>
+</bn-input>
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <BnInput
+    <bn-input
       v-model="email"
       name="email"
     >
@@ -188,14 +238,16 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
           />
         </svg>
       </template>
-    </BnInput>
+    </bn-input>
   </div>
 </code-preview>
 
 ### icon-right
 
+The `icon-right` slot is used to add an icon or small content after the input but inside the input container. Useful for adding a letter icon to an email input or a lock icon to a password input.
+
 ```html
-<BnInput
+<bn-input
   v-model="email"
   name="email"
 >
@@ -210,11 +262,11 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
       />
     </svg>
   </template>
-</BnInput>
+</bn-input>
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <BnInput
+    <bn-input
       v-model="email"
       name="email"
     >
@@ -229,19 +281,19 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
           />
         </svg>
       </template>
-    </BnInput>
+    </bn-input>
   </div>
 </code-preview>
 
 ### bottom
 
-Useful for hints or errors. Includes the following slot props:
+The `bottom` slot is used to add content below the input. Useful for hints or errors. Includes the following slot props:
 - `errorMessage`: `vee-validate` property, if the input is invalid
 - `valid`: `vee-validate` meta property
 - `touched`: `vee-validate` meta property
 
 ```html
-<BnInput
+<bn-input
   v-model="email"
   name="email"
   :rules="isRequired"
@@ -254,11 +306,11 @@ Useful for hints or errors. Includes the following slot props:
       {{ !valid && touched ? errorMessage : "We'll never share your email with anyone else." }}
     </span>
   </template>
-</BnInput>
+</bn-input>
 ```
 <code-preview>
   <div class="grid col-span-1 gap-4">
-    <BnInput
+    <bn-input
       v-model="email"
       name="email"
       :rules="isRequired"
@@ -271,13 +323,13 @@ Useful for hints or errors. Includes the following slot props:
           {{ !valid && touched ? errorMessage : "We'll never share your email with anyone else." }}
         </span>
       </template>
-    </BnInput>
+    </bn-input>
   </div>
 </code-preview>
 
 ## Customization
 
-There are two ways to customize the appearance of the `BnInput` component:
+There are two ways to customize the appearance of the `bn-input` component:
 
 ### `classes` prop
 
@@ -314,7 +366,7 @@ You can change the default appearance or even add variants by editing the config
     require('@headlessui/tailwindcss'),
     banano.tailwindPlugin({
       theme: {
-        BnInput: {
+        bn-input: {
           '.bn-input': {
             '@apply bg-white relative w-full': {},
           }
@@ -326,3 +378,29 @@ You can change the default appearance or even add variants by editing the config
 
 
 You can find more information about customizing the library in [Theme Customization](../theme-customization.md).
+
+## API Reference
+
+### Props
+
+| Prop                    | Default     | Description |
+| ----------------------- | ----------- | ----------- |
+| `modelValue`            | `undefined` | `string \| number`<br><br>Initial value for the input field. |
+| `name`                  | --          | `string` <br><br> The name attribute of the input field. |
+| `color`                 | `'banano-base'` | `string` <br><br> Determines the color of the input field. |
+| `rules`                 | `undefined` | `RuleExpression<string \| number>` <br><br> Validation rules for the input field. Usually a function that receives the value of the component and returns a boolean or a string if invalid. |
+| `classes`               | `{}`        | `object` <br><br> Allows to customize the classes of the input field's elements. |
+
+### Events
+
+This component does not emit any custom events, but it emits all the events from the underlying `<input>` element.
+
+### Slots
+
+| Slot        | Slot Props | Description |
+| ----------- | ---------- | ----------- |
+| `prefix`    | --         | Use to input the content at the start of the input field. |
+| `icon-left` | --         | Use to input the content at the left of the input field, usually an icon. |
+| `icon-right`| --         | Use to input the content at the right of the input field, usually an icon. |
+| `suffix`    | --         | Use to input the content at the end of the input field. |
+| `bottom`    | <ul><li>`errorMessage: string`</li><li>`valid: boolean`</li><li>`touched: boolean`</li></ul> | Use to input the content at the bottom of the input field. <br><br> `errorMessage` is the validation error message. <br> `valid` is a boolean indicating whether the input field value is valid. <br> `touched` is a boolean indicating whether the input field has been touched. |

@@ -13,7 +13,7 @@ export type ValueTypes = undefined | boolean | string | number | Record<string, 
 
 interface Props {
   modelValue?: ValueTypes | ValueTypes[],
-  value: ValueTypes,
+  value?: ValueTypes,
   name: string,
   color?: string,
   rules?: RuleExpression<ValueTypes | ValueTypes[]>,
@@ -23,7 +23,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  value: undefined,
+  value: true,
   color: 'banano-base',
   rules: undefined,
   disabled: false,

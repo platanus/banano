@@ -24,7 +24,7 @@ module.exports = {
       '@apply w-full overflow-hidden text-sm text-banano-text-foreground': {},
     },
     '&__file-list': {
-      '@apply flex w-full items-center': {},
+      '@apply flex w-0 min-w-full max-w-full items-center': {},
     },
     '&__file-names': {
       '@apply truncate': {},

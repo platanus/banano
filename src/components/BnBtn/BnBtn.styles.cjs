@@ -35,7 +35,7 @@ module.exports = {
       '@apply rounded-full': {},
     },
     '&--shapes-rounded': {
-      '@apply rounded-lg': {},
+      '@apply rounded': {},
     },
     '&--variants-default': {
       '@apply border border-solid': {},

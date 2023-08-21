@@ -206,20 +206,6 @@ function blur(event: Event) {
         :add-file="addFile"
         :value="inputValue"
       >
-        <template v-if="variant === 'default'">
-          <BnBtn
-            size="xs"
-            type="button"
-            class="bn-file-input__button"
-            :class="props.classes.button"
-            variant="outline"
-            :disabled="props.disabled"
-            tabindex="-1"
-            @click="openFileDialog"
-          >
-            {{ props.buttonText }}
-          </BnBtn>
-        </template>
         <template v-if="isAvatar">
           <button
             type="button"
@@ -281,6 +267,21 @@ function blur(event: Event) {
             {{ props.placeholder }}
           </span>
         </div>
+        <template v-if="variant === 'default'">
+          <BnBtn
+            size="xs"
+            type="button"
+            shape="rounded"
+            class="bn-file-input__button"
+            :class="props.classes.button"
+            variant="outline"
+            :disabled="props.disabled"
+            tabindex="-1"
+            @click="openFileDialog"
+          >
+            {{ props.buttonText }}
+          </BnBtn>
+        </template>
       </slot>
     </component>
     <slot

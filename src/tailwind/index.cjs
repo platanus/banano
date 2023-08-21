@@ -141,6 +141,9 @@ module.exports = plugin.withOptions(
     return {
       theme: {
         extend: {
+          zIndex: {
+            'bn-listbox-options': 1025,
+          },
           colors: themeColors,
         },
       },

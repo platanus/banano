@@ -1,5 +1,61 @@
 # Colors
 
+## Color Prop
+
+Most components in this library have a `color` prop that can be used to change either the main color or the color accent of the component, however it requires a bit of setup before it can be used due to the way Tailwind works.
+
+### Setup
+
+To use the `color` prop, you need to configure the library to include the colors you want to use. This is done by passing an object to the `require('banano/tailwind')` function, with a `colors` property that is an array of the colors you want to include. For example, to include the `lime` color, you would do the following:
+
+```js
+// tailwind.config.js
+{
+  ...
+  require('banano/tailwind')({ colors: ['lime']}),
+}
+```
+
+The colors that can be included can be found in the [Tailwind Colors](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) palette, plus any custom color added in the Tailwind config file. However, the custom colors need to have all their variants defined (100, 200, 300...)
+, otherwise the `color` prop will not work. For example, if you add a custom color like this it will not work:
+
+```js
+// tailwind.config.js
+{
+  ...
+  theme: {
+    extend: {
+      colors: {
+        custom: '#ff0000',
+      },
+    },
+  },
+}
+```
+
+But if you add it like this, it will work:
+
+```js
+// tailwind.config.js
+{
+  ...
+  theme: {
+    extend: {
+      colors: {
+        custom: {
+          100: '#ff0000',
+          200: '#ff0011',
+          300: '#ff0022',
+          // ...
+        },
+      },
+    },
+  },
+}
+```
+
+## Theme Colors
+
 Banano extends the theme to include some custom colors that affect some components across this library. These colors can be overriden in your projects `tailwind.config.js` file. Some of these colors require a **object** of colors with their numbered variants, for example, `tailwindColors.purple`, and some require a **single string** color, for example `tailwindColors.purple['100']`.
 The colors are as follows:
 

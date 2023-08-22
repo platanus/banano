@@ -99,15 +99,7 @@ function handlePageChange(newPage) {
 
 ## Colors
 
-Due to the way Tailwind compiles classes, to avoid generating CSS for every single color it includes, Banano only has access to the colors you define in its configuration:
-
-```javascript
-// tailwind.config.js
-{
-...
-  require('banano/tailwind')({ colors: ['lime']}),
-}
-```
+You can change the color of the pagination buttons using the `color` prop.
 
 ```html
 <bn-pagination
@@ -120,6 +112,10 @@ Due to the way Tailwind compiles classes, to avoid generating CSS for every sing
 <code-preview>
   <bn-pagination :total-pages="20" :current-page="currentPage" color="lime" />
 </code-preview>
+
+::: tip
+The `color` prop only supports the colors set when configuring the library. See [Colors](../colors.md) for more information.
+:::
 
 ## Customization
 

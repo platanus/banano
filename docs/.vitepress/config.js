@@ -24,12 +24,12 @@ export default defineConfig({
               collapsed: false,
               items: [
                 {
-                  text: 'Classes and Components',
-                  link: '/classes-and-components',
-                },
-                {
                   text: 'Colors',
                   link: '/colors',
+                },
+                {
+                  text: 'Classes and Components',
+                  link: '/classes-and-components',
                 },
               ],
             },

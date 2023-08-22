@@ -2,7 +2,7 @@ module.exports = {
   '.bn-file-input': {
     '&__wrapper': {
       '&--variants-default': {
-        '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-200 px-3 py-2 bg-banano-bg': {},
+        '@apply form-input flex h-12 w-full items-center rounded-lg border border-gray-100 px-3 py-2 bg-banano-bg': {},
       },
       '&--disabled': {
         '@apply bg-gray-100 opacity-75 cursor-not-allowed': {},
@@ -18,13 +18,13 @@ module.exports = {
       '@apply hidden': {},
     },
     '&__button': {
-      '@apply mr-2 shrink-0 cursor-pointer outline-none': {},
+      '@apply ml-2 shrink-0 cursor-pointer outline-none': {},
     },
     '&__label': {
       '@apply w-full overflow-hidden text-sm text-banano-text-foreground': {},
     },
     '&__file-list': {
-      '@apply flex w-full items-center': {},
+      '@apply flex w-0 min-w-full max-w-full items-center': {},
     },
     '&__file-names': {
       '@apply truncate': {},

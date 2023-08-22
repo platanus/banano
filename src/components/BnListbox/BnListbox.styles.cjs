@@ -40,8 +40,10 @@ module.exports = {
   // Separate class since it's teleported to body
   '.bn-listbox-options': {
     '@apply fixed max-h-60 w-full overflow-auto rounded-lg border border-gray-200 bg-white': {},
+    '@apply z-bn-listbox-options': {},
     '&__option': {
-      '@apply flex h-12 items-center p-3 ui-selected:text-white hover:text-white ui-active:text-white': {},
+      '@apply flex h-12 items-center p-3 text-banano-text-foreground': {},
+      '@apply ui-selected:text-white hover:text-white ui-active:text-white': {},
       colors: {
         '@apply hover:bg-varColor-600 ui-selected:bg-varColor-600 ui-active:bg-varColor-600': {},
       },

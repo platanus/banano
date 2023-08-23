@@ -60,6 +60,7 @@ const tag = computed(() => {
         <slot name="icon-left" />
       </div>
       <span class="bn-btn__content-and-loading-wrapper">
+        <slot />
         <svg
           v-if="loading"
           class="bn-btn__loading"
@@ -86,7 +87,6 @@ const tag = computed(() => {
               5.824 3 7.938l3-2.647z"
           />
         </svg>
-        <slot />
       </span>
       <div
         v-if="$slots['icon-right']"

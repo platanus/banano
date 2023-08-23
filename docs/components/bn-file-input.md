@@ -172,15 +172,11 @@ You can change the color accent of the default variants of the file input using 
   </div>
 </code-preview>
 
-Note: the color prop only supports the included colors when configuring the library.
 
-```javascript
-// tailwind.config.js
-{
-...
-  require('banano/tailwind')({ colors: ['lime']}),
-}
-```
+::: tip
+The `color` prop only supports the colors set when configuring the library. See [Colors](../colors.md) for more information.
+:::
+
 
 ## Slots
 

@@ -16,13 +16,15 @@ const sizeVariants = [
 const shapeVariants = [
   { shape: 'circle', size: 'lg', text: '👍' },
   { shape: 'pill' },
-  { shape: 'rounded' },
+  { shape: 'square' },
 ];
 
 const variantVariants = [
   { variant: 'default' },
   { variant: 'outline' },
+  { variant: 'outline', disabled: true, title: 'BnBtn outline disabled' },
   { variant: 'no-border' },
+  { variant: 'no-border', disabled: true, title: 'BnBtn no-border disabled' },
 ];
 
 const colorVariants = [
@@ -32,6 +34,7 @@ const colorVariants = [
 
 const loadingVariants = [
   { loading: true, text: 'Loading...', title: 'Loading' },
+  { loading: true, text: 'Loading...', size: 'xs', title: 'Loading sm' },
   { loading: true, text: 'Loading...', size: 'sm', title: 'Loading sm' },
   { loading: true, text: 'Loading...', size: 'md', title: 'Loading md' },
   { loading: true, text: 'Loading...', size: 'lg', title: 'Loading lg' },
@@ -95,7 +98,7 @@ defineExpose({
     <Variant
       v-for="(props, key) of variantVariants"
       :key="key"
-      :title="'BnBtn ' + props.variant"
+      :title="props.title || 'BnBtn ' + props.variant"
     >
       <BnBtn v-bind="props">
         {{ state.text }}

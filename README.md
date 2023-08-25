@@ -14,3 +14,15 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
 You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+
+## Credits
+
+Thank you [contributors](https://github.com/platanus/banano/graphs/contributors)!
+
+<img src="http://platan.us/gravatar_with_text.png" alt="Platanus" width="250"/>
+
+banano is maintained by [platanus](http://platan.us).
+
+## License
+
+Banano is © 2021 Platanus, spa. It is free software and may be redistributed under the terms specified in the LICENSE file.

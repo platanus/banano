@@ -1,7 +1,32 @@
 {
-  "name": "banano",
+  "name": "@platanus/banano",
   "private": false,
-  "version": "0.0.0",
+  "version": "1.0.1",
+  "description": "A Vue 3 UI components library for platanus proyects",
+  "main": "./dist/vue/index.js",
+  "module": "./dist/vue/index.js",
+  "types": "./dist/vue/index.d.ts",
+  "author": "Platanus",
+  "license": "MIT",
+  "repository": "https://github.com/platanus/banano.git",
+  "exports": {
+    ".": "./dist/vue/index.js",
+    "./tailwind": "./dist/tailwind/tailwind.umd.cjs"
+  },
+  "bin": {
+    "banano": "./bin/banano.js"
+  },
+  "contributors": [
+    {
+      "name": "Diego Fernández"
+    },
+    {
+      "name": "Guillermo Moreno"
+    },
+    {
+      "name": "Francisca Rebolledo"
+    }
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build && vite build --config vite.tailwind.config.ts",
@@ -29,16 +54,6 @@
     "vee-validate": "^4.6.9",
     "vue": "^3.3.4"
   },
-  "main": "./dist/vue/index.js",
-  "module": "./dist/vue/index.js",
-  "exports": {
-    ".": "./dist/vue/index.js",
-    "./tailwind": "./dist/tailwind/tailwind.umd.cjs"
-  },
-  "bin": {
-    "banano": "./bin/banano.js"
-  },
-  "types": "./dist/vue/index.d.ts",
   "devDependencies": {
     "@headlessui/tailwindcss": "^0.1.1",
     "@histoire/plugin-vue": "^0.15.8",
